@@ -3,11 +3,7 @@
 const double Simulation::BOLTZMANN_K = 0.00831447122,
         Simulation::ELECTROSTATIC_K = 1389.354325379097;
 
-Simulation::Simulation() {
-    Simulation(200, 2);
-}
-
-Simulation::Simulation(int num_waters = 200, int num_ions = 2) {
+Simulation::Simulation(int num_waters, int num_ions) {
     default_initialize_system_parameters(num_waters, num_ions);
     default_initialize_waters(num_waters);
     default_initialize_ions(num_ions);
@@ -89,7 +85,7 @@ void Simulation::set_temperature(double new_temp) {
     return;
 }
 
-void Simulation::expand_box_z_direction(double new_len = 0.0) {
+void Simulation::expand_box_z_direction(double new_len) {
     // first increase the box z length, then move all particles up by displacement dz, where dz is such that after the move, water slab will be in the center
     // set water's box z length when expanding box
     if (new_len == 0.0)
@@ -111,7 +107,7 @@ void Simulation::expand_box_z_direction(double new_len = 0.0) {
     }
 
     // redo all Ewald tables and recalculate energies
-    int times = ceil(BOX_Z_LENGTH / BOX_LENGTH);
+    int times = (int) ceil(BOX_Z_LENGTH / BOX_LENGTH);
     initialize_all_ewald_tables(EWALD_ALPHA, EWALD_NXY, EWALD_NZ * times);
     calculate_and_init_energy();
     return;

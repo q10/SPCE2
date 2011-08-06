@@ -1,0 +1,68 @@
+= SPCE2
+
+* http://github.com/q10/SPCE2
+
+SPCE is a program that simulates the behavior of water ions in water according 
+to the SPC/E model of water and ion solvation.  This is a Monte Carlo 
+simulation program.  SPCE2 is a complete rewrite of the original SPCE program, 
+with emphasis on code modularity, re-usability, and testability.
+
+= Install:
+
+== Requirements:
+
+* git
+* g++
+* make
+
+== Instructions:
+
+Pull code from GitHub:
+
+    $ git pull git@github.com:q10/SPCE2.git
+
+Then compile everything from inside the SPCE program folder into a binary:
+
+    $ make
+
+The following make flags are available:
+
+    $ make o0       // no optimizations applied
+    $ make o1       // -O1 optimization applied
+    $ make o2       // -O2 optimization applied
+    $ make o3       // -O3 optimization applied
+    $ make verbose  // compile under -O3 optimization with verbose output
+    $ make clean    // removes SPCE executable and *.o and *~ files
+
+= Usage:
+
+Simply run the following command on terminal:
+
+    $ ./SPCE
+
+== Flags:
+
+The following program flags are allowed for a customized simulation.
+
+-r:: Specify the system configuration file to import
+-w:: Specify the name of the file to export the system configuration
+-v:: Specify the name of the VMD (.lammpstrj) file to export the system configuration
+
+All customizations must be specified in the config file that is to be used by the -r flag
+
+Example Usage:
+
+    $ ./SPCE -r=sample.config -w=output.config -v=output.lammpstrj
+
+= Development:
+
+* Source hosted at {GitHub}[https://github.com/q10/SPCE2].
+* Report issues on {GitHub Issues}[https://github.com/q10/SPCE2/issues]
+
+Pull requests are very welcome! Make sure your patches are well tested. Please 
+create a topic branch for every separate change you make.
+
+= License:
+
+SPCE2 is licensed under the the New BSD License and may be freely redistributed 
+under the terms specified in the {LICENSE}[https://github.com/q10/SPCE2/blob/master/LICENSE] file.

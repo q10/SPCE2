@@ -79,31 +79,30 @@ void Simulation::initialize_rho_k_values_table() {
 
 void Simulation::initialize_exp_kr_cache_tables() {
     for (int i = 0; i < 3; i++) {
-        delete [] exp_kr_O[i];
-        delete [] exp_kr_H1[i];
-        delete [] exp_kr_H2[i];
-        delete [] exp_kr_ion[i];
+        if (exp_kr_O[i] != NULL)
+            delete [] exp_kr_O[i];
+        if (exp_kr_H1[i] != NULL)
+            delete [] exp_kr_H1[i];
+        if (exp_kr_H2[i] != NULL)
+            delete [] exp_kr_H2[i];
+        if (exp_kr_ion[i] != NULL)
+            delete [] exp_kr_ion[i];
     }
 
-    dcomplex * ptr;
     int tmp_n;
-
     for (int i = 0; i < 3; i++) {
         tmp_n = (i < 2) ? EWALD_NXY : EWALD_NZ;
-        ptr = new dcomplex [2 * tmp_n + 1];
-        exp_kr_O[i] = ptr;
-        ptr = new dcomplex [2 * tmp_n + 1];
-        exp_kr_H1[i] = ptr;
-        ptr = new dcomplex [2 * tmp_n + 1];
-        exp_kr_H2[i] = ptr;
-        ptr = new dcomplex [2 * tmp_n + 1];
-        exp_kr_ion[i] = ptr;
+        exp_kr_O[i] = new dcomplex [2 * tmp_n + 1];
+        exp_kr_H1[i] = new dcomplex [2 * tmp_n + 1];
+        exp_kr_H2[i] = new dcomplex [2 * tmp_n + 1];
+        exp_kr_ion[i] = new dcomplex [2 * tmp_n + 1];
     }
 
     for (int i = 0; i < 3; i++) {
         tmp_n = (i < 2) ? EWALD_NXY : EWALD_NZ;
         exp_kr_O[i][tmp_n] = exp_kr_H1[i][tmp_n] = exp_kr_H2[i][tmp_n] = exp_kr_ion[i][tmp_n] = COMPLEX_ONE;
     }
+
     return;
 }
 

@@ -21,8 +21,7 @@ public:
     std::vector <Ion *> IONS;
     Sampler * sampler;
 
-    Simulation();
-    Simulation(int num_waters, int num_ions);
+    Simulation(int num_waters = 200, int num_ions = 2);
     ~Simulation();
 
     void default_initialize_system_parameters(int num_waters, int num_ions);
@@ -30,7 +29,7 @@ public:
     void default_initialize_ions(int num_ions);
 
     void set_temperature(double new_temp);
-    void expand_box_z_direction(double new_len);
+    void expand_box_z_direction(double new_len = 0.0);
 
     double DISPLACEMENT_DISTANCE, DISPLACEMENT_ROTATION;
     int NUM_EQUILIBRATION_SWEEPS, NUM_MC_SWEEPS, NUM_MC_ATTEMPTS_PER_SWEEP,
@@ -73,7 +72,7 @@ public:
     double ewald_diff_ion(int index);
     void set_exp_kr_table_for_water(int water_index);
     void set_exp_kr_table_for_ion(int ion_index);
-    
+
 
     friend std::ostream & operator<<(std::ostream & out, Simulation * simulation);
     std::string to_vmd(int time_step);
