@@ -54,6 +54,7 @@ void Simulation::initialize_k_vectors_table() {
             }
         }
     }
+    ASSERT(NUM_K_VECTORS == K_VECTORS.size(), "NUMBER OF K VECTORS NOT MATCHING.");
     return;
 }
 

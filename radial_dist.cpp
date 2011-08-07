@@ -47,8 +47,8 @@ void Sampler::radial_dist_sample() {
             dx -= simulation->BOX_LENGTH * ROUND(dx / simulation->BOX_LENGTH);
             dy -= simulation->BOX_LENGTH * ROUND(dy / simulation->BOX_LENGTH);
             dz -= simulation->BOX_Z_LENGTH * ROUND(dz / simulation->BOX_Z_LENGTH);
-            dr = sqrt(dx * dx + dy * dy + dz * dz);
             if (dx < simulation->HALF_BOX_LENGTH and dy < simulation->HALF_BOX_LENGTH and dz < simulation->HALF_BOX_Z_LENGTH) {
+                dr = sqrt(dx * dx + dy * dy + dz * dz);
                 int ig = int(dr / delg);
                 ion_radial_dist_data[ig] += 2;
             }

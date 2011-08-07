@@ -2,6 +2,7 @@
 
 const double Simulation::BOLTZMANN_K = 0.00831447122,
         Simulation::ELECTROSTATIC_K = 1389.354325379097;
+const dcomplex Simulation::COMPLEX_ONE(1.0, 0.0);
 
 Simulation::Simulation(int num_waters, int num_ions) {
     default_initialize_system_parameters(num_waters, num_ions);
@@ -61,6 +62,7 @@ void Simulation::default_initialize_waters(int num_waters) {
         w = new Water(coords, DISPLACEMENT_DISTANCE, DISPLACEMENT_ROTATION, BOX_LENGTH, BOX_Z_LENGTH);
         WATERS.push_back(w);
     }
+    delete [] coords;
     return;
 }
 
@@ -76,6 +78,7 @@ void Simulation::default_initialize_ions(int num_ions) {
         ion = new Ion(coords, charge, DISPLACEMENT_DISTANCE, BOX_LENGTH, BOX_Z_LENGTH);
         IONS.push_back(ion);
     }
+    delete [] coords;
     return;
 }
 

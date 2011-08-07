@@ -12,9 +12,9 @@ class Sampler;
 
 class Simulation {
 public:
-#define COMPLEX_ONE dcomplex(1.0, 0.0)
 
     static const double BOLTZMANN_K, ELECTROSTATIC_K;
+    static const dcomplex COMPLEX_ONE;
 
     double TEMPERATURE, BETA, TARGET_WATER_DENSITY, BOX_LENGTH, HALF_BOX_LENGTH, BOX_Z_LENGTH, HALF_BOX_Z_LENGTH, BOX_VOLUME;
     std::vector <Water *> WATERS;

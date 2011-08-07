@@ -66,7 +66,7 @@ bool Simulation::mc_accept(int index, double old_energy_particle_i) {
         // reset partial rho_k's
         dcomplex *column;
         int NUM_TOTAL_PARTICLES = WATERS.size() + IONS.size();
-        for (int k = 0; k < 725; k++) {
+        for (int k = 0; k < K_VECTORS.size(); k++) {
             column = RHO_K_VALUES[k];
             column[NUM_TOTAL_PARTICLES] += column[NUM_TOTAL_PARTICLES + 1] - column[index];
             column[index] = column[NUM_TOTAL_PARTICLES + 1];

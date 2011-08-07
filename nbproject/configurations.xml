@@ -15,6 +15,9 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <itemPath>LICENSE</itemPath>
+      <itemPath>README.rdoc</itemPath>
+      <itemPath>sample.config</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
