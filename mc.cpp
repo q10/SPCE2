@@ -1,31 +1,34 @@
 #include "common.h"
 
 void Simulation::equilibrate() {
-    int equilibrate_start = clock();
+    static struct timeval equilibrate_start, equilibrate_end;
+    gettimeofday(&equilibrate_start, NULL);
     for (int h = 0; h < NUM_EQUILIBRATION_SWEEPS; h++) {
         mc_sweep();
         cerr << "Equilibration MC sweep " << h + 1 << " of " << NUM_EQUILIBRATION_SWEEPS << " complete." << endl;
     }
-    cerr << "Equilibration completed in " << setprecision(10) << ((double) (clock() - equilibrate_start) / (double) CLOCKS_PER_SEC) / 3600 << " hours." << endl;
+    gettimeofday(&equilibrate_end, NULL);
+    cerr << "Equilibration completed in " << setprecision(10) << timeval_diff(&equilibrate_end, &equilibrate_start) / 1000000.0 / 3600.0 << " hours." << endl;
     return;
 }
 
 void Simulation::run_mc() {
-    int run_start = clock();
+    static struct timeval run_start, run_end;
+    gettimeofday(&run_start, NULL);
     for (int h = 0; h < NUM_MC_SWEEPS; h++) {
         mc_sweep();
         if (h % Sampler::DATA_SAMPLING_RATE == 0)
             sampler->sample_data();
         cerr << "MC sweep " << h + 1 << " of " << NUM_MC_SWEEPS << " complete." << endl;
     }
-    cerr << "MC run completed in " << setprecision(10) << ((double) (clock() - run_start) / (double) CLOCKS_PER_SEC) / 3600 << " hours." << endl;
+    gettimeofday(&run_end, NULL);
+    cerr << "MC run completed in " << setprecision(10) << timeval_diff(&run_end, &run_start) / 1000000.0 / 3600.0 << " hours." << endl;
     return;
 }
 
 void Simulation::mc_sweep() {
-    int sweep_start = clock();
-    struct timeval start_time, end_time;
-    gettimeofday(&start_time, NULL);
+    static struct timeval sweep_start, sweep_end;
+    gettimeofday(&sweep_start, NULL);
     for (int i = 0; i < NUM_MC_ATTEMPTS_PER_SWEEP; i++) {
         if (RAN3() < 0.5) {
             total_attempted_mc_translations++;
@@ -35,10 +38,8 @@ void Simulation::mc_sweep() {
             mc_rotate();
         }
     }
-    gettimeofday(&end_time, NULL);
-    cerr << start_time.tv_sec << " " << start_time.tv_usec << endl << end_time.tv_sec << " " << end_time.tv_usec << endl;
-    cerr << timeval_diff(&end_time, &start_time) / 1000000.0 << endl;
-    cerr << (double) (clock() - sweep_start) / (double) CLOCKS_PER_SEC << endl;
+    gettimeofday(&sweep_end, NULL);
+    cerr << setprecision(10) << timeval_diff(&sweep_end, &sweep_start) / 1000000.0 << endl;
     return;
 }
 
