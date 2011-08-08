@@ -21,7 +21,7 @@ public:
 
     
     int num_gr, radial_dist_num_his_bars;
-    double *radial_dist_distance, *radial_dist_data, *ion_radial_dist_data, delg;
+    double *radial_dist_distance, *water_water_RDF, *ion_water_RDF, *ion_ion_RDF, delg;
 
     void initialize_radial_dist_sampler();
     void radial_dist_sample();

@@ -24,6 +24,8 @@ void Simulation::run_mc() {
 
 void Simulation::mc_sweep() {
     int sweep_start = clock();
+    struct timeval start_time, end_time;
+    gettimeofday(&start_time, NULL);
     for (int i = 0; i < NUM_MC_ATTEMPTS_PER_SWEEP; i++) {
         if (RAN3() < 0.5) {
             total_attempted_mc_translations++;
@@ -33,6 +35,9 @@ void Simulation::mc_sweep() {
             mc_rotate();
         }
     }
+    gettimeofday(&end_time, NULL);
+    cerr << start_time.tv_sec << " " << start_time.tv_usec << endl << end_time.tv_sec << " " << end_time.tv_usec << endl;
+    cerr << timeval_diff(&end_time, &start_time) / 1000000.0 << endl;
     cerr << (double) (clock() - sweep_start) / (double) CLOCKS_PER_SEC << endl;
     return;
 }
@@ -56,7 +61,7 @@ void Simulation::mc_rotate() {
 }
 
 bool Simulation::mc_accept(int index, double old_energy_particle_i) {
-    double total_energy_diff = ewald_diff(index) + energy_of_particle_with_index(index) - old_energy_particle_i;
+    double total_energy_diff = /*ewald_diff(index) + */energy_of_particle_with_index(index) - old_energy_particle_i;
     if (RAN3() < exp(-BETA * total_energy_diff))
         TOTAL_ENERGY += total_energy_diff;
     else {

@@ -41,6 +41,7 @@ string Simulation::to_vmd(int time_step) {
 
 void test_vmd_output() {
     Simulation * s = new Simulation();
+    s->NUM_EQUILIBRATION_SWEEPS = 100000;
     s->equilibrate();
     cout << s->to_vmd(42) << endl;
     return;

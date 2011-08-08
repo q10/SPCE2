@@ -23,11 +23,24 @@ Water::Water(double * tmp_coords, double tmp_disp_dist, double tmp_disp_rot, dou
     DISPLACEMENT_ROTATION = tmp_disp_rot;
     BOX_LENGTH = box_length;
     BOX_Z_LENGTH = box_z_length;
+
+    TMP_CENTER_OF_MASS = new double [3];
+    ROTATION_MATRIX = new double * [3];
+    for (int i = 0; i < 3; i++)
+        ROTATION_MATRIX[i] = new double [3];
+    old_coords = new double [9];
+    coords = new double [9];
     for (int i = 0; i < 9; i++)
         coords[i] = tmp_coords[i];
 }
 
 Water::~Water() {
+    delete [] coords;
+    delete [] old_coords;
+    delete [] TMP_CENTER_OF_MASS;
+    for (int i = 0; i < 3; i++)
+        delete [] ROTATION_MATRIX[i];
+    delete [] ROTATION_MATRIX;
 }
 
 void Water::mc_translate() {

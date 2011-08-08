@@ -27,8 +27,8 @@ public:
     OH_LENGTH,
     HOH_ANGLE_DEG;
 
-    double TMP_CENTER_OF_MASS[3], ROTATION_MATRIX[3][3];
-    double coords[9], old_coords[9], DISPLACEMENT_DISTANCE, DISPLACEMENT_ROTATION, BOX_LENGTH, BOX_Z_LENGTH;
+    double *TMP_CENTER_OF_MASS, **ROTATION_MATRIX;
+    double *coords, *old_coords, DISPLACEMENT_DISTANCE, DISPLACEMENT_ROTATION, BOX_LENGTH, BOX_Z_LENGTH;
 
     Water(double * tmp_coords, double tmp_disp_dist, double tmp_disp_rot, double box_length, double box_z_length);
     ~Water();

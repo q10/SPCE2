@@ -11,7 +11,7 @@
 class Ion {
 public:
     static const double SIGMA, EPSILON;
-    double coords[3], old_coords[3];
+    double *coords, *old_coords;
     double charge, DISPLACEMENT_DISTANCE, BOX_LENGTH, BOX_Z_LENGTH;
 
     Ion(double * tmp_coords, double tmp_charge, double tmp_disp_dist, double box_length, double box_z_length);

@@ -210,6 +210,7 @@ double Simulation::ewald_diff_ion(int index) {
 void Simulation::set_exp_kr_table_for_water(int water_index) {
     double *coords = WATERS[water_index]->coords;
     int tmp_n, tmp_m, tmp_o;
+    
     for (int i = 0; i < 3; i++) {
         tmp_o = (i < 2) ? EWALD_NXY : EWALD_NZ;
         tmp_n = tmp_o + 1;

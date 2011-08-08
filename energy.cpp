@@ -72,6 +72,7 @@ double Simulation::energy_between_ion_and_water(int i, int j) {
         } else
             tmp_energy += ELECTROSTATIC_K * IONS[i]->charge * Water::Q_H * ERFC_TABLE[floor(r * 1000.0)] / r;
     }
+    ion_i = water_j = NULL;
     return tmp_energy;
 }
 
@@ -128,5 +129,6 @@ double Simulation::energy_between_two_waters(int i, int j) {
                 tmp_energy += ELECTROSTATIC_K * Water::Q_H * Water::Q_H * ERFC_TABLE[floor(r * 1000.0)] / r;
         }
     }
+    water_i = water_j = NULL;
     return tmp_energy;
 }

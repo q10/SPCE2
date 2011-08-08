@@ -131,3 +131,16 @@ void ASSERT(bool expression, string error_msg) {
     }
     return;
 }
+
+int timeval_diff(struct timeval *end_time, struct timeval *start_time) {
+    long diff_tv_sec = end_time->tv_sec - start_time->tv_sec,
+            diff_tv_usec = end_time->tv_usec - start_time->tv_usec;
+
+    /* Using while instead of if below makes the code slightly more robust. */
+    while (diff_tv_sec < 0) {
+        diff_tv_usec += 1000000;
+        diff_tv_sec -= 1;
+    }
+
+    return (int)(1000000 * diff_tv_sec + diff_tv_usec);
+}
