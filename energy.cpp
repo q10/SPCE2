@@ -68,9 +68,9 @@ double Simulation::energy_between_ion_and_water(int i, int j) {
         if (atom == 0) {
             r2 = (Water::SIGMA + Ion::SIGMA) / (2 * r);
             tmp_energy += 4.0 * Water::EPSILON * (pow(r2, 12) - pow(r2, 6)) +
-                    ELECTROSTATIC_K * IONS[i]->charge * Water::Q_O * ERFC_TABLE[floor(r * 1000.0)] / r;
+                    ELECTROSTATIC_K * IONS[i]->charge * Water::Q_O * ERFC_TABLE[int(r * 1000.0)] / r;
         } else
-            tmp_energy += ELECTROSTATIC_K * IONS[i]->charge * Water::Q_H * ERFC_TABLE[floor(r * 1000.0)] / r;
+            tmp_energy += ELECTROSTATIC_K * IONS[i]->charge * Water::Q_H * ERFC_TABLE[int(r * 1000.0)] / r;
     }
     ion_i = water_j = NULL;
     return tmp_energy;
@@ -80,7 +80,7 @@ double Simulation::energy_between_two_ions(int i, int j) {
     double r = IONS[i]->distance_from(IONS[j]);
     double r2 = Ion::SIGMA / r;
     return 4.0 * Ion::EPSILON * (pow(r2, 12) - pow(r2, 6)) +
-            ELECTROSTATIC_K * IONS[i]->charge * IONS[j]->charge * ERFC_TABLE[floor(r * 1000.0)] / r;
+            ELECTROSTATIC_K * IONS[i]->charge * IONS[j]->charge * ERFC_TABLE[int(r * 1000.0)] / r;
 }
 
 double Simulation::energy_between_two_waters(int i, int j) {
@@ -122,11 +122,11 @@ double Simulation::energy_between_two_waters(int i, int j) {
             if (atom == 0 and atom2 == 0) {
                 r2 = Water::SIGMA / r;
                 tmp_energy += 4.0 * Water::EPSILON * (pow(r2, 12) - pow(r2, 6)) +
-                        ELECTROSTATIC_K * Water::Q_O * Water::Q_O * ERFC_TABLE[floor(r * 1000.0)] / r;
+                        ELECTROSTATIC_K * Water::Q_O * Water::Q_O * ERFC_TABLE[int(r * 1000.0)] / r;
             } else if (atom == 0 or atom2 == 0)
-                tmp_energy += ELECTROSTATIC_K * Water::Q_O * Water::Q_H * ERFC_TABLE[floor(r * 1000.0)] / r;
+                tmp_energy += ELECTROSTATIC_K * Water::Q_O * Water::Q_H * ERFC_TABLE[int(r * 1000.0)] / r;
             else
-                tmp_energy += ELECTROSTATIC_K * Water::Q_H * Water::Q_H * ERFC_TABLE[floor(r * 1000.0)] / r;
+                tmp_energy += ELECTROSTATIC_K * Water::Q_H * Water::Q_H * ERFC_TABLE[int(r * 1000.0)] / r;
         }
     }
     water_i = water_j = NULL;

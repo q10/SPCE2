@@ -21,7 +21,7 @@ private:
     double energy_between_two_ions(int i, int j);
 
 
-    std::map <double, double> ERFC_TABLE;
+    std::vector <double> ERFC_TABLE;
     std::vector <double *> K_VECTORS;
     std::vector <dcomplex *> RHO_K_VALUES;
     dcomplex *exp_kr_O[3], *exp_kr_H1[3], *exp_kr_H2[3], *exp_kr_ion[3];

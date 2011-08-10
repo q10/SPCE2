@@ -17,12 +17,10 @@ void Simulation::initialize_all_ewald_tables(double ewald_alpha, int ewald_nxy, 
 
 void Simulation::initialize_erfc_table() {
     ERFC_TABLE.clear();
-    double sqrt_alpha_1000 = sqrt(EWALD_ALPHA) / 1000.0, key;
-    for (double r = 0.0; r < max(HALF_BOX_LENGTH, HALF_BOX_Z_LENGTH); r += 0.001) {
-        // to optimize map search by using one less division, we keep the keys as x10^4
-        key = floor(r * 1000.0);
-        ERFC_TABLE[key] = erfc(key * sqrt_alpha_1000);
-    }
+    double sqrt_alpha_1000 = sqrt(EWALD_ALPHA) / 1000.0;
+    // to optimize map search by using one less division, we keep the keys as x10^4
+    for (double r = 0.0; r < BOX_Z_LENGTH; r += 0.001)
+        ERFC_TABLE.push_back(erfc(floor(r * 1000.0) * sqrt_alpha_1000));
     return;
 }
 
@@ -210,7 +208,7 @@ double Simulation::ewald_diff_ion(int index) {
 void Simulation::set_exp_kr_table_for_water(int water_index) {
     double *coords = WATERS[water_index]->coords;
     int tmp_n, tmp_m, tmp_o;
-    
+
     for (int i = 0; i < 3; i++) {
         tmp_o = (i < 2) ? EWALD_NXY : EWALD_NZ;
         tmp_n = tmp_o + 1;
