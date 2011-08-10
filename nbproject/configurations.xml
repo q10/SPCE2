@@ -8,6 +8,7 @@
       <itemPath>config_reader.h</itemPath>
       <itemPath>ion.h</itemPath>
       <itemPath>random.h</itemPath>
+      <itemPath>runs.h</itemPath>
       <itemPath>sampler.h</itemPath>
       <itemPath>simulation.h</itemPath>
       <itemPath>water.h</itemPath>
@@ -32,6 +33,7 @@
       <itemPath>radial_dist.cpp</itemPath>
       <itemPath>random.cpp</itemPath>
       <itemPath>rotation.cpp</itemPath>
+      <itemPath>runs.cpp</itemPath>
       <itemPath>sampler.cpp</itemPath>
       <itemPath>simulation.cpp</itemPath>
       <itemPath>water.cpp</itemPath>

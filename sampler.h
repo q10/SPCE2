@@ -9,26 +9,40 @@
 #define	SAMPLER_H
 
 class Sampler {
-public:
-    static const int DATA_SAMPLING_RATE = 5;
-
-    Simulation * simulation;
-
-    Sampler(Simulation * s);
-    ~Sampler();
-
-    void sample_data();
-
-    
+private:
     int num_gr, radial_dist_num_his_bars;
     double *radial_dist_distance, *water_water_RDF, *ion_water_RDF, *ion_ion_RDF, delg;
 
     void initialize_radial_dist_sampler();
     void radial_dist_sample();
     void compute_radial_dist_results();
-    void print_radial_dist_results();
+
+    int vmd_timestep;
+    std::ofstream VMD_FILE, CONFIG_FILE;
+    void close_vmd_file();
+
+public:
+    static int DATA_SAMPLING_RATE;
+
+    Simulation * simulation;
+    std::string SIMULATION_TIME_STAMP;
+
+    Sampler(Simulation * s);
+    ~Sampler();
+
+    void sample_data();
+    void start();
+    void finish();
+
+    std::string radial_dist_results();
+
+
+    std::string config_filename, vmd_filename;
+    void write_vmd_snapshot();
+    void write_config_snapshot();
+
 };
 
-void test_radial_dist_sampler();
+void test_radial_dist();
 
 #endif	/* SAMPLER_H */

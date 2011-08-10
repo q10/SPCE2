@@ -30,8 +30,7 @@ Water::Water(double * tmp_coords, double tmp_disp_dist, double tmp_disp_rot, dou
         ROTATION_MATRIX[i] = new double [3];
     old_coords = new double [9];
     coords = new double [9];
-    for (int i = 0; i < 9; i++)
-        coords[i] = tmp_coords[i];
+    set_coords(tmp_coords);
 }
 
 Water::~Water() {
@@ -41,6 +40,12 @@ Water::~Water() {
     for (int i = 0; i < 3; i++)
         delete [] ROTATION_MATRIX[i];
     delete [] ROTATION_MATRIX;
+}
+
+void Water::set_coords(double * tmp_coords) {
+    for (int i = 0; i < 9; i++)
+        coords[i] = tmp_coords[i];
+    return;
 }
 
 void Water::mc_translate() {
@@ -63,12 +68,11 @@ void Water::mc_rotate() {
     set_rotation_matrix(RANDUNITVECTOR(), DISPLACEMENT_ROTATION * (2.0 * RAN3() - 1.0));
 
     // save old position 
-    for (int g = 0; g < 9; g++)
-        old_coords[g] = coords[g];
-
     // shift water such that its center of mass is now the origin (use the old_coords set of coords)
-    for (int g = 0; g < 9; g++)
+    for (int g = 0; g < 9; g++) {
+        old_coords[g] = coords[g];
         old_coords[g] -= TMP_CENTER_OF_MASS[g % 3];
+    }
 
     // apply rotation matrix to all 9 coordinates of water
     for (int g = 0; g < 9; g += 3) {
@@ -115,7 +119,7 @@ void Water::keep_inside_box() {
 }
 
 void Water::undo_move() {
-    for (int j = 0; j < 3; j++)
+    for (int j = 0; j < 9; j++)
         coords[j] = old_coords[j];
     return;
 }

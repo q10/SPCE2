@@ -25,7 +25,7 @@ double * RANDUNITVECTOR();
 
 string TIMESTAMP();
 void ASSERT(bool expression, string error_msg);
-int timeval_diff(struct timeval *end_time, struct timeval *start_time);
+long long int timeval_diff(struct timeval *end_time, struct timeval *start_time);
 
 template <typename T> string STRING(T tval) {
     stringstream out;

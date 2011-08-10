@@ -78,6 +78,8 @@ public:
     std::string to_vmd(int time_step);
 };
 
+
 void test_vmd_output();
+void test_config_output();
 
 #endif	/* SIMULATION_H */

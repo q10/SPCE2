@@ -1,6 +1,15 @@
 #include "common.h"
 
 void Sampler::initialize_radial_dist_sampler() {
+    if (radial_dist_distance != NULL)
+        delete [] radial_dist_distance;
+    if (water_water_RDF != NULL)
+        delete [] water_water_RDF;
+    if (ion_water_RDF != NULL)
+        delete [] ion_water_RDF;
+    if (ion_ion_RDF != NULL)
+        delete [] ion_ion_RDF;
+
     radial_dist_num_his_bars = 100;
     radial_dist_distance = new double [radial_dist_num_his_bars];
     water_water_RDF = new double [radial_dist_num_his_bars];
@@ -29,8 +38,8 @@ void Sampler::radial_dist_sample() {
             dx -= simulation->BOX_LENGTH * ROUND(dx / simulation->BOX_LENGTH);
             dy -= simulation->BOX_LENGTH * ROUND(dy / simulation->BOX_LENGTH);
             dz -= simulation->BOX_Z_LENGTH * ROUND(dz / simulation->BOX_Z_LENGTH);
-            dr = sqrt(dx * dx + dy * dy + dz * dz);
             if (dx < simulation->HALF_BOX_LENGTH and dy < simulation->HALF_BOX_LENGTH and dz < simulation->HALF_BOX_Z_LENGTH) {
+                dr = sqrt(dx * dx + dy * dy + dz * dz);
                 int ig = int(dr / delg);
                 water_water_RDF[ig] += 2;
             }
@@ -67,8 +76,8 @@ void Sampler::radial_dist_sample() {
             dx -= simulation->BOX_LENGTH * ROUND(dx / simulation->BOX_LENGTH);
             dy -= simulation->BOX_LENGTH * ROUND(dy / simulation->BOX_LENGTH);
             dz -= simulation->BOX_Z_LENGTH * ROUND(dz / simulation->BOX_Z_LENGTH);
-            dr = sqrt(dx * dx + dy * dy + dz * dz);
             if (dx < simulation->HALF_BOX_LENGTH and dy < simulation->HALF_BOX_LENGTH and dz < simulation->HALF_BOX_Z_LENGTH) {
+                dr = sqrt(dx * dx + dy * dy + dz * dz);
                 int ig = int(dr / delg);
                 ion_ion_RDF[ig] += 2;
             }
@@ -88,30 +97,27 @@ void Sampler::compute_radial_dist_results() {
 
         //nid = (4 / 3) * M_PI * vb * ION_DENSITY;
         ion_water_RDF[i] /= num_gr * simulation->IONS.size() * nid;
+        ion_ion_RDF[i] /= num_gr * simulation->IONS.size() * nid;
     }
     return;
 }
 
-void Sampler::print_radial_dist_results() {
-    cout << "\nr(Angstroms)\tg(r)[O-O]\tg(r)[ion-O]" << endl;
+string Sampler::radial_dist_results() {
+    stringstream rad_dist_results;
+    rad_dist_results << "\nr(Angstroms)\tg(r)[O-O]\tg(r)[ion-O]\tg(r)[ion-ion]" << endl;
     for (int k = 0; k < radial_dist_num_his_bars; k++)
-        cout << setprecision(10) << radial_dist_distance[k] << "\t"
+        rad_dist_results << setprecision(10) << radial_dist_distance[k] << "\t"
             << water_water_RDF[k] << "\t" << ion_water_RDF[k] << "\t" << ion_ion_RDF[k] << endl;
-    return;
+    return rad_dist_results.str();
 }
 
-/*
-void test_radial_dist_sampler() {
-    cout << "---- BEGIN TEST - RADIAL DISTRIBUTION SAMPLER ----" << endl;
+void test_radial_dist() {
+    //cout << "---- BEGIN TEST - RADIAL DISTRIBUTION SAMPLER ----" << endl;
 
-    NUM_EQUILIBRATION_SWEEPS = 0;
-    NUM_MC_SWEEPS = 100000;
-    initialize();
-    run_mc();
-    compute_radial_dist_results();
-    print_radial_dist_results();
-
-    cout << "\n---- END TEST - RADIAL DISTRIBUTION SAMPLER ----\n" << endl;
+    Simulation * simulation = new Simulation();
+    simulation->NUM_MC_SWEEPS = 10;
+    simulation->run_mc();
+    cout << simulation->sampler->radial_dist_results();
+    //cout << "\n---- END TEST - RADIAL DISTRIBUTION SAMPLER ----\n" << endl;
     return;
 }
- */

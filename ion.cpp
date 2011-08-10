@@ -14,13 +14,18 @@ Ion::Ion(double * tmp_coords, double tmp_charge, double tmp_disp_dist, double bo
     BOX_Z_LENGTH = box_z_length;
     old_coords = new double [3];
     coords = new double [3];
-    for (int i = 0; i < 3; i++)
-        coords[i] = tmp_coords[i];
+    set_coords(tmp_coords);
 }
 
 Ion::~Ion() {
     delete [] old_coords;
     delete [] coords;
+}
+
+void Ion::set_coords(double * tmp_coords) {
+    for (int i = 0; i < 3; i++)
+        coords[i] = tmp_coords[i];
+    return;
 }
 
 void Ion::mc_translate() {

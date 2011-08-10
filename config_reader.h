@@ -15,10 +15,13 @@ private:
     static const program_flags_t PROGRAM_FLAGS[];
 
     static void read_program_flags(int argc, char** argv, Simulation * simulation);
-    static void load_configuration_file(Simulation * simulation);
+    static void load_configuration_file(std::string input_config_filename, Simulation * simulation);
 
 public:
-    static Simulation * get_new_simulation(int argc, char** argv);
+    static Simulation * new_simulation(int argc, char** argv);
+    static Simulation * new_simulation_with_config(std::string input_config_filename);
 };
+
+void test_config_input();
 
 #endif	/* CONFIG_READER_H */

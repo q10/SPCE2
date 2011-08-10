@@ -20,6 +20,8 @@ public:
     // Must be friend to access private members.
     friend std::ostream & operator<<(std::ostream & out, Ion * ion);
 
+    void set_coords(double * tmp_coords);
+    
     void mc_translate();
     void keep_inside_box();
     void undo_move();

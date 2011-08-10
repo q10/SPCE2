@@ -14,6 +14,7 @@ void Simulation::equilibrate() {
 
 void Simulation::run_mc() {
     static struct timeval run_start, run_end;
+    sampler->start();
     gettimeofday(&run_start, NULL);
     for (int h = 0; h < NUM_MC_SWEEPS; h++) {
         mc_sweep();
@@ -21,6 +22,7 @@ void Simulation::run_mc() {
             sampler->sample_data();
         cerr << "MC sweep " << h + 1 << " of " << NUM_MC_SWEEPS << " complete." << endl;
     }
+    sampler->finish();
     gettimeofday(&run_end, NULL);
     cerr << "MC run completed in " << setprecision(10) << timeval_diff(&run_end, &run_start) / 1000000.0 / 3600.0 << " hours." << endl;
     return;
@@ -62,7 +64,7 @@ void Simulation::mc_rotate() {
 }
 
 bool Simulation::mc_accept(int index, double old_energy_particle_i) {
-    double total_energy_diff = /*ewald_diff(index) + */energy_of_particle_with_index(index) - old_energy_particle_i;
+    double total_energy_diff = ewald_diff(index) + energy_of_particle_with_index(index) - old_energy_particle_i;
     if (RAN3() < exp(-BETA * total_energy_diff))
         TOTAL_ENERGY += total_energy_diff;
     else {
@@ -77,6 +79,7 @@ bool Simulation::mc_accept(int index, double old_energy_particle_i) {
             column[NUM_TOTAL_PARTICLES] += column[NUM_TOTAL_PARTICLES + 1] - column[index];
             column[index] = column[NUM_TOTAL_PARTICLES + 1];
         }
+        column = NULL;
         return false;
     }
     return true;

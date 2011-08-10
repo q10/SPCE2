@@ -41,6 +41,7 @@
 #include "simulation.h"
 #include "sampler.h"
 #include "config_reader.h"
+#include "runs.h"
 
 using namespace std;
 

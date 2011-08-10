@@ -36,6 +36,8 @@ public:
     // Must be friend to access private members.
     friend std::ostream & operator<<(std::ostream & out, Water * water);
 
+    void set_coords(double * tmp_coords);
+
     void mc_translate();
     void mc_rotate();
     void keep_inside_box();
