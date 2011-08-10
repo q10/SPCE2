@@ -1,10 +1,9 @@
 #include "common.h"
 
-int Sampler::DATA_SAMPLING_RATE = 10;
-
 Sampler::Sampler(Simulation * s) {
     simulation = s;
     SIMULATION_TIME_STAMP = TIMESTAMP();
+    DATA_SAMPLING_RATE = 10;
     vmd_timestep = 0;
 }
 

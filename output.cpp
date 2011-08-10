@@ -47,8 +47,8 @@ string Simulation::to_vmd(int time_step) {
 }
 
 void test_vmd_output() {
-    Sampler::DATA_SAMPLING_RATE = 2;
     Simulation * s = new Simulation();
+    s->sampler->DATA_SAMPLING_RATE = 2;
     s->NUM_MC_SWEEPS = 10;
     s->run_mc();
     return;

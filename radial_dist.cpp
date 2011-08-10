@@ -47,8 +47,8 @@ void Sampler::radial_dist_sample() {
     }
 
     // ion-water
-    for (int i = 0; i < simulation->IONS.size(); i++) {
-        for (int j = 0; j < simulation->WATERS.size(); j++) {
+    for (int i = 0; i < simulation->IONS.size() - 1; i++) {
+        for (int j = i + 1; j < simulation->WATERS.size(); j++) {
             coords = simulation->IONS[i]->coords;
             other_coords = simulation->WATERS[j]->coords;
             dx = abs(coords[0] - other_coords[0]);
@@ -115,7 +115,7 @@ void test_radial_dist() {
     //cout << "---- BEGIN TEST - RADIAL DISTRIBUTION SAMPLER ----" << endl;
 
     Simulation * simulation = new Simulation();
-    simulation->NUM_MC_SWEEPS = 10;
+    simulation->NUM_MC_SWEEPS = 100;
     simulation->run_mc();
     cout << simulation->sampler->radial_dist_results();
     //cout << "\n---- END TEST - RADIAL DISTRIBUTION SAMPLER ----\n" << endl;

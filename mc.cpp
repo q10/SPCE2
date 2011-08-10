@@ -18,7 +18,7 @@ void Simulation::run_mc() {
     gettimeofday(&run_start, NULL);
     for (int h = 0; h < NUM_MC_SWEEPS; h++) {
         mc_sweep();
-        if (h % Sampler::DATA_SAMPLING_RATE == 0)
+        if (h % sampler->DATA_SAMPLING_RATE == 0)
             sampler->sample_data();
         cerr << "MC sweep " << h + 1 << " of " << NUM_MC_SWEEPS << " complete." << endl;
     }

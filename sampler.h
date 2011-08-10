@@ -22,7 +22,7 @@ private:
     void close_vmd_file();
 
 public:
-    static int DATA_SAMPLING_RATE;
+    int DATA_SAMPLING_RATE;
 
     Simulation * simulation;
     std::string SIMULATION_TIME_STAMP;
@@ -34,13 +34,12 @@ public:
     void start();
     void finish();
 
-    std::string radial_dist_results();
-
 
     std::string config_filename, vmd_filename;
     void write_vmd_snapshot();
     void write_config_snapshot();
 
+    std::string radial_dist_results();
 };
 
 void test_radial_dist();

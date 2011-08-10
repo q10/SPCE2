@@ -16,6 +16,7 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <itemPath>.gitignore</itemPath>
       <itemPath>LICENSE</itemPath>
       <itemPath>README.rdoc</itemPath>
       <itemPath>sample.config</itemPath>
