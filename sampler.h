@@ -10,8 +10,9 @@
 
 class Sampler {
 private:
+    double delg;
     int num_gr, radial_dist_num_his_bars;
-    double *radial_dist_distance, *water_water_RDF, *ion_water_RDF, *ion_ion_RDF, delg;
+    std::vector <double> radial_dist_distance, water_water_RDF, ion_water_RDF, ion_ion_RDF;
 
     void initialize_radial_dist_sampler();
     void radial_dist_sample();

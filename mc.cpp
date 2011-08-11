@@ -42,7 +42,6 @@ void Simulation::mc_sweep() {
     }
     gettimeofday(&sweep_end, NULL);
     cerr << setprecision(10) << timeval_diff(&sweep_end, &sweep_start) / 1000000.0 << endl;
-    cerr << ERFC_TABLE.size() << endl;
     return;
 }
 

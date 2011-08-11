@@ -1,25 +1,20 @@
 #include "common.h"
 
 void Sampler::initialize_radial_dist_sampler() {
-    if (radial_dist_distance != NULL)
-        delete [] radial_dist_distance;
-    if (water_water_RDF != NULL)
-        delete [] water_water_RDF;
-    if (ion_water_RDF != NULL)
-        delete [] ion_water_RDF;
-    if (ion_ion_RDF != NULL)
-        delete [] ion_ion_RDF;
+    radial_dist_distance.clear();
+    water_water_RDF.clear();
+    ion_water_RDF.clear();
+    ion_ion_RDF.clear();
 
     radial_dist_num_his_bars = 100;
-    radial_dist_distance = new double [radial_dist_num_his_bars];
-    water_water_RDF = new double [radial_dist_num_his_bars];
-    ion_water_RDF = new double [radial_dist_num_his_bars];
-    ion_ion_RDF = new double [radial_dist_num_his_bars];
-
     num_gr = 0;
-    delg = simulation->BOX_LENGTH / (2 * radial_dist_num_his_bars);
-    for (int i = 0; i < radial_dist_num_his_bars; i++)
-        water_water_RDF[i] = ion_water_RDF[i] = ion_ion_RDF[i] = 0;
+    delg = simulation->BOX_Z_LENGTH / radial_dist_num_his_bars;
+    for (int i = 0; i < radial_dist_num_his_bars; i++) {
+        radial_dist_distance.push_back(0.0);
+        water_water_RDF.push_back(0.0);
+        ion_water_RDF.push_back(0.0);
+        ion_ion_RDF.push_back(0.0);
+    }
     return;
 }
 
