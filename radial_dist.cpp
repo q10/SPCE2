@@ -3,16 +3,18 @@
 void Sampler::initialize_radial_dist_sampler() {
     radial_dist_distance.clear();
     water_water_RDF.clear();
-    ion_water_RDF.clear();
+    anion_water_RDF.clear();
+    cation_water_RDF.clear();
     ion_ion_RDF.clear();
 
-    radial_dist_num_his_bars = 100;
+    radial_dist_num_his_bars = 200;
     num_gr = 0;
     delg = simulation->BOX_Z_LENGTH / radial_dist_num_his_bars;
     for (int i = 0; i < radial_dist_num_his_bars; i++) {
         radial_dist_distance.push_back(0.0);
         water_water_RDF.push_back(0.0);
-        ion_water_RDF.push_back(0.0);
+        anion_water_RDF.push_back(0.0);
+        cation_water_RDF.push_back(0.0);
         ion_ion_RDF.push_back(0.0);
     }
     return;
@@ -42,8 +44,8 @@ void Sampler::radial_dist_sample() {
     }
 
     // ion-water
-    for (int i = 0; i < simulation->IONS.size() - 1; i++) {
-        for (int j = i + 1; j < simulation->WATERS.size(); j++) {
+    for (int i = 0; i < simulation->IONS.size(); i++) {
+        for (int j = i; j < simulation->WATERS.size(); j++) {
             coords = simulation->IONS[i]->coords;
             other_coords = simulation->WATERS[j]->coords;
             dx = abs(coords[0] - other_coords[0]);
@@ -55,7 +57,10 @@ void Sampler::radial_dist_sample() {
             if (dx < simulation->HALF_BOX_LENGTH and dy < simulation->HALF_BOX_LENGTH and dz < simulation->HALF_BOX_Z_LENGTH) {
                 dr = sqrt(dx * dx + dy * dy + dz * dz);
                 int ig = int(dr / delg);
-                ion_water_RDF[ig] += 2;
+                if (simulation->IONS[i]->charge < 0.0)
+                    anion_water_RDF[ig] += 2;
+                else
+                    cation_water_RDF[ig] += 2;
             }
         }
     }
@@ -91,7 +96,12 @@ void Sampler::compute_radial_dist_results() {
         water_water_RDF[i] /= num_gr * simulation->WATERS.size() * nid;
 
         //nid = (4 / 3) * M_PI * vb * ION_DENSITY;
-        ion_water_RDF[i] /= num_gr * simulation->IONS.size() * nid;
+        int num_anions = 0;
+        for (int k = 0; k < simulation->IONS.size(); k++)
+            if (simulation->IONS[k]->charge < 0.0)
+                num_anions++;
+        anion_water_RDF[i] /= num_gr * num_anions * nid;
+        cation_water_RDF[i] /= num_gr * (simulation->IONS.size() - num_anions) * nid;
         ion_ion_RDF[i] /= num_gr * simulation->IONS.size() * nid;
     }
     return;
@@ -99,20 +109,24 @@ void Sampler::compute_radial_dist_results() {
 
 string Sampler::radial_dist_results() {
     stringstream rad_dist_results;
-    rad_dist_results << "\nr(Angstroms)\tg(r)[O-O]\tg(r)[ion-O]\tg(r)[ion-ion]" << endl;
+    // Format of results is as such:
+    // r(Angstroms)     g(r)[O-O]       g(r)[anion-O]   g(r)[cation-O]  g(r)[ion-ion]
+    //rad_dist_results << "r(Angstroms)\tg(r)[O-O]\tg(r)[anion-O]\tg(r)[cation-O]\tg(r)[ion-ion]" << endl;
     for (int k = 0; k < radial_dist_num_his_bars; k++)
         rad_dist_results << setprecision(10) << radial_dist_distance[k] << "\t"
-            << water_water_RDF[k] << "\t" << ion_water_RDF[k] << "\t" << ion_ion_RDF[k] << endl;
+            << water_water_RDF[k] << "\t" << anion_water_RDF[k] << "\t" << cation_water_RDF[k] << "\t" << ion_ion_RDF[k] << endl;
     return rad_dist_results.str();
 }
 
 void test_radial_dist() {
-    //cout << "---- BEGIN TEST - RADIAL DISTRIBUTION SAMPLER ----" << endl;
-
+    cerr << "---- BEGIN TEST - RADIAL DISTRIBUTION SAMPLER ----" << endl;
     Simulation * simulation = new Simulation();
-    simulation->NUM_MC_SWEEPS = 100;
+    simulation->IONS[0]->charge = -1.0;
+    simulation->IONS[1]->charge = 1.0;
+    simulation->NUM_MC_SWEEPS = 5000000;
     simulation->run_mc();
     cout << simulation->sampler->radial_dist_results();
-    //cout << "\n---- END TEST - RADIAL DISTRIBUTION SAMPLER ----\n" << endl;
+    simulation->sampler->write_config_snapshot();
+    cerr << "\n---- END TEST - RADIAL DISTRIBUTION SAMPLER ----\n" << endl;
     return;
 }

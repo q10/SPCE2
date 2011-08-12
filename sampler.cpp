@@ -2,9 +2,13 @@
 
 Sampler::Sampler(Simulation * s) {
     simulation = s;
+
     SIMULATION_TIME_STAMP = TIMESTAMP();
     DATA_SAMPLING_RATE = 10;
+    RELATIVE_VMD_SNAPSHOT_RATE = 100;
+
     vmd_timestep = 0;
+    vmd_snapshot_counter = 0;
 }
 
 Sampler::~Sampler() {
@@ -16,7 +20,8 @@ Sampler::~Sampler() {
 
 void Sampler::sample_data() {
     radial_dist_sample();
-    write_vmd_snapshot();
+    if (++vmd_snapshot_counter % RELATIVE_VMD_SNAPSHOT_RATE == 0)
+        write_vmd_snapshot();
     return;
 }
 

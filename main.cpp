@@ -20,11 +20,5 @@ void run_tests(int argc, char** argv) {
     //test_config_output();
     //test_config_input();
     test_radial_dist();
-
-    std::map <double, double> table;
-    table[1.1] = 4.3;
-    cout << table[3.2] << endl;
-    cout << table[3.2] << endl;
-
     return;
 }

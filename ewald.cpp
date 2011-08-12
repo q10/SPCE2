@@ -17,10 +17,10 @@ void Simulation::initialize_all_ewald_tables(double ewald_alpha, int ewald_nxy, 
 
 void Simulation::initialize_erfc_table() {
     ERFC_TABLE.clear();
-    double sqrt_alpha_1000 = sqrt(EWALD_ALPHA) / 1000.0;
+    double sqrt_alpha = sqrt(EWALD_ALPHA);
     // to optimize map search by using one less division, we keep the keys as x10^4
     for (double r = 0.0; r < BOX_Z_LENGTH; r += 0.001)
-        ERFC_TABLE.push_back(erfc(floor(r * 1000.0) * sqrt_alpha_1000));
+        ERFC_TABLE.push_back(erfc(r * sqrt_alpha));
     return;
 }
 

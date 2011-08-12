@@ -110,7 +110,7 @@ void Simulation::expand_box_z_direction(double new_len) {
     }
 
     // redo all Ewald tables and recalculate energies
-    int times = (int) ceil(BOX_Z_LENGTH / BOX_LENGTH);
+    int times = int(ceil(BOX_Z_LENGTH / BOX_LENGTH));
     initialize_all_ewald_tables(EWALD_ALPHA, EWALD_NXY, EWALD_NZ * times);
     calculate_and_init_energy();
     return;

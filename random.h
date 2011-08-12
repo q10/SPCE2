@@ -37,5 +37,4 @@ inline double DEG2RAD(double degrees) {
     return degrees * M_PI / 180.0;
 }
 
-
 #endif	/* RANDOM_H */
