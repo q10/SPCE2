@@ -30,8 +30,9 @@
 #include <cfloat>
 #include <cstdarg>
 #include <cctype>
-#include <pthread.h>
 #include <getopt.h>
+#include <pthread.h>
+#include <omp.h>
 //#include <cassert>
 //#include <cstring>
 

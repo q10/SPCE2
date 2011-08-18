@@ -5,7 +5,7 @@
 SPCE is a program that simulates the behavior of water ions in water according 
 to the SPC/E model of water and ion solvation.  This is a Monte Carlo 
 simulation program.  SPCE2 is a complete rewrite of the original SPCE program, 
-with emphasis on code modularity, re-usability, and testability.
+with emphasis on code parallelizibility, re-usability, testability.
 
 = Install:
 
