@@ -64,17 +64,7 @@ void Simulation::mc_rotate() {
 }
 
 bool Simulation::mc_accept(int index, double old_energy_particle_i) {
-    double a, b;
-#pragma omp task
-    a = ewald_diff(index);
-
-    b = energy_of_particle_with_index(index);
-
-#pragma omp barrier
-    double total_energy_diff = a + b - old_energy_particle_i;
-    //double total_energy_diff = ewald_diff(index) + energy_of_particle_with_index(index) - old_energy_particle_i;
-
-
+    double total_energy_diff = ewald_diff(index) + energy_of_particle_with_index(index) - old_energy_particle_i;
     if (RAN3() < exp(-BETA * total_energy_diff))
         TOTAL_ENERGY += total_energy_diff;
     else {
