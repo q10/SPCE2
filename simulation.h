@@ -60,7 +60,7 @@ public:
 
     double DISPLACEMENT_DISTANCE, DISPLACEMENT_ROTATION;
     int NUM_EQUILIBRATION_SWEEPS, NUM_MC_SWEEPS, NUM_MC_ATTEMPTS_PER_SWEEP, ION_PROBABILITY_WEIGHT;
-;
+
     void equilibrate();
     void run_mc();
     void mc_sweep();
@@ -80,9 +80,6 @@ public:
     double total_ewald_energy();
     
 
-    void run_window_sampling();
-
-    
     friend std::ostream & operator<<(std::ostream & out, Simulation * simulation);
     std::string to_vmd(int time_step);
 };

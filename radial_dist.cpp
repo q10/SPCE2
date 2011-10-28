@@ -25,8 +25,8 @@ void Sampler::radial_dist_sample() {
     double dx, dy, dz, dr, *coords, *other_coords;
 
     // water-water
-    for (int i = 0; i < simulation->WATERS.size() - 1; i++) {
-        for (int j = i + 1; j < simulation->WATERS.size(); j++) {
+    for (unsigned int i = 0; i < simulation->WATERS.size() - 1; i++) {
+        for (unsigned int j = i + 1; j < simulation->WATERS.size(); j++) {
             coords = simulation->WATERS[i]->coords;
             other_coords = simulation->WATERS[j]->coords;
             dx = abs(coords[0] - other_coords[0]);
@@ -44,8 +44,8 @@ void Sampler::radial_dist_sample() {
     }
 
     // ion-water
-    for (int i = 0; i < simulation->IONS.size(); i++) {
-        for (int j = i; j < simulation->WATERS.size(); j++) {
+    for (unsigned int i = 0; i < simulation->IONS.size(); i++) {
+        for (unsigned int j = i; j < simulation->WATERS.size(); j++) {
             coords = simulation->IONS[i]->coords;
             other_coords = simulation->WATERS[j]->coords;
             dx = abs(coords[0] - other_coords[0]);
@@ -66,8 +66,8 @@ void Sampler::radial_dist_sample() {
     }
 
     // ion-ion
-    for (int i = 0; i < simulation->IONS.size() - 1; i++) {
-        for (int j = i + 1; j < simulation->IONS.size(); j++) {
+    for (unsigned int i = 0; i < simulation->IONS.size() - 1; i++) {
+        for (unsigned int j = i + 1; j < simulation->IONS.size(); j++) {
             coords = simulation->IONS[i]->coords;
             other_coords = simulation->IONS[j]->coords;
             dx = abs(coords[0] - other_coords[0]);
@@ -97,7 +97,7 @@ void Sampler::compute_radial_dist_results() {
 
         //nid = (4 / 3) * M_PI * vb * ION_DENSITY;
         int num_anions = 0;
-        for (int k = 0; k < simulation->IONS.size(); k++)
+        for (unsigned int k = 0; k < simulation->IONS.size(); k++)
             if (simulation->IONS[k]->charge < 0.0)
                 num_anions++;
         anion_water_RDF[i] /= num_gr * num_anions * nid;

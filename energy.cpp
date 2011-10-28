@@ -29,7 +29,7 @@ double Simulation::energy_of_particle_with_index(int index) {
 
 double Simulation::total_real_space_energy() {
     double real_space_energy = 0.0;
-    for (int i = 0; i < WATERS.size() + IONS.size(); i++)
+    for (unsigned int i = 0; i < WATERS.size() + IONS.size(); i++)
         real_space_energy += energy_of_particle_with_index(i);
     return real_space_energy / 2.0;
 }

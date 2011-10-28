@@ -69,7 +69,7 @@ void ConfigReader::load_configuration_file(string input_config_filename, Simulat
     ifstream input_filestream(input_config_filename.c_str());
     ASSERT(input_filestream.is_open(), "Could not open input configuration file " + STRING(input_config_filename));
 
-    int line_num = 0, num_ions = 0, num_waters = 0, ewald_nxy = 0, ewald_nz = 0;
+    unsigned int line_num = 0, num_ions = 0, num_waters = 0, ewald_nxy = 0, ewald_nz = 0;
     string line, line_key;
     vector< double > coords;
     double ewald_alpha = 0.0, val;

@@ -21,6 +21,8 @@ public:
     STD_DENSITY,
     Q_H,
     Q_O,
+    SIGMA_H,
+    SIGMA_O,
     H_MASS,
     O_MASS,
     WATER_MASS,

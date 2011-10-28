@@ -99,13 +99,13 @@ void Simulation::expand_box_z_direction(double new_len) {
     HALF_BOX_Z_LENGTH = BOX_Z_LENGTH / 2.0;
     BOX_VOLUME = BOX_LENGTH * BOX_LENGTH * BOX_Z_LENGTH;
 
-    for (int i = 0; i < WATERS.size(); i++) {
+    for (unsigned int i = 0; i < WATERS.size(); i++) {
         for (int j = 2; j < 9; j += 3)
             WATERS[i]->coords[j] += (BOX_Z_LENGTH - BOX_LENGTH) / 2.0;
         WATERS[i]->BOX_Z_LENGTH = BOX_Z_LENGTH;
     }
 
-    for (int i = 0; i < IONS.size(); i++) {
+    for (unsigned int i = 0; i < IONS.size(); i++) {
         IONS[i]->coords[2] += (BOX_Z_LENGTH - BOX_LENGTH) / 2.0;
         IONS[i]->BOX_Z_LENGTH = BOX_Z_LENGTH;
     }

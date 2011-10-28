@@ -52,7 +52,7 @@ void Simulation::initialize_k_vectors_table() {
             }
         }
     }
-    ASSERT(NUM_K_VECTORS == K_VECTORS.size(), "NUMBER OF K VECTORS NOT MATCHING.");
+    ASSERT(NUM_K_VECTORS == (int)K_VECTORS.size(), "NUMBER OF K VECTORS NOT MATCHING.");
     return;
 }
 
@@ -61,7 +61,7 @@ void Simulation::initialize_rho_k_values_table() {
     dcomplex *column, column_sum;
     int NUM_TOTAL_PARTICLES = WATERS.size() + IONS.size();
 
-    for (int k = 0; k < K_VECTORS.size(); k++) {
+    for (unsigned int k = 0; k < K_VECTORS.size(); k++) {
         column = new dcomplex [NUM_TOTAL_PARTICLES + 2];
         column_sum = dcomplex(0.0, 0.0);
 
@@ -109,7 +109,7 @@ dcomplex Simulation::partial_rho(int index, double * k_coords) {
     double q, *coords;
     dcomplex part_rho(0.0, 0.0);
 
-    if (index < WATERS.size()) {
+    if (index < (int)WATERS.size()) {
         for (int atom = 0; atom < 9; atom += 3) {
             coords = WATERS[index]->coords;
             q = (atom == 0) ? Water::Q_O : Water::Q_H;
@@ -132,7 +132,7 @@ double Simulation::total_ewald_energy() {
 }
 
 double Simulation::ewald_diff(int index) {
-    return (index < WATERS.size()) ? ewald_diff_water(index) : ewald_diff_ion(index);
+    return (index < (int)WATERS.size()) ? ewald_diff_water(index) : ewald_diff_ion(index);
 }
 
 double Simulation::ewald_diff_water(int water_index) {
