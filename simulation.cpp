@@ -28,6 +28,7 @@ void Simulation::default_initialize_system_parameters(int num_waters, int num_io
     HALF_BOX_LENGTH = BOX_LENGTH / 2.0;
     HALF_BOX_Z_LENGTH = HALF_BOX_LENGTH;
 
+    ION_PROBABILITY_WEIGHT = 1;
     DISPLACEMENT_DISTANCE = 0.2;
     DISPLACEMENT_ROTATION = 0.17 * M_PI;
     NUM_EQUILIBRATION_SWEEPS = 5000;

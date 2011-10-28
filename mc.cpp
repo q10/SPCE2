@@ -46,9 +46,14 @@ void Simulation::mc_sweep() {
 }
 
 void Simulation::mc_translate() {
-    int rand_i = RANDINT(0, WATERS.size() + IONS.size());
+    int rand_i = RANDINT(0, WATERS.size() + IONS.size() * ION_PROBABILITY_WEIGHT);
     double old_energy_particle_i = energy_of_particle_with_index(rand_i);
-    (rand_i < WATERS.size()) ? WATERS[rand_i]->mc_translate() : IONS[rand_i - WATERS.size()]->mc_translate();
+    if (rand_i < WATERS.size())
+        WATERS[rand_i]->mc_translate();
+    else {
+        rand_i = WATERS.size() + ((rand_i - WATERS.size()) % ION_PROBABILITY_WEIGHT);
+        IONS[rand_i]->mc_translate();
+    }
     if (mc_accept(rand_i, old_energy_particle_i))
         num_successful_mc_translations++;
     return;

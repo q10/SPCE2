@@ -12,6 +12,8 @@ class Sampler;
 
 class Simulation {
 private:
+    bool WINDOW_SAMPLING_MODE;
+    
     int total_attempted_mc_translations, total_attempted_mc_rotations, num_successful_mc_translations, num_successful_mc_rotations;
     bool mc_accept(int index, double old_energy_particle_i);
 
@@ -57,7 +59,8 @@ public:
     void expand_box_z_direction(double new_len = 0.0);
 
     double DISPLACEMENT_DISTANCE, DISPLACEMENT_ROTATION;
-    int NUM_EQUILIBRATION_SWEEPS, NUM_MC_SWEEPS, NUM_MC_ATTEMPTS_PER_SWEEP;
+    int NUM_EQUILIBRATION_SWEEPS, NUM_MC_SWEEPS, NUM_MC_ATTEMPTS_PER_SWEEP, ION_PROBABILITY_WEIGHT;
+;
     void equilibrate();
     void run_mc();
     void mc_sweep();
@@ -75,8 +78,11 @@ public:
     int EWALD_NXY, EWALD_NZ, NUM_K_VECTORS, K_111_INDEX;
     void initialize_all_ewald_tables(double ewald_alpha, int ewald_nxy, int ewald_nz);
     double total_ewald_energy();
+    
 
+    void run_window_sampling();
 
+    
     friend std::ostream & operator<<(std::ostream & out, Simulation * simulation);
     std::string to_vmd(int time_step);
 };

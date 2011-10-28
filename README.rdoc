@@ -30,7 +30,8 @@ The following make flags are available:
     $ make o0       // no optimizations applied
     $ make o1       // -O1 optimization applied
     $ make o2       // -O2 optimization applied
-    $ make          // -O3 optimization applied (default)
+	$ make o3       // -O3 optimization applied
+    $ make          // default options (-O3 optimization applied)
     $ make verbose  // compile under -O3 optimization with verbose output
     $ make clean    // removes SPCE executable and *.o and *~ files
 
