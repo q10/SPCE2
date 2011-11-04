@@ -30,12 +30,11 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CXX) $(LDFLAGS) $(OBJECTS) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 remove:
 	rm -rf $(EXECUTABLE)
 	
 clean: remove
-	cd obj && rm -rf * && cd ..
+	rm -rf $(OBJ_DIR)/*
 	
