@@ -50,13 +50,12 @@ void SamplerSet::write_vmd_snapshot() {
 }
 
 void SamplerSet::write_config_snapshot() {
-    if (config_filename.compare("") == 0) {
-        if (config_filename.compare("") == 0)
-            config_filename = "SPCE_" + SIMULATION_TIME_STAMP + ".config";
-        CONFIG_FILE.open(config_filename.c_str());
-        ASSERT(CONFIG_FILE.is_open(), "Could not open config output file.");
-    }
-    CONFIG_FILE << simulation;
-    CONFIG_FILE.close();
+    ofstream file;
+    if (config_filename.compare("") == 0)
+        config_filename = "SPCE_" + SIMULATION_TIME_STAMP + ".config";
+    file.open(config_filename.c_str());
+    ASSERT(file.is_open(), "Could not open config output file.");
+    file << simulation;
+    file.close();
     return;
 }

@@ -11,7 +11,7 @@
 class SamplerSet {
 private:
     int vmd_timestep, vmd_snapshot_counter;
-    std::ofstream VMD_FILE, CONFIG_FILE;
+    std::ofstream VMD_FILE;
 
     std::vector <Sampler *> samplers;
 public:
