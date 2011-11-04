@@ -5,8 +5,8 @@
  * Created on August 4, 2011, 1:07 AM
  */
 
-//#ifndef SAMPLER_H
-#define	SAMPLER_H
+#ifndef SAMPLER_SET_H
+#define	SAMPLER_SET_H
 
 class SamplerSet {
 private:
@@ -35,4 +35,4 @@ public:
 
 void test_radial_dist();
 
-//#endif	/* SAMPLER_H */
+#endif	/* SAMPLER_H */

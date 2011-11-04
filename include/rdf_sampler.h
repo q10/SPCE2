@@ -26,5 +26,4 @@ public:
     std::string radial_dist_results();
 };
 
-
 #endif	/* RDF_SAMPLER_H */

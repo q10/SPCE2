@@ -10,7 +10,7 @@ void UmbrellaSampling::run_umbrella_system() {
     simulation->equilibrate();
 
     // set the new potential energy wall
-    // set up how the sampler works
+    // set up how the sampler works, customize output
     simulation->DATA_SAMPLING_RATE = 20;
     simulation->NUM_MC_SWEEPS = 100000;
     simulation->run_mc();

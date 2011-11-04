@@ -23,5 +23,4 @@ public:
     void finish();
 };
 
-
 #endif	/* IPAIR_DISTANCE_SAMPLER_H */
