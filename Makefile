@@ -37,6 +37,8 @@ remove:
 	
 clean: remove
 	rm -rf $(OBJ_DIR)/*
+	rm -rf $(SRC_DIR)/*~
+	rm -rf $(INCLUDE_DIR)/*~
 
 init:
 	mkdir -p $(OBJ_DIR)

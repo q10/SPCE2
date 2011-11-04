@@ -9,6 +9,7 @@
 #define	UMBRELLA_SAMPLING_H
 
 namespace UmbrellaSampling {
+    void run_umbrella_system();
 
 }
 

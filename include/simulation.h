@@ -12,9 +12,10 @@ class Sampler;
 
 class Simulation {
 private:
-    bool WINDOW_SAMPLING_MODE;
-    
     int total_attempted_mc_translations, total_attempted_mc_rotations, num_successful_mc_translations, num_successful_mc_rotations;
+    void mc_sweep();
+    void mc_translate();
+    void mc_rotate();
     bool mc_accept(int index, double old_energy_particle_i);
 
 
@@ -43,10 +44,11 @@ public:
     static const double BOLTZMANN_K, ELECTROSTATIC_K;
     static const dcomplex COMPLEX_ONE;
 
+
     double TEMPERATURE, BETA, TARGET_WATER_DENSITY, BOX_LENGTH, HALF_BOX_LENGTH, BOX_Z_LENGTH, HALF_BOX_Z_LENGTH, BOX_VOLUME;
     std::vector <Water *> WATERS;
     std::vector <Ion *> IONS;
-    Sampler * sampler;
+    SamplerSet * SAMPLER_SET;
 
     Simulation(int num_waters = 200, int num_ions = 2);
     ~Simulation();
@@ -54,18 +56,16 @@ public:
     void default_initialize_system_parameters(int num_waters, int num_ions);
     void default_initialize_waters(int num_waters);
     void default_initialize_ions(int num_ions);
+    void default_initialize_sampling_parameters();
 
     void set_temperature(double new_temp);
     void expand_box_z_direction(double new_len = 0.0);
 
+
     double DISPLACEMENT_DISTANCE, DISPLACEMENT_ROTATION;
     int NUM_EQUILIBRATION_SWEEPS, NUM_MC_SWEEPS, NUM_MC_ATTEMPTS_PER_SWEEP, ION_PROBABILITY_WEIGHT;
-
     void equilibrate();
     void run_mc();
-    void mc_sweep();
-    void mc_translate();
-    void mc_rotate();
 
 
     double TOTAL_ENERGY;
@@ -78,7 +78,11 @@ public:
     int EWALD_NXY, EWALD_NZ, NUM_K_VECTORS, K_111_INDEX;
     void initialize_all_ewald_tables(double ewald_alpha, int ewald_nxy, int ewald_nz);
     double total_ewald_energy();
-    
+
+
+
+    bool WINDOW_SAMPLING_MODE;
+    int DATA_SAMPLING_RATE;
 
     friend std::ostream & operator<<(std::ostream & out, Simulation * simulation);
     std::string to_vmd(int time_step);

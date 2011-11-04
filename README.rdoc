@@ -2,10 +2,10 @@
 
 * http://github.com/q10/SPCE2
 
-SPCE is a program that simulates the behavior of water ions in water according 
+SPCE is a program that simulates the behavior of ions in water interfaces according 
 to the SPC/E model of water and ion solvation.  This is a Monte Carlo 
 simulation program.  SPCE2 is a complete rewrite of the original SPCE program, 
-with emphasis on code parallelizibility, re-usability, testability.
+with emphasis on speed, code parallelizibility, re-usability, testability.
 
 = Install:
 
@@ -23,6 +23,7 @@ Pull code from GitHub:
 
 Then compile everything from inside the SPCE program folder into a binary:
 
+    $ make init
     $ make
 
 The following make flags are available:
@@ -32,8 +33,8 @@ The following make flags are available:
     $ make o2       // -O2 optimization applied
     $ make o3       // -O3 optimization applied
     $ make          // default options (-O2 optimization applied)
-    $ make verbose  // compile under -O3 optimization with verbose output
-    $ make clean    // removes SPCE executable and *.o and *~ files
+    $ make remove   // compile under -O3 optimization with verbose output
+    $ make clean    // removes SPCE executable and *.o and *~ files everywhere
 
 = Usage:
 

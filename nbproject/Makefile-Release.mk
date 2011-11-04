@@ -35,18 +35,19 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/src/energy.o \
+	${OBJECTDIR}/src/sampler_set.o \
 	${OBJECTDIR}/src/main.o \
 	${OBJECTDIR}/src/random.o \
 	${OBJECTDIR}/src/umbrella_sampling.o \
 	${OBJECTDIR}/src/simulation.o \
 	${OBJECTDIR}/src/output.o \
-	${OBJECTDIR}/src/sampler.o \
+	${OBJECTDIR}/src/ipair_distance_sampler.o \
+	${OBJECTDIR}/src/rdf_sampler.o \
 	${OBJECTDIR}/src/mc.o \
 	${OBJECTDIR}/src/rotation.o \
 	${OBJECTDIR}/src/config_reader.o \
 	${OBJECTDIR}/src/water.o \
 	${OBJECTDIR}/src/ion.o \
-	${OBJECTDIR}/src/radial_dist.o \
 	${OBJECTDIR}/src/ewald.o
 
 
@@ -79,6 +80,11 @@ ${OBJECTDIR}/src/energy.o: src/energy.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/energy.o src/energy.cpp
 
+${OBJECTDIR}/src/sampler_set.o: src/sampler_set.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/sampler_set.o src/sampler_set.cpp
+
 ${OBJECTDIR}/src/main.o: src/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
@@ -104,10 +110,15 @@ ${OBJECTDIR}/src/output.o: src/output.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/output.o src/output.cpp
 
-${OBJECTDIR}/src/sampler.o: src/sampler.cpp 
+${OBJECTDIR}/src/ipair_distance_sampler.o: src/ipair_distance_sampler.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/sampler.o src/sampler.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/ipair_distance_sampler.o src/ipair_distance_sampler.cpp
+
+${OBJECTDIR}/src/rdf_sampler.o: src/rdf_sampler.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/rdf_sampler.o src/rdf_sampler.cpp
 
 ${OBJECTDIR}/src/mc.o: src/mc.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -133,11 +144,6 @@ ${OBJECTDIR}/src/ion.o: src/ion.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/ion.o src/ion.cpp
-
-${OBJECTDIR}/src/radial_dist.o: src/radial_dist.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/radial_dist.o src/radial_dist.cpp
 
 ${OBJECTDIR}/src/ewald.o: src/ewald.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

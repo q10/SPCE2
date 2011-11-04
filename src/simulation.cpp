@@ -10,11 +10,11 @@ Simulation::Simulation(int num_waters, int num_ions) {
     default_initialize_ions(num_ions);
     initialize_all_ewald_tables(0.0784, 5, 5);
     calculate_and_init_energy();
-    sampler = new Sampler(this);
+    default_initialize_sampling_parameters();
 }
 
 Simulation::~Simulation() {
-    delete sampler;
+    delete SAMPLER_SET;
 }
 
 void Simulation::default_initialize_system_parameters(int num_waters, int num_ions) {
@@ -28,7 +28,7 @@ void Simulation::default_initialize_system_parameters(int num_waters, int num_io
     HALF_BOX_LENGTH = BOX_LENGTH / 2.0;
     HALF_BOX_Z_LENGTH = HALF_BOX_LENGTH;
 
-    ION_PROBABILITY_WEIGHT = 1;
+    ION_PROBABILITY_WEIGHT = 3;
     DISPLACEMENT_DISTANCE = 0.2;
     DISPLACEMENT_ROTATION = 0.17 * M_PI;
     NUM_EQUILIBRATION_SWEEPS = 5000;
@@ -40,7 +40,7 @@ void Simulation::default_initialize_system_parameters(int num_waters, int num_io
 
 void Simulation::default_initialize_waters(int num_waters) {
     WATERS.clear();
-    Water *w;
+    Water * w;
     double HOH_ANGLE_RAD = DEG2RAD(Water::HOH_ANGLE_DEG), *coords = new double[9];
     double tmp_r = Water::OH_LENGTH * sin(HOH_ANGLE_RAD), rand_angle_rad;
 
@@ -69,7 +69,7 @@ void Simulation::default_initialize_waters(int num_waters) {
 
 void Simulation::default_initialize_ions(int num_ions) {
     IONS.clear();
-    Ion *ion;
+    Ion * ion;
     double *coords = new double[3], charge;
 
     for (int i = 0; i < num_ions; i++) {
@@ -115,4 +115,9 @@ void Simulation::expand_box_z_direction(double new_len) {
     initialize_all_ewald_tables(EWALD_ALPHA, EWALD_NXY, EWALD_NZ * times);
     calculate_and_init_energy();
     return;
+}
+
+void Simulation::default_initialize_sampling_parameters() {
+    DATA_SAMPLING_RATE = 10;
+    SAMPLER_SET = new Sampler(this);
 }

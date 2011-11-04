@@ -1,13 +1,20 @@
 #include "common.h"
 
-void Sampler::initialize_radial_dist_sampler() {
+RDFSampler::RDFSampler(Simulation * s) {
+    simulation = s;
+    radial_dist_num_his_bars = 200;
+}
+
+RDFSampler::~RDFSampler() {
+}
+
+void RDFSampler::start() {
     radial_dist_distance.clear();
     water_water_RDF.clear();
     anion_water_RDF.clear();
     cation_water_RDF.clear();
     ion_ion_RDF.clear();
 
-    radial_dist_num_his_bars = 200;
     num_gr = 0;
     delg = simulation->BOX_Z_LENGTH / radial_dist_num_his_bars;
     for (int i = 0; i < radial_dist_num_his_bars; i++) {
@@ -20,7 +27,7 @@ void Sampler::initialize_radial_dist_sampler() {
     return;
 }
 
-void Sampler::radial_dist_sample() {
+void RDFSampler::sample() {
     num_gr++;
     double dx, dy, dz, dr, *coords, *other_coords;
 
@@ -86,7 +93,8 @@ void Sampler::radial_dist_sample() {
     return;
 }
 
-void Sampler::compute_radial_dist_results() {
+void RDFSampler::finish() {
+    // computes radial distribution results
     double r, vb, nid;
     for (int i = 0; i < radial_dist_num_his_bars; i++) {
         r = delg * (i + 0.5);
@@ -107,7 +115,7 @@ void Sampler::compute_radial_dist_results() {
     return;
 }
 
-string Sampler::radial_dist_results() {
+string RDFSampler::radial_dist_results() {
     stringstream rad_dist_results;
     // Format of results is as such:
     // r(Angstroms)     g(r)[O-O]       g(r)[anion-O]   g(r)[cation-O]  g(r)[ion-ion]
@@ -125,7 +133,7 @@ void test_radial_dist() {
     simulation->IONS[1]->charge = 1.0;
     simulation->NUM_MC_SWEEPS = 5000000;
     simulation->run_mc();
-    cout << simulation->sampler->radial_dist_results();
+    cout << simulation->SAMPLER_SET->radial_dist_results();
     simulation->sampler->write_config_snapshot();
     cerr << "\n---- END TEST - RADIAL DISTRIBUTION SAMPLER ----\n" << endl;
     return;

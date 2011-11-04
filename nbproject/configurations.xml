@@ -8,8 +8,11 @@
         <itemPath>include/common.h</itemPath>
         <itemPath>include/config_reader.h</itemPath>
         <itemPath>include/ion.h</itemPath>
+        <itemPath>include/ipair_distance_sampler.h</itemPath>
         <itemPath>include/random.h</itemPath>
+        <itemPath>include/rdf_sampler.h</itemPath>
         <itemPath>include/sampler.h</itemPath>
+        <itemPath>include/sampler_set.h</itemPath>
         <itemPath>include/simulation.h</itemPath>
         <itemPath>include/umbrella_sampling.h</itemPath>
         <itemPath>include/water.h</itemPath>
@@ -31,13 +34,14 @@
         <itemPath>src/energy.cpp</itemPath>
         <itemPath>src/ewald.cpp</itemPath>
         <itemPath>src/ion.cpp</itemPath>
+        <itemPath>src/ipair_distance_sampler.cpp</itemPath>
         <itemPath>src/main.cpp</itemPath>
         <itemPath>src/mc.cpp</itemPath>
         <itemPath>src/output.cpp</itemPath>
-        <itemPath>src/radial_dist.cpp</itemPath>
         <itemPath>src/random.cpp</itemPath>
+        <itemPath>src/rdf_sampler.cpp</itemPath>
         <itemPath>src/rotation.cpp</itemPath>
-        <itemPath>src/sampler.cpp</itemPath>
+        <itemPath>src/sampler_set.cpp</itemPath>
         <itemPath>src/simulation.cpp</itemPath>
         <itemPath>src/umbrella_sampling.cpp</itemPath>
         <itemPath>src/water.cpp</itemPath>
