@@ -28,6 +28,8 @@ public:
 
     double distance_from(Water * other_water);
     double distance_from(Ion * other_ion);
+    double squared_distance_from(Water * other_water);
+    double squared_distance_from(Ion * other_ion);
 };
 
 #endif	/* ION_H */

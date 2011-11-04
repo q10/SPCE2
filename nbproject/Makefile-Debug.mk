@@ -34,9 +34,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/runs.o \
 	${OBJECTDIR}/rotation.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/umbrella_sampling.o \
 	${OBJECTDIR}/water.o \
 	${OBJECTDIR}/output.o \
 	${OBJECTDIR}/energy.o \
@@ -74,11 +74,6 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/spce2.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/spce2 ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/runs.o: runs.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/runs.o runs.cpp
-
 ${OBJECTDIR}/rotation.o: rotation.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
@@ -88,6 +83,11 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/umbrella_sampling.o: umbrella_sampling.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/umbrella_sampling.o umbrella_sampling.cpp
 
 ${OBJECTDIR}/water.o: water.cpp 
 	${MKDIR} -p ${OBJECTDIR}

@@ -8,9 +8,9 @@
       <itemPath>config_reader.h</itemPath>
       <itemPath>ion.h</itemPath>
       <itemPath>random.h</itemPath>
-      <itemPath>runs.h</itemPath>
       <itemPath>sampler.h</itemPath>
       <itemPath>simulation.h</itemPath>
+      <itemPath>umbrella_sampling.h</itemPath>
       <itemPath>water.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -34,9 +34,9 @@
       <itemPath>radial_dist.cpp</itemPath>
       <itemPath>random.cpp</itemPath>
       <itemPath>rotation.cpp</itemPath>
-      <itemPath>runs.cpp</itemPath>
       <itemPath>sampler.cpp</itemPath>
       <itemPath>simulation.cpp</itemPath>
+      <itemPath>umbrella_sampling.cpp</itemPath>
       <itemPath>water.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"

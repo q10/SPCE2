@@ -78,9 +78,9 @@ double Simulation::energy_between_ion_and_water(int i, int j) {
 
 double Simulation::energy_between_two_ions(int i, int j) {
     double r = IONS[i]->distance_from(IONS[j]);
-    double r2 = Ion::SIGMA / r;
+    double rb = Ion::SIGMA / r;
     double energy_bias = WINDOW_SAMPLING_MODE ? -pow(r - HALF_BOX_LENGTH, 2.0) : 0.0;
-    return energy_bias + 4.0 * Ion::EPSILON * (pow(r2, 12) - pow(r2, 6)) +
+    return energy_bias + 4.0 * Ion::EPSILON * (pow(rb, 12) - pow(rb, 6)) +
             ELECTROSTATIC_K * IONS[i]->charge * IONS[j]->charge * ERFC_TABLE[int(r * 1000.0)] / r;
 }
 

@@ -58,6 +58,14 @@ void Ion::undo_move() {
 }
 
 double Ion::distance_from(Water * other_water) {
+    return sqrt(squared_distance_from(other_water));
+}
+
+double Ion::distance_from(Ion * other_ion) {
+    return sqrt(squared_distance_from(other_ion));
+}
+
+double Ion::squared_distance_from(Water * other_water) {
     double * other_coords = other_water->coords;
     double dx = coords[0] - other_coords[0];
     double dy = coords[1] - other_coords[1];
@@ -65,10 +73,10 @@ double Ion::distance_from(Water * other_water) {
     dx -= BOX_LENGTH * ROUND(dx / BOX_LENGTH);
     dy -= BOX_LENGTH * ROUND(dy / BOX_LENGTH);
     dz -= BOX_Z_LENGTH * ROUND(dz / BOX_Z_LENGTH);
-    return sqrt(dx * dx + dy * dy + dz * dz);
+    return dx * dx + dy * dy + dz * dz;
 }
 
-double Ion::distance_from(Ion * other_ion) {
+double Ion::squared_distance_from(Ion * other_ion) {
     double * other_coords = other_ion->coords;
     double dx = coords[0] - other_coords[0];
     double dy = coords[1] - other_coords[1];
@@ -76,5 +84,5 @@ double Ion::distance_from(Ion * other_ion) {
     dx -= BOX_LENGTH * ROUND(dx / BOX_LENGTH);
     dy -= BOX_LENGTH * ROUND(dy / BOX_LENGTH);
     dz -= BOX_Z_LENGTH * ROUND(dz / BOX_Z_LENGTH);
-    return sqrt(dx * dx + dy * dy + dz * dz);
+    return dx * dx + dy * dy + dz * dz;
 }

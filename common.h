@@ -42,7 +42,7 @@
 #include "simulation.h"
 #include "sampler.h"
 #include "config_reader.h"
-#include "runs.h"
+#include "umbrella_sampling.h"
 
 using namespace std;
 
