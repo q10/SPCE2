@@ -10,8 +10,8 @@
 
 class Sampler {
 public:
-    Sampler();
-    virtual ~Sampler();
+    Sampler() {};
+    virtual ~Sampler() {};
     virtual void start() = 0;
     virtual void sample() = 0;
     virtual void finish() = 0;

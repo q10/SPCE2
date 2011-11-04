@@ -119,5 +119,5 @@ void Simulation::expand_box_z_direction(double new_len) {
 
 void Simulation::default_initialize_sampling_parameters() {
     DATA_SAMPLING_RATE = 10;
-    SAMPLER_SET = new Sampler(this);
+    SAMPLER_SET = new SamplerSet(this);
 }

@@ -133,8 +133,8 @@ void test_radial_dist() {
     simulation->IONS[1]->charge = 1.0;
     simulation->NUM_MC_SWEEPS = 5000000;
     simulation->run_mc();
-    cout << simulation->SAMPLER_SET->radial_dist_results();
-    simulation->sampler->write_config_snapshot();
+    //cout << simulation->SAMPLER_SET->radial_dist_results();
+    //simulation->sampler->write_config_snapshot();
     cerr << "\n---- END TEST - RADIAL DISTRIBUTION SAMPLER ----\n" << endl;
     return;
 }

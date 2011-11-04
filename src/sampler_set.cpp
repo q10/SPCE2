@@ -1,5 +1,4 @@
 #include "common.h"
-#include "sampler.h"
 
 SamplerSet::SamplerSet(Simulation * s) {
     simulation = s;
@@ -14,8 +13,6 @@ SamplerSet::SamplerSet(Simulation * s) {
 SamplerSet::~SamplerSet() {
     if (VMD_FILE.is_open())
         VMD_FILE.close();
-    if (CONFIG_FILE.is_open())
-        CONFIG_FILE.close();
 }
 
 void SamplerSet::sample_data() {

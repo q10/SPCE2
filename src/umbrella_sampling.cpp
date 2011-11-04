@@ -15,7 +15,7 @@ void UmbrellaSampling::run_umbrella_system() {
     simulation->NUM_MC_SWEEPS = 100000;
     simulation->run_mc();
 
-    simulation->sampler->write_config_snapshot();
+    simulation->SAMPLER_SET->write_config_snapshot();
     cerr << "\n---- END - UMBRELLA SAMPLING ----\n" << endl;
     return;
 }

@@ -50,12 +50,12 @@ void ConfigReader::read_program_flags(int argc, char** argv, Simulation * simula
             string config_filename = optarg;
             if (config_filename[0] == '=')
                 config_filename = config_filename.substr(1);
-            simulation->sampler->config_filename = config_filename;
+            simulation->SAMPLER_SET->config_filename = config_filename;
         } else if (option == 'v') {
             string vmd_filename = optarg;
             if (vmd_filename[0] == '=')
                 vmd_filename = vmd_filename.substr(1);
-            simulation->sampler->vmd_filename = vmd_filename;
+            simulation->SAMPLER_SET->vmd_filename = vmd_filename;
         } else
             ASSERT(false, "Invalid program flag, invalid flag parameter, or missing a flag parameter.");
     }

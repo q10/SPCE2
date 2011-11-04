@@ -34,11 +34,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/src/energy.o \
 	${OBJECTDIR}/src/sampler_set.o \
+	${OBJECTDIR}/src/energy.o \
 	${OBJECTDIR}/src/main.o \
-	${OBJECTDIR}/src/random.o \
 	${OBJECTDIR}/src/umbrella_sampling.o \
+	${OBJECTDIR}/src/random.o \
 	${OBJECTDIR}/src/simulation.o \
 	${OBJECTDIR}/src/output.o \
 	${OBJECTDIR}/src/ipair_distance_sampler.o \
@@ -75,30 +75,30 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/spce2.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/spce2 ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/src/energy.o: src/energy.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/energy.o src/energy.cpp
-
 ${OBJECTDIR}/src/sampler_set.o: src/sampler_set.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/sampler_set.o src/sampler_set.cpp
+
+${OBJECTDIR}/src/energy.o: src/energy.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/energy.o src/energy.cpp
 
 ${OBJECTDIR}/src/main.o: src/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main.o src/main.cpp
 
-${OBJECTDIR}/src/random.o: src/random.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/random.o src/random.cpp
-
 ${OBJECTDIR}/src/umbrella_sampling.o: src/umbrella_sampling.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbrella_sampling.o src/umbrella_sampling.cpp
+
+${OBJECTDIR}/src/random.o: src/random.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/random.o src/random.cpp
 
 ${OBJECTDIR}/src/simulation.o: src/simulation.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
