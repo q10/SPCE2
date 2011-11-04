@@ -8,7 +8,7 @@
 #ifndef SIMULATION_H
 #define	SIMULATION_H
 
-class Sampler;
+class SamplerSet;
 
 class Simulation {
 private:
