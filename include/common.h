@@ -40,9 +40,10 @@
 #include "water.h"
 #include "ion.h"
 #include "simulation.h"
-#include "sampler_set.h"
+#include "sampler.h"
 #include "rdf_sampler.h"
 #include "ipair_distance_sampler.h"
+#include "sampler_set.h"
 #include "config_reader.h"
 #include "umbrella_sampling.h"
 
