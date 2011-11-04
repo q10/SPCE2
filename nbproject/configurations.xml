@@ -4,14 +4,16 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>common.h</itemPath>
-      <itemPath>config_reader.h</itemPath>
-      <itemPath>ion.h</itemPath>
-      <itemPath>random.h</itemPath>
-      <itemPath>sampler.h</itemPath>
-      <itemPath>simulation.h</itemPath>
-      <itemPath>umbrella_sampling.h</itemPath>
-      <itemPath>water.h</itemPath>
+      <logicalFolder name="include" displayName="include" projectFiles="true">
+        <itemPath>include/common.h</itemPath>
+        <itemPath>include/config_reader.h</itemPath>
+        <itemPath>include/ion.h</itemPath>
+        <itemPath>include/random.h</itemPath>
+        <itemPath>include/sampler.h</itemPath>
+        <itemPath>include/simulation.h</itemPath>
+        <itemPath>include/umbrella_sampling.h</itemPath>
+        <itemPath>include/water.h</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -24,20 +26,22 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>config_reader.cpp</itemPath>
-      <itemPath>energy.cpp</itemPath>
-      <itemPath>ewald.cpp</itemPath>
-      <itemPath>ion.cpp</itemPath>
-      <itemPath>main.cpp</itemPath>
-      <itemPath>mc.cpp</itemPath>
-      <itemPath>output.cpp</itemPath>
-      <itemPath>radial_dist.cpp</itemPath>
-      <itemPath>random.cpp</itemPath>
-      <itemPath>rotation.cpp</itemPath>
-      <itemPath>sampler.cpp</itemPath>
-      <itemPath>simulation.cpp</itemPath>
-      <itemPath>umbrella_sampling.cpp</itemPath>
-      <itemPath>water.cpp</itemPath>
+      <logicalFolder name="src" displayName="src" projectFiles="true">
+        <itemPath>src/config_reader.cpp</itemPath>
+        <itemPath>src/energy.cpp</itemPath>
+        <itemPath>src/ewald.cpp</itemPath>
+        <itemPath>src/ion.cpp</itemPath>
+        <itemPath>src/main.cpp</itemPath>
+        <itemPath>src/mc.cpp</itemPath>
+        <itemPath>src/output.cpp</itemPath>
+        <itemPath>src/radial_dist.cpp</itemPath>
+        <itemPath>src/random.cpp</itemPath>
+        <itemPath>src/rotation.cpp</itemPath>
+        <itemPath>src/sampler.cpp</itemPath>
+        <itemPath>src/simulation.cpp</itemPath>
+        <itemPath>src/umbrella_sampling.cpp</itemPath>
+        <itemPath>src/water.cpp</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -52,6 +56,10 @@
     </logicalFolder>
     <itemPath>Makefile</itemPath>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>src</Elem>
+    <Elem>include</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile2</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
@@ -60,6 +68,11 @@
         <compilerSet>default</compilerSet>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>include</pElem>
+          </incDir>
+        </ccTool>
       </compileType>
     </conf>
     <conf name="Release" type="1">

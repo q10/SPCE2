@@ -34,20 +34,20 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/rotation.o \
-	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/umbrella_sampling.o \
-	${OBJECTDIR}/water.o \
-	${OBJECTDIR}/output.o \
-	${OBJECTDIR}/energy.o \
-	${OBJECTDIR}/sampler.o \
-	${OBJECTDIR}/random.o \
-	${OBJECTDIR}/mc.o \
-	${OBJECTDIR}/simulation.o \
-	${OBJECTDIR}/ion.o \
-	${OBJECTDIR}/ewald.o \
-	${OBJECTDIR}/radial_dist.o \
-	${OBJECTDIR}/config_reader.o
+	${OBJECTDIR}/src/energy.o \
+	${OBJECTDIR}/src/main.o \
+	${OBJECTDIR}/src/random.o \
+	${OBJECTDIR}/src/umbrella_sampling.o \
+	${OBJECTDIR}/src/simulation.o \
+	${OBJECTDIR}/src/output.o \
+	${OBJECTDIR}/src/sampler.o \
+	${OBJECTDIR}/src/mc.o \
+	${OBJECTDIR}/src/rotation.o \
+	${OBJECTDIR}/src/config_reader.o \
+	${OBJECTDIR}/src/water.o \
+	${OBJECTDIR}/src/ion.o \
+	${OBJECTDIR}/src/radial_dist.o \
+	${OBJECTDIR}/src/ewald.o
 
 
 # C Compiler Flags
@@ -74,75 +74,75 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/spce2.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/spce2 ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/rotation.o: rotation.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/energy.o: src/energy.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/rotation.o rotation.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/energy.o src/energy.cpp
 
-${OBJECTDIR}/main.o: main.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/main.o: src/main.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main.o src/main.cpp
 
-${OBJECTDIR}/umbrella_sampling.o: umbrella_sampling.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/random.o: src/random.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/umbrella_sampling.o umbrella_sampling.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/random.o src/random.cpp
 
-${OBJECTDIR}/water.o: water.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/umbrella_sampling.o: src/umbrella_sampling.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/water.o water.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbrella_sampling.o src/umbrella_sampling.cpp
 
-${OBJECTDIR}/output.o: output.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/simulation.o: src/simulation.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/output.o output.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/simulation.o src/simulation.cpp
 
-${OBJECTDIR}/energy.o: energy.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/output.o: src/output.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/energy.o energy.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/output.o src/output.cpp
 
-${OBJECTDIR}/sampler.o: sampler.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/sampler.o: src/sampler.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sampler.o sampler.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/sampler.o src/sampler.cpp
 
-${OBJECTDIR}/random.o: random.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/mc.o: src/mc.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/random.o random.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/mc.o src/mc.cpp
 
-${OBJECTDIR}/mc.o: mc.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/rotation.o: src/rotation.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/mc.o mc.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/rotation.o src/rotation.cpp
 
-${OBJECTDIR}/simulation.o: simulation.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/config_reader.o: src/config_reader.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/simulation.o simulation.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/config_reader.o src/config_reader.cpp
 
-${OBJECTDIR}/ion.o: ion.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/water.o: src/water.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/ion.o ion.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/water.o src/water.cpp
 
-${OBJECTDIR}/ewald.o: ewald.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/ion.o: src/ion.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/ewald.o ewald.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/ion.o src/ion.cpp
 
-${OBJECTDIR}/radial_dist.o: radial_dist.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/radial_dist.o: src/radial_dist.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/radial_dist.o radial_dist.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/radial_dist.o src/radial_dist.cpp
 
-${OBJECTDIR}/config_reader.o: config_reader.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/ewald.o: src/ewald.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/config_reader.o config_reader.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/ewald.o src/ewald.cpp
 
 # Subprojects
 .build-subprojects:

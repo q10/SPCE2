@@ -1,38 +1,40 @@
-CC=g++
-CFLAGS=-Wall -fopenmp -pthread -g
-CFLAGS2=-c
+SRC_DIR=src
+INCLUDE_DIR=include
+OBJ_DIR=obj
+
+CXX=g++
+PARALLEL_FLAGS=-fopenmp -pthread
+DEBUG_FLAG=-g
+CXXFLAGS=-c -Wall -I $(INCLUDE_DIR)
 LDFLAGS=
-SOURCES=
-OBJECTS=$(SOURCES:.cpp=.o)
+SOURCES= $(shell ls $(SRC_DIR)/*.cpp)
+OBJECTS=$(addprefix $(OBJ_DIR)/,$(notdir $(SOURCES:.cpp=.o)))
 EXECUTABLE=SPCE
 
 all:	o2
 
-o3:
-	rm -rf $(EXECUTABLE)	
-	$(CC) $(CFLAGS) -O3 *.cpp -o $(EXECUTABLE)
+o3: CXXFLAGS += -O3
+o3: verbose
 
-o2:
-	rm -rf $(EXECUTABLE)	
-	$(CC) $(CFLAGS) -O2 *.cpp -o $(EXECUTABLE)
-	
-o1:
-	rm -rf $(EXECUTABLE)	
-	$(CC) $(CFLAGS) -O1 *.cpp -o $(EXECUTABLE)
+o2: CXXFLAGS += -O2
+o2: verbose
 
-o0:
-	rm -rf $(EXECUTABLE)	
-	$(CC) $(CFLAGS) *.cpp -o $(EXECUTABLE)
+o1: CXXFLAGS += -O1
+o1: verbose
 
+o0: verbose
 
 verbose: $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
-	rm -rf *.o *~
+	$(CXX) $(LDFLAGS) $(OBJECTS) -o $@
 
-.cpp.o:
-	$(CC) $(CFLAGS2) $(CFLAGS) $< -o $@
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@
 
-clean:
-	rm -rf *.o *~
+remove:
+	rm -rf $(EXECUTABLE)
+	
+clean: remove
+	cd obj && rm -rf * && cd ..
+	
