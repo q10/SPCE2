@@ -30,6 +30,7 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CXX) $(LDFLAGS) $(OBJECTS) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 remove:
