@@ -5,3 +5,4 @@ Makefile2
 *.o
 *~
 *.lammpstrj
+*.exe
