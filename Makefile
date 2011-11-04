@@ -37,4 +37,6 @@ remove:
 	
 clean: remove
 	rm -rf $(OBJ_DIR)/*
-	
+
+init:
+	mkdir -p $(OBJ_DIR)
