@@ -51,7 +51,4 @@ public:
     double squared_distance_from(Ion * other_ion);
 };
 
-
-void test_water_rotation();
-
 #endif	/* WATER_H */

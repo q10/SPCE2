@@ -125,16 +125,3 @@ string RDFSampler::results() {
             << water_water_RDF[k] << "\t" << anion_water_RDF[k] << "\t" << cation_water_RDF[k] << "\t" << ion_ion_RDF[k] << endl;
     return rad_dist_results.str();
 }
-
-void test_radial_dist() {
-    cerr << "---- BEGIN TEST - RADIAL DISTRIBUTION SAMPLER ----" << endl;
-    Simulation * simulation = new Simulation();
-    simulation->IONS[0]->charge = -1.0;
-    simulation->IONS[1]->charge = 1.0;
-    simulation->NUM_MC_SWEEPS = 5000000;
-    simulation->run_mc();
-    //cout << simulation->SAMPLER_SET->radial_dist_results();
-    //simulation->sampler->write_config_snapshot();
-    cerr << "\n---- END TEST - RADIAL DISTRIBUTION SAMPLER ----\n" << endl;
-    return;
-}

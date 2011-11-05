@@ -37,10 +37,10 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/sampler_set.o \
 	${OBJECTDIR}/src/energy.o \
 	${OBJECTDIR}/src/main.o \
-	${OBJECTDIR}/src/umbrella_sampling.o \
 	${OBJECTDIR}/src/random.o \
 	${OBJECTDIR}/src/simulation.o \
 	${OBJECTDIR}/src/output.o \
+	${OBJECTDIR}/src/spce_runtime.o \
 	${OBJECTDIR}/src/ipair_distance_sampler.o \
 	${OBJECTDIR}/src/rdf_sampler.o \
 	${OBJECTDIR}/src/mc.o \
@@ -90,11 +90,6 @@ ${OBJECTDIR}/src/main.o: src/main.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -Iinclude -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main.o src/main.cpp
 
-${OBJECTDIR}/src/umbrella_sampling.o: src/umbrella_sampling.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.cc) -g -Iinclude -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbrella_sampling.o src/umbrella_sampling.cpp
-
 ${OBJECTDIR}/src/random.o: src/random.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
@@ -109,6 +104,11 @@ ${OBJECTDIR}/src/output.o: src/output.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.cc) -g -Iinclude -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/output.o src/output.cpp
+
+${OBJECTDIR}/src/spce_runtime.o: src/spce_runtime.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iinclude -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/spce_runtime.o src/spce_runtime.cpp
 
 ${OBJECTDIR}/src/ipair_distance_sampler.o: src/ipair_distance_sampler.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

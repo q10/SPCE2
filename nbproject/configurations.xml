@@ -14,7 +14,7 @@
         <itemPath>include/sampler.h</itemPath>
         <itemPath>include/sampler_set.h</itemPath>
         <itemPath>include/simulation.h</itemPath>
-        <itemPath>include/umbrella_sampling.h</itemPath>
+        <itemPath>include/spce_runtime.h</itemPath>
         <itemPath>include/water.h</itemPath>
       </logicalFolder>
     </logicalFolder>
@@ -43,7 +43,7 @@
         <itemPath>src/rotation.cpp</itemPath>
         <itemPath>src/sampler_set.cpp</itemPath>
         <itemPath>src/simulation.cpp</itemPath>
-        <itemPath>src/umbrella_sampling.cpp</itemPath>
+        <itemPath>src/spce_runtime.cpp</itemPath>
         <itemPath>src/water.cpp</itemPath>
       </logicalFolder>
     </logicalFolder>

@@ -45,23 +45,3 @@ string Simulation::to_vmd(int time_step) {
     }
     return vmd_string.str();
 }
-
-void test_vmd_output() {
-    cerr << "---- BEGIN TEST - LAMMPSTRJ (VMD) FILE OUTPUT ----" << endl;
-    Simulation * s = new Simulation();
-    s->DATA_SAMPLING_RATE = 2;
-    s->NUM_MC_SWEEPS = 10;
-    s->run_mc();
-    cerr << "---- END TEST - LAMMPSTRJ (VMD) FILE OUTPUT ----" << endl;
-    return;
-}
-
-void test_config_output() {
-    cerr << "---- BEGIN TEST - CONFIG FILE OUTPUT ----" << endl;
-    Simulation * s = new Simulation();
-    s->NUM_MC_SWEEPS = 100;
-    s->run_mc();
-    s->SAMPLER_SET->write_config_snapshot();
-    cerr << "---- END TEST - CONFIG FILE OUTPUT ----" << endl;
-    return;
-}

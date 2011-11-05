@@ -24,6 +24,4 @@ public:
     std::string results();
 };
 
-void test_radial_dist();
-
 #endif	/* RDF_SAMPLER_H */

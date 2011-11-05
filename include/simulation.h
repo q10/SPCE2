@@ -80,7 +80,6 @@ public:
     double total_ewald_energy();
 
 
-
     bool WINDOW_SAMPLING_MODE;
     int DATA_SAMPLING_RATE;
 
@@ -88,9 +87,5 @@ public:
     friend std::ostream & operator<<(std::ostream & out, Simulation * simulation);
     std::string to_vmd(int time_step);
 };
-
-
-void test_vmd_output();
-void test_config_output();
 
 #endif	/* SIMULATION_H */

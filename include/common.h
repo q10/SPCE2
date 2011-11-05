@@ -45,7 +45,7 @@
 #include "ipair_distance_sampler.h"
 #include "sampler_set.h"
 #include "config_reader.h"
-#include "umbrella_sampling.h"
+#include "spce_runtime.h"
 
 using namespace std;
 

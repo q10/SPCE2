@@ -145,12 +145,3 @@ void ConfigReader::load_configuration_file(string input_config_filename, Simulat
 
     return;
 }
-
-void test_config_input() {
-    cerr << "---- BEGIN TEST - CONFIG FILE INPUT ----" << endl
-            << "reading from input file sample.config" << endl;
-    Simulation * simulation = ConfigReader::new_simulation_with_config("sample.config");
-    cout << simulation << endl;
-    cerr << "---- END TEST - CONFIG FILE INPUT ----" << endl;
-    return;
-}

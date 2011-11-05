@@ -26,21 +26,3 @@ void Water::set_rotation_matrix(double * rand_unit_vector, double theta_rad) {
     delete [] rand_unit_vector;
     return;
 }
-
-void test_water_rotation() {
-    cerr << "---- BEGIN TEST - WATER ROTATION ----" << endl;
-    double * coords = new double [9];
-    coords[0] = 1.34;
-    coords[1] = 2.0;
-    coords[2] = 3.2;
-    for (int i = 3; i < 9; i++)
-        coords[i] = RAN3()*5.0;
-    Water * w = new Water(coords, 0.2, 0.17, 20.0, 20.0);
-    delete [] coords;
-    for (int k = 0; k < 10000; k++) {
-        w->mc_rotate();
-        cout << w << endl;
-    }
-    cerr << "---- END TEST - WATER ROTATION ----\n" << endl;
-    return;
-}
