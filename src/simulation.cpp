@@ -5,6 +5,7 @@ const double Simulation::BOLTZMANN_K = 0.00831447122,
 const dcomplex Simulation::COMPLEX_ONE(1.0, 0.0);
 
 Simulation::Simulation(int num_waters, int num_ions) {
+    NAME = "SPCE_" + TIMESTAMP();
     default_initialize_system_parameters(num_waters, num_ions);
     default_initialize_waters(num_waters);
     default_initialize_ions(num_ions);

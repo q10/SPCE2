@@ -115,7 +115,7 @@ void RDFSampler::finish() {
     return;
 }
 
-string RDFSampler::radial_dist_results() {
+string RDFSampler::results() {
     stringstream rad_dist_results;
     // Format of results is as such:
     // r(Angstroms)     g(r)[O-O]       g(r)[anion-O]   g(r)[cation-O]  g(r)[ion-ion]

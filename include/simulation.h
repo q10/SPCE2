@@ -84,6 +84,7 @@ public:
     bool WINDOW_SAMPLING_MODE;
     int DATA_SAMPLING_RATE;
 
+    std::string NAME;
     friend std::ostream & operator<<(std::ostream & out, Simulation * simulation);
     std::string to_vmd(int time_step);
 };

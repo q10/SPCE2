@@ -13,7 +13,6 @@ private:
     double delg;
     int num_gr, radial_dist_num_his_bars;
     std::vector <double> radial_dist_distance, water_water_RDF, anion_water_RDF, cation_water_RDF, ion_ion_RDF;
-    Simulation * simulation;
 
 public:
     RDFSampler(Simulation * s);
@@ -22,8 +21,9 @@ public:
     void start();
     void sample();
     void finish();
-
-    std::string radial_dist_results();
+    std::string results();
 };
+
+void test_radial_dist();
 
 #endif	/* RDF_SAMPLER_H */

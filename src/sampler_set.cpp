@@ -2,17 +2,21 @@
 
 SamplerSet::SamplerSet(Simulation * s) {
     simulation = s;
-
-    SIMULATION_TIME_STAMP = TIMESTAMP();
     RELATIVE_VMD_SNAPSHOT_RATE = 100;
-
     vmd_timestep = 0;
     vmd_snapshot_counter = 0;
 }
 
 SamplerSet::~SamplerSet() {
+    samplers.clear();
     if (VMD_FILE.is_open())
         VMD_FILE.close();
+}
+
+void SamplerSet::start() {
+    for (unsigned int i = 0; i < samplers.size(); i++)
+        samplers[i]->start();
+    return;
 }
 
 void SamplerSet::sample_data() {
@@ -23,22 +27,28 @@ void SamplerSet::sample_data() {
     return;
 }
 
-void SamplerSet::start() {
-    for (unsigned int i = 0; i < samplers.size(); i++)
-        samplers[i]->start();
-    return;
-}
-
 void SamplerSet::finish() {
     for (unsigned int i = 0; i < samplers.size(); i++)
         samplers[i]->finish();
     return;
 }
 
+void SamplerSet::add_rdf_sampler() {
+    RDFSampler * sampler = new RDFSampler(simulation);
+    samplers.push_back(dynamic_cast<Sampler *> (sampler));
+    return;
+}
+
+void SamplerSet::add_ion_pair_distance_sampler() {
+    IonPairDistanceSampler * sampler = new IonPairDistanceSampler(simulation);
+    samplers.push_back(dynamic_cast<Sampler *> (sampler));
+    return;
+}
+
 void SamplerSet::write_vmd_snapshot() {
     if (!VMD_FILE.is_open()) {
         if (vmd_filename.compare("") == 0)
-            vmd_filename = "SPCE_" + SIMULATION_TIME_STAMP + ".lammpstrj";
+            vmd_filename = simulation->NAME + ".lammpstrj";
         VMD_FILE.open(vmd_filename.c_str());
         ASSERT(VMD_FILE.is_open(), "Could not open VMD output file.");
     }
@@ -47,12 +57,12 @@ void SamplerSet::write_vmd_snapshot() {
 }
 
 void SamplerSet::write_config_snapshot() {
-    ofstream file;
+    ofstream config_file;
     if (config_filename.compare("") == 0)
-        config_filename = "SPCE_" + SIMULATION_TIME_STAMP + ".config";
-    file.open(config_filename.c_str());
-    ASSERT(file.is_open(), "Could not open config output file.");
-    file << simulation;
-    file.close();
+        config_filename = simulation->NAME + ".config";
+    config_file.open(config_filename.c_str());
+    ASSERT(config_file.is_open(), "Could not open config output file.");
+    config_file << simulation;
+    config_file.close();
     return;
 }

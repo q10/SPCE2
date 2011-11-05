@@ -12,13 +12,11 @@ class SamplerSet {
 private:
     int vmd_timestep, vmd_snapshot_counter;
     std::ofstream VMD_FILE;
-
     std::vector <Sampler *> samplers;
+
 public:
     int RELATIVE_VMD_SNAPSHOT_RATE;
-
     Simulation * simulation;
-    std::string SIMULATION_TIME_STAMP;
 
     SamplerSet(Simulation * s);
     ~SamplerSet();
@@ -26,6 +24,9 @@ public:
     void start();
     void sample_data();
     void finish();
+    
+    void add_rdf_sampler();
+    void add_ion_pair_distance_sampler();
 
     std::string config_filename, vmd_filename;
     void write_vmd_snapshot();
@@ -33,6 +34,4 @@ public:
 
 };
 
-void test_radial_dist();
-
-#endif	/* SAMPLER_H */
+#endif	/* SAMPLER_SET_H */

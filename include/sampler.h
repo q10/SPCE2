@@ -9,6 +9,9 @@
 #define	SAMPLER_H
 
 class Sampler {
+protected:
+    Simulation * simulation;
+
 public:
     Sampler() {}
     virtual ~Sampler() {}
