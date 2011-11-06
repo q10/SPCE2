@@ -12,7 +12,7 @@ namespace SPCERuntime {
     void run_umbrella_system();
 
 
-    void run_tests(int argc, char** argv);
+    void run_all_tests(int argc, char** argv);
     void test_water_rotation();
     void test_config_input();
     void test_vmd_output();

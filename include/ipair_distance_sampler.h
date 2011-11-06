@@ -25,6 +25,7 @@ public:
     void start();
     void sample();
     void finish();
+    std::string results();
 };
 
 #endif	/* IPAIR_DISTANCE_SAMPLER_H */

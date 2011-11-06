@@ -20,8 +20,7 @@ void SPCERuntime::run_umbrella_system() {
     return;
 }
 
-
-void SPCERuntime::run_tests(int argc, char** argv) {
+void SPCERuntime::run_all_tests(int argc, char** argv) {
     //test_water_rotation();
     //test_vmd_output();
     //test_config_output();
@@ -29,7 +28,6 @@ void SPCERuntime::run_tests(int argc, char** argv) {
     test_radial_dist();
     return;
 }
-
 
 void SPCERuntime::test_config_input() {
     cerr << "---- BEGIN TEST - CONFIG FILE INPUT ----" << endl
@@ -63,16 +61,16 @@ void SPCERuntime::test_config_output() {
 void SPCERuntime::test_radial_dist() {
     cerr << "---- BEGIN TEST - RADIAL DISTRIBUTION SAMPLER ----" << endl;
     Simulation * simulation = new Simulation();
+    simulation->SAMPLER_SET->add_rdf_sampler();
     simulation->IONS[0]->charge = -1.0;
     simulation->IONS[1]->charge = 1.0;
-    simulation->NUM_MC_SWEEPS = 5000000;
+    simulation->NUM_MC_SWEEPS = 50000;
     simulation->run_mc();
-    //cout << simulation->SAMPLER_SET->radial_dist_results();
-    //simulation->sampler->write_config_snapshot();
+    simulation->SAMPLER_SET->print_individual_sampler_results();
+    simulation->SAMPLER_SET->write_config_snapshot();
     cerr << "\n---- END TEST - RADIAL DISTRIBUTION SAMPLER ----\n" << endl;
     return;
 }
-
 
 void SPCERuntime::test_water_rotation() {
     cerr << "---- BEGIN TEST - WATER ROTATION ----" << endl;

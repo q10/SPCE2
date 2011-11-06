@@ -33,6 +33,12 @@ void SamplerSet::finish() {
     return;
 }
 
+void SamplerSet::print_individual_sampler_results() {
+    for (unsigned int i = 0; i < samplers.size(); i++)
+        cout << samplers[i]->results() << endl;
+    return;
+}
+
 void SamplerSet::add_rdf_sampler() {
     RDFSampler * sampler = new RDFSampler(simulation);
     samplers.push_back(dynamic_cast<Sampler *> (sampler));

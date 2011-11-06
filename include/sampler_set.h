@@ -24,6 +24,7 @@ public:
     void start();
     void sample_data();
     void finish();
+    void print_individual_sampler_results();
     
     void add_rdf_sampler();
     void add_ion_pair_distance_sampler();

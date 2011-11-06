@@ -39,3 +39,9 @@ void IonPairDistanceSampler::finish() {
         ION_PAIR_DISTANCE_FILE.close();
     return;
 }
+
+string IonPairDistanceSampler::results() {
+    stringstream results;
+    results << "Ion pair distance sampling results are available in " << simulation->NAME << ".ipair_dist" << endl;
+    return results.str();
+}

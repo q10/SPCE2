@@ -18,6 +18,7 @@ public:
     virtual void start() = 0;
     virtual void sample() = 0;
     virtual void finish() = 0;
+    virtual std::string results() = 0;
 };
 
 #endif	/* SAMPLER_H */

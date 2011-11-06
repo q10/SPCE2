@@ -8,6 +8,6 @@
 #include "common.h"
 
 int main(int argc, char** argv) {
-    SPCERuntime::run_tests(argc, argv);
+    SPCERuntime::run_all_tests(argc, argv);
     return 0;
 }
