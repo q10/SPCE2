@@ -25,7 +25,8 @@ void SPCERuntime::run_all_tests(int argc, char** argv) {
     //test_vmd_output();
     //test_config_output();
     //test_config_input();
-    test_radial_dist();
+    //test_radial_dist();
+    test_ion_pair_dist();
     return;
 }
 
@@ -62,13 +63,25 @@ void SPCERuntime::test_config_output() {
 void SPCERuntime::test_radial_dist() {
     cerr << "---- BEGIN TEST - RADIAL DISTRIBUTION SAMPLER ----" << endl;
     Simulation * simulation = new Simulation();
-    simulation->SAMPLER_SET->add_rdf_sampler();
     simulation->IONS[0]->charge = -1.0;
     simulation->IONS[1]->charge = 1.0;
     simulation->NUM_MC_SWEEPS = 50000;
+    simulation->SAMPLER_SET->add_rdf_sampler();
     simulation->run_mc();
     simulation->SAMPLER_SET->print_individual_sampler_results();
     cerr << "\n---- END TEST - RADIAL DISTRIBUTION SAMPLER ----\n" << endl;
+    return;
+}
+
+void SPCERuntime::test_ion_pair_dist() {
+    cerr << "---- BEGIN TEST - ION PAIR DISTANCE SAMPLER ----" << endl;
+    Simulation * simulation = new Simulation();
+    simulation->IONS[0]->charge = -1.0;
+    simulation->IONS[1]->charge = 1.0;
+    simulation->SAMPLER_SET->add_ion_pair_distance_sampler();
+    simulation->run_mc();
+    simulation->SAMPLER_SET->print_individual_sampler_results();
+    cerr << "---- END TEST - ION PAIR DISTANCE SAMPLER ----" << endl;
     return;
 }
 

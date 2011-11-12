@@ -18,6 +18,7 @@ namespace SPCERuntime {
     void test_vmd_output();
     void test_config_output();
     void test_radial_dist();
+    void test_ion_pair_dist();
 };
 
 #endif	/* SPCE_RUNTIME_H */
