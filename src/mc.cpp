@@ -67,6 +67,12 @@ void Simulation::mc_rotate() {
 }
 
 bool Simulation::mc_accept(int index, double old_energy_particle_i) {
+    if (index >= IONS.size() and WINDOW_SAMPLING_MODE) {
+        double ion_dist = IONS[0]->distance_from(IONS[1]);
+        if (ion_dist < WINDOW_LOWER_BOUND or ion_dist > WINDOW_UPPER_BOUND)
+            return false;
+    }
+
     double total_energy_diff = ewald_diff(index) + energy_of_particle_with_index(index) - old_energy_particle_i;
     if (RAN3() < exp(-BETA * total_energy_diff))
         TOTAL_ENERGY += total_energy_diff;

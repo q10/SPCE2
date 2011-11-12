@@ -19,11 +19,11 @@ ostream & operator<<(ostream & out, Simulation * simulation) {
     return out;
 }
 
-string Simulation::to_vmd(int time_step) {
-    stringstream vmd_string;
+string Simulation::to_lammpstrj(int time_step) {
+    stringstream lammpstrj_string;
     int atom_count = 0, ion_id;
     double *coords;
-    vmd_string << setprecision(10) << "ITEM: TIMESTEP" << endl << time_step << endl
+    lammpstrj_string << setprecision(10) << "ITEM: TIMESTEP" << endl << time_step << endl
             << "ITEM: NUMBER OF ATOMS" << endl << (3 * WATERS.size() + IONS.size()) << endl
             << "ITEM: BOX BOUNDS" << endl
             << "0 " << BOX_LENGTH << endl
@@ -32,16 +32,16 @@ string Simulation::to_vmd(int time_step) {
             << "ITEM: ATOMS id type x y z diameter q" << endl;
     for (unsigned int i = 0; i < WATERS.size(); i++) {
         coords = WATERS[i]->coords;
-        vmd_string << ++atom_count << " 1 " << coords[0] << " " << coords[1] << " " << coords[2] << " " << Water::SIGMA_O << " " << Water::Q_O << endl;
-        vmd_string << ++atom_count << " 2 " << coords[3] << " " << coords[4] << " " << coords[5] << " " << Water::SIGMA_H << " " << Water::Q_H << endl;
-        vmd_string << ++atom_count << " 2 " << coords[6] << " " << coords[7] << " " << coords[8] << " " << Water::SIGMA_H << " " << Water::Q_H << endl;
+        lammpstrj_string << ++atom_count << " 1 " << coords[0] << " " << coords[1] << " " << coords[2] << " " << Water::SIGMA_O << " " << Water::Q_O << endl;
+        lammpstrj_string << ++atom_count << " 2 " << coords[3] << " " << coords[4] << " " << coords[5] << " " << Water::SIGMA_H << " " << Water::Q_H << endl;
+        lammpstrj_string << ++atom_count << " 2 " << coords[6] << " " << coords[7] << " " << coords[8] << " " << Water::SIGMA_H << " " << Water::Q_H << endl;
     }
 
     for (unsigned int i = 0; i < IONS.size(); i++) {
         coords = IONS[i]->coords;
         ion_id = (IONS[i]->charge < 0.0) ? 3 : 4;
-        vmd_string << ++atom_count << " " << ion_id << " "
+        lammpstrj_string << ++atom_count << " " << ion_id << " "
                 << coords[0] << " " << coords[1] << " " << coords[2] << " " << IONS[i]->SIGMA << " " << IONS[i]->charge << endl;
     }
-    return vmd_string.str();
+    return lammpstrj_string.str();
 }

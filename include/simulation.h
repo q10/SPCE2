@@ -12,6 +12,10 @@ class SamplerSet;
 
 class Simulation {
 private:
+    static const double BOLTZMANN_K, ELECTROSTATIC_K;
+    static const dcomplex COMPLEX_ONE;
+
+    
     int total_attempted_mc_translations, total_attempted_mc_rotations, num_successful_mc_translations, num_successful_mc_rotations;
     void mc_sweep();
     void mc_translate();
@@ -24,6 +28,8 @@ private:
     double energy_between_two_ions(int i, int j);
 
 
+    double EWALD_ALPHA;
+    int EWALD_NXY, EWALD_NZ, NUM_K_VECTORS, K_111_INDEX;
     std::vector <double> ERFC_TABLE;
     std::vector <double *> K_VECTORS;
     std::vector <dcomplex *> RHO_K_VALUES;
@@ -39,12 +45,11 @@ private:
     void set_exp_kr_table_for_water(int water_index);
     void set_exp_kr_table_for_ion(int ion_index);
 
+    
+    bool WINDOW_SAMPLING_MODE;
+    double WINDOW_LOWER_BOUND, WINDOW_UPPER_BOUND;
 
 public:
-    static const double BOLTZMANN_K, ELECTROSTATIC_K;
-    static const dcomplex COMPLEX_ONE;
-
-
     double TEMPERATURE, BETA, TARGET_WATER_DENSITY, BOX_LENGTH, HALF_BOX_LENGTH, BOX_Z_LENGTH, HALF_BOX_Z_LENGTH, BOX_VOLUME;
     std::vector <Water *> WATERS;
     std::vector <Ion *> IONS;
@@ -57,6 +62,8 @@ public:
     void default_initialize_waters(int num_waters);
     void default_initialize_ions(int num_ions);
     void default_initialize_sampling_parameters();
+    void default_initialize_window_sampling_mode();
+
 
     void set_temperature(double new_temp);
     void expand_box_z_direction(double new_len = 0.0);
@@ -74,18 +81,19 @@ public:
     double total_real_space_energy();
 
 
-    double EWALD_ALPHA;
-    int EWALD_NXY, EWALD_NZ, NUM_K_VECTORS, K_111_INDEX;
     void initialize_all_ewald_tables(double ewald_alpha, int ewald_nxy, int ewald_nz);
     double total_ewald_energy();
 
 
-    bool WINDOW_SAMPLING_MODE;
+    void turn_on_window_sampling_mode(double window_lower_bound, double window_upper_bound);
+
+
     int DATA_SAMPLING_RATE;
 
+    
     std::string NAME;
     friend std::ostream & operator<<(std::ostream & out, Simulation * simulation);
-    std::string to_vmd(int time_step);
+    std::string to_lammpstrj(int time_step);
 };
 
 #endif	/* SIMULATION_H */

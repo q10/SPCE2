@@ -12,6 +12,7 @@ Simulation::Simulation(int num_waters, int num_ions) {
     initialize_all_ewald_tables(0.0784, 5, 5);
     calculate_and_init_energy();
     default_initialize_sampling_parameters();
+    default_initialize_window_sampling_mode();
 }
 
 Simulation::~Simulation() {
@@ -121,4 +122,19 @@ void Simulation::expand_box_z_direction(double new_len) {
 void Simulation::default_initialize_sampling_parameters() {
     DATA_SAMPLING_RATE = 10;
     SAMPLER_SET = new SamplerSet(this);
+    return;
+}
+
+void Simulation::default_initialize_window_sampling_mode() {
+    WINDOW_SAMPLING_MODE = false;
+    WINDOW_LOWER_BOUND = WINDOW_UPPER_BOUND = -1;
+    return;
+}
+
+void Simulation::turn_on_window_sampling_mode(double window_lower_bound, double window_upper_bound) {
+    ASSERT(IONS.size() == 2, "Not enough ions to start window sampling.");
+    WINDOW_SAMPLING_MODE = true;
+    WINDOW_LOWER_BOUND = window_lower_bound, WINDOW_UPPER_BOUND = window_upper_bound;
+    SAMPLER_SET->add_ion_pair_distance_sampler();
+    return;
 }

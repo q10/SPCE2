@@ -22,17 +22,15 @@ double RAN3() {
             ii = (21 * i) % 55;
             ma[ii] = mk;
             mk = mj - mk;
-            if (mk < MZ) {
+            if (mk < MZ)
                 mk += MBIG;
-            }
             mj = (long) ma[ii];
         }
         for (k = 1; k <= 4; k++)
             for (i = 1; i <= 55; i++) {
                 ma[i] -= ma[1 + (i + 30) % 55];
-                if (ma[i] < MZ) {
+                if (ma[i] < MZ)
                     ma[i] += MBIG;
-                }
             }
         inext = 0;
         inextp = 31;
@@ -41,9 +39,8 @@ double RAN3() {
     if (++inext == 56) inext = 1;
     if (++inextp == 56) inextp = 1;
     mj = (long) (ma[inext] - ma[inextp]);
-    if (mj < MZ) {
+    if (mj < MZ)
         mj += MBIG;
-    }
     ma[inext] = mj;
     return mj*FAC;
 

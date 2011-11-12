@@ -41,6 +41,7 @@ void SPCERuntime::test_config_input() {
 void SPCERuntime::test_vmd_output() {
     cerr << "---- BEGIN TEST - LAMMPSTRJ (VMD) FILE OUTPUT ----" << endl;
     Simulation * s = new Simulation();
+    s->SAMPLER_SET->turn_on_lammpstrj_sampler();
     s->DATA_SAMPLING_RATE = 2;
     s->NUM_MC_SWEEPS = 10;
     s->run_mc();
@@ -67,7 +68,6 @@ void SPCERuntime::test_radial_dist() {
     simulation->NUM_MC_SWEEPS = 50000;
     simulation->run_mc();
     simulation->SAMPLER_SET->print_individual_sampler_results();
-    simulation->SAMPLER_SET->write_config_snapshot();
     cerr << "\n---- END TEST - RADIAL DISTRIBUTION SAMPLER ----\n" << endl;
     return;
 }

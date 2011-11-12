@@ -11,8 +11,6 @@ IonPairDistanceSampler::IonPairDistanceSampler(Simulation * s) {
             ANION = ion;
     }
     ASSERT((CATION != NULL) && (ANION != NULL), "There needs to be at least one cation and one anion in the system.");
-
-
 }
 
 IonPairDistanceSampler::~IonPairDistanceSampler() {

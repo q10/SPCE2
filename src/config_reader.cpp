@@ -3,7 +3,7 @@
 const program_flags_t ConfigReader::PROGRAM_FLAGS[] = {
     { "input", required_argument, NULL, 'r'},
     { "output_config", required_argument, NULL, 'w'},
-    { "output_vmd", required_argument, NULL, 'v'},
+    { "output_lammpstrj", required_argument, NULL, 'v'},
     { NULL, no_argument, NULL, 0}
 };
 
@@ -52,10 +52,10 @@ void ConfigReader::read_program_flags(int argc, char** argv, Simulation * simula
                 config_filename = config_filename.substr(1);
             simulation->SAMPLER_SET->config_filename = config_filename;
         } else if (option == 'v') {
-            string vmd_filename = optarg;
-            if (vmd_filename[0] == '=')
-                vmd_filename = vmd_filename.substr(1);
-            simulation->SAMPLER_SET->vmd_filename = vmd_filename;
+            string lammpstrj_filename = optarg;
+            if (lammpstrj_filename[0] == '=')
+                lammpstrj_filename = lammpstrj_filename.substr(1);
+            simulation->SAMPLER_SET->lammpstrj_filename = lammpstrj_filename;
         } else
             ASSERT(false, "Invalid program flag, invalid flag parameter, or missing a flag parameter.");
     }

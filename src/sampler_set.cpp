@@ -2,15 +2,16 @@
 
 SamplerSet::SamplerSet(Simulation * s) {
     simulation = s;
-    RELATIVE_VMD_SNAPSHOT_RATE = 100;
-    vmd_timestep = 0;
-    vmd_snapshot_counter = 0;
+    is_lammpstr_sampling = false;
+    RELATIVE_LAMMPSTRJ_SNAPSHOT_RATE = 10;
+    lammpstrj_timestep = 0;
+    lammpstrj_snapshot_counter = 0;
 }
 
 SamplerSet::~SamplerSet() {
     samplers.clear();
-    if (VMD_FILE.is_open())
-        VMD_FILE.close();
+    if (LAMMPSTRJ_FILE.is_open())
+        LAMMPSTRJ_FILE.close();
 }
 
 void SamplerSet::start() {
@@ -22,8 +23,8 @@ void SamplerSet::start() {
 void SamplerSet::sample_data() {
     for (unsigned int i = 0; i < samplers.size(); i++)
         samplers[i]->sample();
-    if (++vmd_snapshot_counter % RELATIVE_VMD_SNAPSHOT_RATE == 0)
-        write_vmd_snapshot();
+    if (is_lammpstr_sampling and ++lammpstrj_snapshot_counter % RELATIVE_LAMMPSTRJ_SNAPSHOT_RATE == 0)
+        write_lammpstrj_snapshot();
     return;
 }
 
@@ -39,6 +40,11 @@ void SamplerSet::print_individual_sampler_results() {
     return;
 }
 
+void SamplerSet::turn_on_lammpstrj_sampler() {
+    is_lammpstr_sampling = true;
+    return;
+}
+
 void SamplerSet::add_rdf_sampler() {
     RDFSampler * sampler = new RDFSampler(simulation);
     samplers.push_back(dynamic_cast<Sampler *> (sampler));
@@ -51,14 +57,14 @@ void SamplerSet::add_ion_pair_distance_sampler() {
     return;
 }
 
-void SamplerSet::write_vmd_snapshot() {
-    if (!VMD_FILE.is_open()) {
-        if (vmd_filename.compare("") == 0)
-            vmd_filename = simulation->NAME + ".lammpstrj";
-        VMD_FILE.open(vmd_filename.c_str());
-        ASSERT(VMD_FILE.is_open(), "Could not open VMD output file.");
+void SamplerSet::write_lammpstrj_snapshot() {
+    if (!LAMMPSTRJ_FILE.is_open()) {
+        if (lammpstrj_filename.compare("") == 0)
+            lammpstrj_filename = simulation->NAME + ".lammpstrj";
+        LAMMPSTRJ_FILE.open(lammpstrj_filename.c_str());
+        ASSERT(LAMMPSTRJ_FILE.is_open(), "Could not open LAMMPSTRJ output file.");
     }
-    VMD_FILE << simulation->to_vmd(++vmd_timestep);
+    LAMMPSTRJ_FILE << simulation->to_lammpstrj(++lammpstrj_timestep);
     return;
 }
 

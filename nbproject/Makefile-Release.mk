@@ -36,8 +36,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/src/sampler_set.o \
 	${OBJECTDIR}/src/energy.o \
-	${OBJECTDIR}/src/main.o \
 	${OBJECTDIR}/src/random.o \
+	${OBJECTDIR}/src/main.o \
 	${OBJECTDIR}/src/simulation.o \
 	${OBJECTDIR}/src/output.o \
 	${OBJECTDIR}/src/spce_runtime.o \
@@ -85,15 +85,15 @@ ${OBJECTDIR}/src/energy.o: src/energy.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/energy.o src/energy.cpp
 
-${OBJECTDIR}/src/main.o: src/main.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main.o src/main.cpp
-
 ${OBJECTDIR}/src/random.o: src/random.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/random.o src/random.cpp
+
+${OBJECTDIR}/src/main.o: src/main.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main.o src/main.cpp
 
 ${OBJECTDIR}/src/simulation.o: src/simulation.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

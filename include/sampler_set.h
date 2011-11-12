@@ -10,12 +10,13 @@
 
 class SamplerSet {
 private:
-    int vmd_timestep, vmd_snapshot_counter;
-    std::ofstream VMD_FILE;
+    bool is_lammpstr_sampling;
+    int lammpstrj_timestep, lammpstrj_snapshot_counter;
+    std::ofstream LAMMPSTRJ_FILE;
     std::vector <Sampler *> samplers;
 
 public:
-    int RELATIVE_VMD_SNAPSHOT_RATE;
+    int RELATIVE_LAMMPSTRJ_SNAPSHOT_RATE;
     Simulation * simulation;
 
     SamplerSet(Simulation * s);
@@ -26,13 +27,13 @@ public:
     void finish();
     void print_individual_sampler_results();
     
+    void turn_on_lammpstrj_sampler();
     void add_rdf_sampler();
     void add_ion_pair_distance_sampler();
 
-    std::string config_filename, vmd_filename;
-    void write_vmd_snapshot();
+    std::string config_filename, lammpstrj_filename;
+    void write_lammpstrj_snapshot();
     void write_config_snapshot();
-
 };
 
 #endif	/* SAMPLER_SET_H */
