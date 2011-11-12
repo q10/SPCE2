@@ -75,7 +75,7 @@ void ConfigReader::load_configuration_file(string input_config_filename, Simulat
     string line, line_key;
     vector< double > coords;
     double ewald_alpha = 0.0, val;
-    cerr << "reached here!!!" << endl;
+
     while (getline(input_filestream, line)) {
         istringstream iss(line);
         line_num++;
@@ -103,10 +103,10 @@ void ConfigReader::load_configuration_file(string input_config_filename, Simulat
             iss >> ewald_nxy;
         } else if (line_key.compare("EWALD_NZ") == 0) {
             iss >> ewald_nz;
-//        } else if (line_key.compare("ION_PAIR_DISTANCE_WINDOW") == 0) {
-//            window_sampling_mode = true;
-            //iss >> window_lower_bound;
-            //iss >> window_upper_bound;
+        } else if (line_key.compare("ION_PAIR_DISTANCE_WINDOW") == 0) {
+            window_sampling_mode = true;
+            iss >> window_lower_bound;
+            iss >> window_upper_bound;
         } else if (line_key.compare("ION") == 0) {
             coords.clear();
             while (iss >> val)
