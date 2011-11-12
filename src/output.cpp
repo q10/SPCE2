@@ -9,6 +9,9 @@ ostream & operator<<(ostream & out, Simulation * simulation) {
             << "EWALD_ALPHA\t" << simulation->EWALD_ALPHA << endl
             << "EWALD_NXY\t" << simulation->EWALD_NXY << endl
             << "EWALD_NZ\t" << simulation->EWALD_NZ << endl;
+    
+    if (simulation->WINDOW_SAMPLING_MODE)
+        out << "ION_PAIR_DISTANCE_WINDOW\t" << simulation->WINDOW_LOWER_BOUND << "\t" << simulation->WINDOW_UPPER_BOUND << endl;
 
     for (unsigned int i = 0; i < simulation->WATERS.size(); i++)
         out << "WATER\t" << simulation->WATERS[i] << endl;

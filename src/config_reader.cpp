@@ -69,11 +69,13 @@ void ConfigReader::load_configuration_file(string input_config_filename, Simulat
     ifstream input_filestream(input_config_filename.c_str());
     ASSERT(input_filestream.is_open(), "Could not open input configuration file " + STRING(input_config_filename));
 
+    bool window_sampling_mode = false;
+    double window_lower_bound = 0, window_upper_bound = 0;
     unsigned int line_num = 0, num_ions = 0, num_waters = 0, ewald_nxy = 0, ewald_nz = 0;
     string line, line_key;
     vector< double > coords;
     double ewald_alpha = 0.0, val;
-
+    cerr << "reached here!!!" << endl;
     while (getline(input_filestream, line)) {
         istringstream iss(line);
         line_num++;
@@ -101,6 +103,10 @@ void ConfigReader::load_configuration_file(string input_config_filename, Simulat
             iss >> ewald_nxy;
         } else if (line_key.compare("EWALD_NZ") == 0) {
             iss >> ewald_nz;
+//        } else if (line_key.compare("ION_PAIR_DISTANCE_WINDOW") == 0) {
+//            window_sampling_mode = true;
+            //iss >> window_lower_bound;
+            //iss >> window_upper_bound;
         } else if (line_key.compare("ION") == 0) {
             coords.clear();
             while (iss >> val)
@@ -143,5 +149,8 @@ void ConfigReader::load_configuration_file(string input_config_filename, Simulat
     simulation->initialize_all_ewald_tables(ewald_alpha, ewald_nxy, ewald_nz);
     simulation->calculate_and_init_energy();
 
+    // sets window sampling mode on if selected
+    if (window_sampling_mode)
+        simulation->turn_on_window_sampling_mode(window_lower_bound, window_upper_bound);
     return;
 }

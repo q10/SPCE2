@@ -22,11 +22,11 @@ void SPCERuntime::run_umbrella_system() {
 
 void SPCERuntime::run_all_tests(int argc, char** argv) {
     //test_water_rotation();
-    //test_vmd_output();
+    //test_lammpstrj_output();
     //test_config_output();
-    //test_config_input();
+    test_config_input();
     //test_radial_dist();
-    test_ion_pair_dist();
+    //test_ion_pair_dist();
     return;
 }
 
@@ -39,7 +39,7 @@ void SPCERuntime::test_config_input() {
     return;
 }
 
-void SPCERuntime::test_vmd_output() {
+void SPCERuntime::test_lammpstrj_output() {
     cerr << "---- BEGIN TEST - LAMMPSTRJ (VMD) FILE OUTPUT ----" << endl;
     Simulation * s = new Simulation();
     s->SAMPLER_SET->turn_on_lammpstrj_sampler();
@@ -53,7 +53,10 @@ void SPCERuntime::test_vmd_output() {
 void SPCERuntime::test_config_output() {
     cerr << "---- BEGIN TEST - CONFIG FILE OUTPUT ----" << endl;
     Simulation * s = new Simulation();
-    s->NUM_MC_SWEEPS = 100;
+    s->IONS[0]->charge = -1.0;
+    s->IONS[1]->charge = 1.0;
+    s->NUM_MC_SWEEPS = 10;
+    s->turn_on_window_sampling_mode(9.12, 12.56);
     s->run_mc();
     s->SAMPLER_SET->write_config_snapshot();
     cerr << "---- END TEST - CONFIG FILE OUTPUT ----" << endl;
@@ -78,6 +81,7 @@ void SPCERuntime::test_ion_pair_dist() {
     Simulation * simulation = new Simulation();
     simulation->IONS[0]->charge = -1.0;
     simulation->IONS[1]->charge = 1.0;
+    simulation->NUM_MC_SWEEPS = 50000;
     simulation->SAMPLER_SET->add_ion_pair_distance_sampler();
     simulation->run_mc();
     simulation->SAMPLER_SET->print_individual_sampler_results();

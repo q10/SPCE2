@@ -15,7 +15,7 @@ namespace SPCERuntime {
     void run_all_tests(int argc, char** argv);
     void test_water_rotation();
     void test_config_input();
-    void test_vmd_output();
+    void test_lammpstrj_output();
     void test_config_output();
     void test_radial_dist();
     void test_ion_pair_dist();
