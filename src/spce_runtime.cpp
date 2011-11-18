@@ -20,6 +20,7 @@ void SPCERuntime::run_umbrella_system() {
     simulation->equilibrate();
 
     simulation->SAMPLER_SET->turn_on_lammpstrj_sampler();
+    simulation->SAMPLER_SET->add_ion_pair_distance_sampler();
     simulation->DATA_SAMPLING_RATE = 20;
     simulation->NUM_MC_SWEEPS = 500000;
     simulation->run_mc();
