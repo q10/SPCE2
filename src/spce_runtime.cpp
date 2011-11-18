@@ -9,8 +9,8 @@ void SPCERuntime::run_umbrella_system() {
     simulation->NUM_EQUILIBRATION_SWEEPS = 100000;
     simulation->equilibrate();
 
-    // set the new potential energy wall
-    // set up how the sampler works, customize output
+    simulation->turn_on_window_sampling_mode(0.0, 10.0);
+    simulation->SAMPLER_SET->turn_on_lammpstrj_sampler();
     simulation->DATA_SAMPLING_RATE = 20;
     simulation->NUM_MC_SWEEPS = 500000;
     simulation->run_mc();
@@ -24,7 +24,7 @@ void SPCERuntime::run_all_tests(int argc, char** argv) {
     //test_water_rotation();
     //test_lammpstrj_output();
     //test_config_output();
-    test_config_input();
+    //test_config_input();
     //test_radial_dist();
     //test_ion_pair_dist();
     return;
@@ -32,7 +32,7 @@ void SPCERuntime::run_all_tests(int argc, char** argv) {
 
 void SPCERuntime::test_config_input() {
     cerr << "---- BEGIN TEST - CONFIG FILE INPUT ----" << endl
-            << "reading from input file sample.config" << endl;
+            << "Reading from input file sample.config...\n" << endl;
     Simulation * simulation = ConfigReader::new_simulation_with_config("sample.config");
     cout << simulation << endl;
     cerr << "---- END TEST - CONFIG FILE INPUT ----" << endl;
