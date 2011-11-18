@@ -21,6 +21,7 @@ public:
     friend std::ostream & operator<<(std::ostream & out, Ion * ion);
 
     void set_coords(double * tmp_coords);
+    void set_random_coords();
     
     void mc_translate();
     void keep_inside_box();

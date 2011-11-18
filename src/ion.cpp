@@ -28,6 +28,13 @@ void Ion::set_coords(double * tmp_coords) {
     return;
 }
 
+void Ion::set_random_coords() {
+    coords[0] = RAN3() * BOX_LENGTH;
+    coords[1] = RAN3() * BOX_LENGTH;
+    coords[2] = RAN3() * BOX_Z_LENGTH;
+    return;
+}
+
 void Ion::mc_translate() {
     for (int g = 0; g < 3; g++) {
         old_coords[g] = coords[g];

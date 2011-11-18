@@ -131,10 +131,9 @@ void Simulation::default_initialize_window_sampling_mode() {
     return;
 }
 
-void Simulation::turn_on_window_sampling_mode(double window_lower_bound, double window_upper_bound) {
+void Simulation::turn_on_window_sampling_mc(double window_lower_bound, double window_upper_bound) {
     ASSERT(IONS.size() == 2, "Not enough ions to start window sampling.");
     WINDOW_SAMPLING_MODE = true;
     WINDOW_LOWER_BOUND = window_lower_bound, WINDOW_UPPER_BOUND = window_upper_bound;
-    SAMPLER_SET->add_ion_pair_distance_sampler();
     return;
 }

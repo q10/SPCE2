@@ -2,14 +2,23 @@
 
 void SPCERuntime::run_umbrella_system() {
     cerr << "---- BEGIN - UMBRELLA SAMPLING ----" << endl;
+    double window_lower_bound = 0.0, window_lower_bound = 10.0;
     Simulation * simulation = new Simulation();
-    simulation->IONS[0]->charge = -1.0;
-    simulation->IONS[1]->charge = 1.0;
-    // set ion positions
+
+    Ion * anion = simulation->IONS[0];
+    Ion * cation = simulation->IONS[1];
+    anion->charge = -1.0;
+    cation->charge = 1.0;
+
+    cerr << "Initializing anion-cation distance to be inside window [" << window_lower_bound << ", " << window_lower_bound << "] Angstroms...";
+    while (anion->distance_from(cation) <= window_lower_bound or anion->distance_from(cation) > window_lower_bound)
+        anion->set_random_coords();
+    cerr << "done." << endl;
+
     simulation->NUM_EQUILIBRATION_SWEEPS = 100000;
+    simulation->turn_on_window_sampling_mc(window_lower_bound, window_lower_bound);
     simulation->equilibrate();
 
-    simulation->turn_on_window_sampling_mode(0.0, 10.0);
     simulation->SAMPLER_SET->turn_on_lammpstrj_sampler();
     simulation->DATA_SAMPLING_RATE = 20;
     simulation->NUM_MC_SWEEPS = 500000;
@@ -21,6 +30,7 @@ void SPCERuntime::run_umbrella_system() {
 }
 
 void SPCERuntime::run_all_tests(int argc, char** argv) {
+    run_umbrella_system();
     //test_water_rotation();
     //test_lammpstrj_output();
     //test_config_output();
@@ -56,7 +66,7 @@ void SPCERuntime::test_config_output() {
     s->IONS[0]->charge = -1.0;
     s->IONS[1]->charge = 1.0;
     s->NUM_MC_SWEEPS = 10;
-    s->turn_on_window_sampling_mode(9.12, 12.56);
+    s->turn_on_window_sampling_mc(9.12, 12.56);
     s->run_mc();
     s->SAMPLER_SET->write_config_snapshot();
     cerr << "---- END TEST - CONFIG FILE OUTPUT ----" << endl;

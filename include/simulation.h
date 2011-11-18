@@ -85,7 +85,7 @@ public:
     double total_ewald_energy();
 
 
-    void turn_on_window_sampling_mode(double window_lower_bound, double window_upper_bound);
+    void turn_on_window_sampling_mc(double window_lower_bound, double window_upper_bound);
 
 
     int DATA_SAMPLING_RATE;
