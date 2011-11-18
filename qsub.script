@@ -1,20 +1,14 @@
 # Declare a name for this job
-#PBS -N SPCE_00
+#$ -N SPCE_0
 
-# Request the queue (enter the possible names, if omitted, serial is the default)
-#PBS -q serial
+# Request that email is sent when job has started, ended, aborted, or suspended
+#$ -m beas
+#$ -M bm@berkeley.edu
 
-# Request number of nodes
-#PBS -l notes=1
-
-# Request amount of CPU time
-#PBS -l cput=10:00:00
-
-# Request that email is sent when job has started, ended, or aborted
-#PBS -m bea
-#PBS -M bm@berkeley.edu
+# Run program and save logfiles in the current working directory
+#$ -cwd
 
 # Run the program
-cd SPCE2
 ./SPCE
+
 exit 0

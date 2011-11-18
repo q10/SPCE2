@@ -36,6 +36,7 @@ remove:
 	rm -rf $(EXECUTABLE)
 	
 clean: remove
+	rm -rf *~
 	rm -rf $(OBJ_DIR)/*
 	rm -rf $(SRC_DIR)/*~
 	rm -rf $(INCLUDE_DIR)/*~
