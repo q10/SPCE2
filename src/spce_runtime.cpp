@@ -2,7 +2,7 @@
 
 void SPCERuntime::run_umbrella_system() {
     cerr << "---- BEGIN - UMBRELLA SAMPLING ----" << endl;
-    double window_lower_bound = 0.0, window_upper_bound = 10.0;
+    double window_lower_bound = 0.0, window_upper_bound = 2.0;
     Simulation * simulation = new Simulation();
 
     Ion * anion = simulation->IONS[0];
@@ -10,10 +10,10 @@ void SPCERuntime::run_umbrella_system() {
     anion->charge = -1.0;
     cation->charge = 1.0;
 
-    cerr << "Initializing anion-cation distance to be inside window [" << window_lower_bound << ", " << window_upper_bound << "] Angstroms...";
+    cerr << "Initializing anion-cation distance to be inside window [" << window_lower_bound << ", " << window_upper_bound << "] Angstroms......";
     while (anion->distance_from(cation) <= window_lower_bound or anion->distance_from(cation) > window_upper_bound)
         anion->set_random_coords();
-    cerr << "done." << endl;
+    cerr << "done.\n" << endl;
 
     simulation->NUM_EQUILIBRATION_SWEEPS = 100000;
     simulation->turn_on_window_sampling_mc(window_lower_bound, window_upper_bound);
@@ -45,7 +45,7 @@ void SPCERuntime::test_config_input() {
             << "Reading from input file sample.config...\n" << endl;
     Simulation * simulation = ConfigReader::new_simulation_with_config("sample.config");
     cout << simulation << endl;
-    cerr << "---- END TEST - CONFIG FILE INPUT ----" << endl;
+    cerr << "\n---- END TEST - CONFIG FILE INPUT ----\n" << endl;
     return;
 }
 
@@ -56,7 +56,7 @@ void SPCERuntime::test_lammpstrj_output() {
     s->DATA_SAMPLING_RATE = 2;
     s->NUM_MC_SWEEPS = 10;
     s->run_mc();
-    cerr << "---- END TEST - LAMMPSTRJ (VMD) FILE OUTPUT ----" << endl;
+    cerr << "\n---- END TEST - LAMMPSTRJ (VMD) FILE OUTPUT ----\n" << endl;
     return;
 }
 
@@ -69,7 +69,7 @@ void SPCERuntime::test_config_output() {
     s->turn_on_window_sampling_mc(9.12, 12.56);
     s->run_mc();
     s->SAMPLER_SET->write_config_snapshot();
-    cerr << "---- END TEST - CONFIG FILE OUTPUT ----" << endl;
+    cerr << "\n---- END TEST - CONFIG FILE OUTPUT ----" << endl;
     return;
 }
 
@@ -95,7 +95,7 @@ void SPCERuntime::test_ion_pair_dist() {
     simulation->SAMPLER_SET->add_ion_pair_distance_sampler();
     simulation->run_mc();
     simulation->SAMPLER_SET->print_individual_sampler_results();
-    cerr << "---- END TEST - ION PAIR DISTANCE SAMPLER ----" << endl;
+    cerr << "---- END TEST - ION PAIR DISTANCE SAMPLER ----\n" << endl;
     return;
 }
 
