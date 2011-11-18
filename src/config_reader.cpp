@@ -151,6 +151,6 @@ void ConfigReader::load_configuration_file(string input_config_filename, Simulat
 
     // sets window sampling mode on if selected
     if (window_sampling_mode)
-        simulation->turn_on_window_sampling_mode(window_lower_bound, window_upper_bound);
+        simulation->turn_on_window_sampling_mc(window_lower_bound, window_upper_bound);
     return;
 }

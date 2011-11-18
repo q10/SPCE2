@@ -2,7 +2,7 @@
 
 void SPCERuntime::run_umbrella_system() {
     cerr << "---- BEGIN - UMBRELLA SAMPLING ----" << endl;
-    double window_lower_bound = 0.0, window_lower_bound = 10.0;
+    double window_lower_bound = 0.0, window_upper_bound = 10.0;
     Simulation * simulation = new Simulation();
 
     Ion * anion = simulation->IONS[0];
@@ -10,13 +10,13 @@ void SPCERuntime::run_umbrella_system() {
     anion->charge = -1.0;
     cation->charge = 1.0;
 
-    cerr << "Initializing anion-cation distance to be inside window [" << window_lower_bound << ", " << window_lower_bound << "] Angstroms...";
-    while (anion->distance_from(cation) <= window_lower_bound or anion->distance_from(cation) > window_lower_bound)
+    cerr << "Initializing anion-cation distance to be inside window [" << window_lower_bound << ", " << window_upper_bound << "] Angstroms...";
+    while (anion->distance_from(cation) <= window_lower_bound or anion->distance_from(cation) > window_upper_bound)
         anion->set_random_coords();
     cerr << "done." << endl;
 
     simulation->NUM_EQUILIBRATION_SWEEPS = 100000;
-    simulation->turn_on_window_sampling_mc(window_lower_bound, window_lower_bound);
+    simulation->turn_on_window_sampling_mc(window_lower_bound, window_upper_bound);
     simulation->equilibrate();
 
     simulation->SAMPLER_SET->turn_on_lammpstrj_sampler();
