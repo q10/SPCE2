@@ -11,7 +11,7 @@ void SPCERuntime::run_umbrella_system() {
     cation->charge = 1.0;
 
     cerr << "Initializing anion-cation distance to be inside window [" << window_lower_bound << ", " << window_upper_bound << "] Angstroms......";
-    while (anion->distance_from(cation) <= window_lower_bound or anion->distance_from(cation) > window_upper_bound)
+    while (anion->distance_from(cation) < window_lower_bound or anion->distance_from(cation) >= window_upper_bound)
         anion->set_random_coords();
     cerr << "done.\n" << endl;
 

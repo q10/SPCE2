@@ -59,6 +59,7 @@
       <itemPath>Makefile2</itemPath>
     </logicalFolder>
     <itemPath>Makefile</itemPath>
+    <itemPath>qsub.script</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>src</Elem>
