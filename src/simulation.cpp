@@ -20,8 +20,7 @@ Simulation::~Simulation() {
 }
 
 void Simulation::default_initialize_system_parameters(int num_waters, int num_ions) {
-    TEMPERATURE = 300.0;
-    BETA = 1.0 / (BOLTZMANN_K * TEMPERATURE);
+    set_temperature(300.0);
     TARGET_WATER_DENSITY = Water::STD_DENSITY;
     BOX_VOLUME = (num_waters + num_ions) / TARGET_WATER_DENSITY;
     BOX_LENGTH = pow(BOX_VOLUME, 1.0 / 3.0);
@@ -42,7 +41,6 @@ void Simulation::default_initialize_system_parameters(int num_waters, int num_io
 
 void Simulation::default_initialize_waters(int num_waters) {
     WATERS.clear();
-    Water * w;
     double HOH_ANGLE_RAD = DEG2RAD(Water::HOH_ANGLE_DEG), *coords = new double[9];
     double tmp_r = Water::OH_LENGTH * sin(HOH_ANGLE_RAD), rand_angle_rad;
 
@@ -62,8 +60,7 @@ void Simulation::default_initialize_waters(int num_waters) {
         coords[7] = coords[1] + tmp_r * sin(rand_angle_rad);
         coords[8] = coords[2] + Water::OH_LENGTH * cos(HOH_ANGLE_RAD);
 
-        w = new Water(coords, DISPLACEMENT_DISTANCE, DISPLACEMENT_ROTATION, BOX_LENGTH, BOX_Z_LENGTH);
-        WATERS.push_back(w);
+        WATERS.push_back(new Water(this, coords));
     }
     delete [] coords;
     return;
@@ -71,22 +68,20 @@ void Simulation::default_initialize_waters(int num_waters) {
 
 void Simulation::default_initialize_ions(int num_ions) {
     IONS.clear();
-    Ion * ion;
     double *coords = new double[3], charge;
 
     for (int i = 0; i < num_ions; i++) {
         charge = (RAN3() < 0.5) ? -1.0 : 1.0;
         for (int j = 0; j < 3; j++)
             coords[j] = RAN3() * BOX_LENGTH;
-        ion = new Ion(coords, charge, DISPLACEMENT_DISTANCE, BOX_LENGTH, BOX_Z_LENGTH);
-        IONS.push_back(ion);
+        IONS.push_back(new Ion(this, coords, charge));
     }
     delete [] coords;
     return;
 }
 
 void Simulation::set_temperature(double new_temp) {
-    TEMPERATURE = 300.0;
+    TEMPERATURE = new_temp;
     BETA = 1.0 / (BOLTZMANN_K * TEMPERATURE);
     return;
 }
@@ -101,17 +96,15 @@ void Simulation::expand_box_z_direction(double new_len) {
     HALF_BOX_Z_LENGTH = BOX_Z_LENGTH / 2.0;
     BOX_VOLUME = BOX_LENGTH * BOX_LENGTH * BOX_Z_LENGTH;
 
+    double shift = (BOX_Z_LENGTH - BOX_LENGTH) / 2.0;
     for (unsigned int i = 0; i < WATERS.size(); i++) {
         for (int j = 2; j < 9; j += 3)
-            WATERS[i]->coords[j] += (BOX_Z_LENGTH - BOX_LENGTH) / 2.0;
-        WATERS[i]->BOX_Z_LENGTH = BOX_Z_LENGTH;
+            WATERS[i]->coords[j] += shift;
     }
 
-    for (unsigned int i = 0; i < IONS.size(); i++) {
-        IONS[i]->coords[2] += (BOX_Z_LENGTH - BOX_LENGTH) / 2.0;
-        IONS[i]->BOX_Z_LENGTH = BOX_Z_LENGTH;
-    }
-
+    for (unsigned int i = 0; i < IONS.size(); i++)
+        IONS[i]->coords[2] += shift;
+    
     // redo all Ewald tables and recalculate energies
     int times = int(ceil(BOX_Z_LENGTH / BOX_LENGTH));
     initialize_all_ewald_tables(EWALD_ALPHA, EWALD_NXY, EWALD_NZ * times);

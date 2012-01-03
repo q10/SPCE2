@@ -99,7 +99,7 @@ void SPCERuntime::test_ion_pair_dist() {
     cerr << "---- END TEST - ION PAIR DISTANCE SAMPLER ----\n" << endl;
     return;
 }
-
+/*
 void SPCERuntime::test_water_rotation() {
     cerr << "---- BEGIN TEST - WATER ROTATION ----" << endl;
     double * coords = new double [9];
@@ -117,3 +117,4 @@ void SPCERuntime::test_water_rotation() {
     cerr << "---- END TEST - WATER ROTATION ----\n" << endl;
     return;
 }
+**/

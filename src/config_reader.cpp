@@ -115,8 +115,7 @@ void ConfigReader::load_configuration_file(string input_config_filename, Simulat
             ASSERT(coords[3] != 0.0, "Charge is zero for ion on line " + STRING(line_num) + " of config file.");
 
             if (simulation->IONS.size() < ++num_ions) {
-                Ion * ion = new Ion(&coords[0], coords[3], simulation->DISPLACEMENT_DISTANCE,
-                        simulation->BOX_LENGTH, simulation->BOX_Z_LENGTH);
+                Ion * ion = new Ion(simulation, &coords[0], coords[3]);
                 simulation->IONS.push_back(ion);
             } else {
                 simulation->IONS[num_ions - 1]->set_coords(&coords[0]);
@@ -129,8 +128,7 @@ void ConfigReader::load_configuration_file(string input_config_filename, Simulat
             ASSERT((int) coords.size() == 9, "Not enough coordinates on line " + STRING(line_num) + " of config file.");
 
             if (simulation->WATERS.size() < ++num_waters) {
-                Water * water = new Water(&coords[0], simulation->DISPLACEMENT_DISTANCE,
-                        simulation->DISPLACEMENT_ROTATION, simulation->BOX_LENGTH, simulation->BOX_Z_LENGTH);
+                Water * water = new Water(simulation, &coords[0]);
                 simulation->WATERS.push_back(water);
             } else
                 simulation->WATERS[num_waters - 1]->set_coords(&coords[0]);

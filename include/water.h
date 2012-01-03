@@ -9,6 +9,7 @@
 #define	WATER_H
 
 class Ion;
+class Simulation;
 
 class Water {
 private:
@@ -30,9 +31,9 @@ public:
     HOH_ANGLE_DEG;
 
     double *TMP_CENTER_OF_MASS, **ROTATION_MATRIX;
-    double *coords, *old_coords, DISPLACEMENT_DISTANCE, DISPLACEMENT_ROTATION, BOX_LENGTH, BOX_Z_LENGTH;
+    double *coords, *old_coords, &DISPLACEMENT_DISTANCE, &DISPLACEMENT_ROTATION, &BOX_LENGTH, &BOX_Z_LENGTH;
 
-    Water(double * tmp_coords, double tmp_disp_dist, double tmp_disp_rot, double box_length, double box_z_length);
+    Water(Simulation * sim, double * tmp_coords);
     ~Water();
 
     // Must be friend to access private members.

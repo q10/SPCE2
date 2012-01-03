@@ -8,13 +8,15 @@
 #ifndef ION_H
 #define	ION_H
 
+class Simulation;
+
 class Ion {
 public:
-    static const double SIGMA, EPSILON;
+    static double SIGMA, EPSILON;
     double *coords, *old_coords;
-    double charge, DISPLACEMENT_DISTANCE, BOX_LENGTH, BOX_Z_LENGTH;
+    double charge, &DISPLACEMENT_DISTANCE, &BOX_LENGTH, &BOX_Z_LENGTH;
 
-    Ion(double * tmp_coords, double tmp_charge, double tmp_disp_dist, double box_length, double box_z_length);
+    Ion(Simulation * sim, double * tmp_coords, double tmp_charge);
     ~Ion();
 
     // Must be friend to access private members.
@@ -22,7 +24,7 @@ public:
 
     void set_coords(double * tmp_coords);
     void set_random_coords();
-    
+
     void mc_translate();
     void keep_inside_box();
     void undo_move();

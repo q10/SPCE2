@@ -1,17 +1,15 @@
 #include "common.h"
 
-const double Ion::SIGMA = 5.0,
+double Ion::SIGMA = 5.0,
         Ion::EPSILON = 1.0;
 
 ostream & operator<<(ostream & out, Ion * ion) {
     return out << setprecision(10) << ion->coords[0] << "\t" << ion->coords[1] << "\t" << ion->coords[2] << "\t" << ion->charge;
 }
 
-Ion::Ion(double * tmp_coords, double tmp_charge, double tmp_disp_dist, double box_length, double box_z_length) {
+Ion::Ion(Simulation * sim, double * tmp_coords, double tmp_charge)
+: DISPLACEMENT_DISTANCE(sim->DISPLACEMENT_DISTANCE), BOX_LENGTH(sim->BOX_LENGTH), BOX_Z_LENGTH(sim->BOX_Z_LENGTH) {
     charge = tmp_charge;
-    DISPLACEMENT_DISTANCE = tmp_disp_dist;
-    BOX_LENGTH = box_length;
-    BOX_Z_LENGTH = box_z_length;
     old_coords = new double [3];
     coords = new double [3];
     set_coords(tmp_coords);
