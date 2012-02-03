@@ -22,4 +22,4 @@ public:
     static Simulation * new_simulation_with_config(std::string input_config_filename);
 };
 
-#endif	/* CONFIG_READER_H */
+**///#endif	/* CONFIG_READER_H */

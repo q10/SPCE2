@@ -10,7 +10,7 @@
 
 class SPCEHamiltonian {
 protected:
-    double &TEMPERATURE, &BETA, &TARGET_WATER_DENSITY, &BOX_LENGTH, &HALF_BOX_LENGTH, &BOX_Z_LENGTH, &HALF_BOX_Z_LENGTH, &BOX_VOLUME;
+    double &TARGET_WATER_DENSITY, &BOX_LENGTH, &HALF_BOX_LENGTH, &BOX_Z_LENGTH, &HALF_BOX_Z_LENGTH, &BOX_VOLUME;
     std::vector <Water *> &WATERS;
     std::vector <Ion *> &IONS;
 

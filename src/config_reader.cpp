@@ -1,5 +1,5 @@
-#include "common.h"
-/*
+/*#include "common.h"
+
 const program_flags_t ConfigReader::PROGRAM_FLAGS[] = {
     { "input", required_argument, NULL, 'r'},
     { "output_config", required_argument, NULL, 'w'},
