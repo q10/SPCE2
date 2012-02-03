@@ -71,25 +71,25 @@ double Ion::distance_from(Ion * other_ion) {
 }
 
 double Ion::old_distance_from(Water * other_water) {
-    double * other_coords = other_water->old_coords;
-    double dx = coords[0] - other_coords[0];
-    double dy = coords[1] - other_coords[1];
-    double dz = coords[2] - other_coords[2];
+    double * other_coords = other_water->coords;
+    double dx = old_coords[0] - other_coords[0];
+    double dy = old_coords[1] - other_coords[1];
+    double dz = old_coords[2] - other_coords[2];
     dx -= BOX_LENGTH * ROUND(dx / BOX_LENGTH);
     dy -= BOX_LENGTH * ROUND(dy / BOX_LENGTH);
     dz -= BOX_Z_LENGTH * ROUND(dz / BOX_Z_LENGTH);
-    return dx * dx + dy * dy + dz * dz;
+    return sqrt(dx * dx + dy * dy + dz * dz);
 }
 
 double Ion::old_distance_from(Ion * other_ion) {
-    double * other_coords = other_ion->old_coords;
-    double dx = coords[0] - other_coords[0];
-    double dy = coords[1] - other_coords[1];
-    double dz = coords[2] - other_coords[2];
+    double * other_coords = other_ion->coords;
+    double dx = old_coords[0] - other_coords[0];
+    double dy = old_coords[1] - other_coords[1];
+    double dz = old_coords[2] - other_coords[2];
     dx -= BOX_LENGTH * ROUND(dx / BOX_LENGTH);
     dy -= BOX_LENGTH * ROUND(dy / BOX_LENGTH);
     dz -= BOX_Z_LENGTH * ROUND(dz / BOX_Z_LENGTH);
-    return dx * dx + dy * dy + dz * dz;
+    return sqrt(dx * dx + dy * dy + dz * dz);
 }
 
 double Ion::squared_distance_from(Water * other_water) {

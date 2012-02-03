@@ -34,7 +34,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 
 remove:
 	rm -rf $(EXECUTABLE)
-	
+
 clean: remove
 	rm -rf *~
 	rm -rf $(OBJ_DIR)/*

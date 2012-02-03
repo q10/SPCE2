@@ -104,6 +104,7 @@ double SPCEHamiltonian::energy_between_two_ions(int i, int j, WHICH_TYPE typ) {
     double rb = Ion::SIGMA / r;
     return 4.0 * Ion::EPSILON * (pow(rb, 12) - pow(rb, 6)) +
             PCONSTANTS::ELECTROSTATIC_K * IONS[i]->charge * IONS[j]->charge * ERFC_TABLE[int(r * 1000.0)] / r;
+    // old_coords is garbage so ggs ERFC)TABLE lookup
 }
 
 double SPCEHamiltonian::energy_between_two_waters(int i, int j, WHICH_TYPE typ) {
