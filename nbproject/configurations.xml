@@ -9,12 +9,15 @@
         <itemPath>include/config_reader.h</itemPath>
         <itemPath>include/ion.h</itemPath>
         <itemPath>include/ipair_distance_sampler.h</itemPath>
+        <itemPath>include/pconstants.h</itemPath>
         <itemPath>include/random.h</itemPath>
         <itemPath>include/rdf_sampler.h</itemPath>
         <itemPath>include/sampler.h</itemPath>
-        <itemPath>include/sampler_set.h</itemPath>
         <itemPath>include/simulation.h</itemPath>
+        <itemPath>include/spce_hamiltonian.h</itemPath>
         <itemPath>include/spce_runtime.h</itemPath>
+        <itemPath>include/system.h</itemPath>
+        <itemPath>include/umbrella_spce_hamiltonian.h</itemPath>
         <itemPath>include/water.h</itemPath>
       </logicalFolder>
     </logicalFolder>
@@ -36,14 +39,12 @@
         <itemPath>src/ion.cpp</itemPath>
         <itemPath>src/ipair_distance_sampler.cpp</itemPath>
         <itemPath>src/main.cpp</itemPath>
-        <itemPath>src/mc.cpp</itemPath>
-        <itemPath>src/output.cpp</itemPath>
         <itemPath>src/random.cpp</itemPath>
         <itemPath>src/rdf_sampler.cpp</itemPath>
         <itemPath>src/rotation.cpp</itemPath>
-        <itemPath>src/sampler_set.cpp</itemPath>
-        <itemPath>src/simulation.cpp</itemPath>
+        <itemPath>src/spce_hamiltonian.cpp</itemPath>
         <itemPath>src/spce_runtime.cpp</itemPath>
+        <itemPath>src/umbrella_spce_hamiltonian.cpp</itemPath>
         <itemPath>src/water.cpp</itemPath>
       </logicalFolder>
     </logicalFolder>

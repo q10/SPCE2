@@ -4,7 +4,7 @@
  *
  * Created on August 4, 2011, 1:35 AM
  */
-
+/*
 #ifndef CONFIG_READER_H
 #define	CONFIG_READER_H
 

@@ -8,7 +8,7 @@
 #ifndef ION_H
 #define	ION_H
 
-class Simulation;
+class System;
 
 class Ion {
 public:
@@ -16,7 +16,7 @@ public:
     double *coords, *old_coords;
     double charge, &DISPLACEMENT_DISTANCE, &BOX_LENGTH, &BOX_Z_LENGTH;
 
-    Ion(Simulation * sim, double * tmp_coords, double tmp_charge);
+    Ion(System * sys, double * tmp_coords, double tmp_charge);
     ~Ion();
 
     // Must be friend to access private members.
@@ -31,6 +31,8 @@ public:
 
     double distance_from(Water * other_water);
     double distance_from(Ion * other_ion);
+    double old_distance_from(Water * other_water);
+    double old_distance_from(Ion * other_ion);
     double squared_distance_from(Water * other_water);
     double squared_distance_from(Ion * other_ion);
 };

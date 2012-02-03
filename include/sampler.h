@@ -10,7 +10,7 @@
 
 class Sampler {
 protected:
-    Simulation * simulation;
+    System * system;
 
 public:
     Sampler() {}

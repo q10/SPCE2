@@ -1,10 +1,10 @@
 #include "common.h"
 
-IonPairDistanceSampler::IonPairDistanceSampler(Simulation * s) {
-    simulation = s;
+IonPairDistanceSampler::IonPairDistanceSampler(System * s) {
+    system = s;
     CATION = ANION = NULL;
-    for (unsigned int i = 0; i < simulation->IONS.size(); i++) {
-        Ion * ion = simulation->IONS[i];
+    for (unsigned int i = 0; i < system->IONS.size(); i++) {
+        Ion * ion = system->IONS[i];
         if (ion->charge > 0)
             CATION = ion;
         else if (ion->charge < 0)
@@ -20,7 +20,7 @@ IonPairDistanceSampler::~IonPairDistanceSampler() {
 
 void IonPairDistanceSampler::start() {
     if (!ION_PAIR_DISTANCE_FILE.is_open()) {
-        string filename = simulation->NAME + ".ipair_dist";
+        string filename = system->NAME + ".ipair_dist";
         ION_PAIR_DISTANCE_FILE.open(filename.c_str());
         ASSERT(ION_PAIR_DISTANCE_FILE.is_open(), "Could not open config output file.");
     }
@@ -40,6 +40,6 @@ void IonPairDistanceSampler::finish() {
 
 string IonPairDistanceSampler::results() {
     stringstream results;
-    results << "Ion pair distance sampling results are available in " << simulation->NAME << ".ipair_dist" << endl;
+    results << "Ion pair distance sampling results are available in " << system->NAME << ".ipair_dist" << endl;
     return results.str();
 }

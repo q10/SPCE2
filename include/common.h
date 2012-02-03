@@ -25,6 +25,7 @@
 #include <ctime>
 #include <sys/time.h>
 #include <cmath>
+#include <limits>
 #include <complex>
 #include <climits>
 #include <cfloat>
@@ -37,13 +38,16 @@
 //#include <cstring>
 
 #include "random.h"
+#include "pconstants.h"
+#include "system.h"
 #include "water.h"
 #include "ion.h"
-#include "simulation.h"
 #include "sampler.h"
 #include "rdf_sampler.h"
 #include "ipair_distance_sampler.h"
-#include "sampler_set.h"
+#include "simulation.h"
+#include "spce_hamiltonian.h"
+#include "umbrella_spce_hamiltonian.h"
 #include "config_reader.h"
 #include "spce_runtime.h"
 

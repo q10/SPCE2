@@ -34,16 +34,14 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/src/sampler_set.o \
 	${OBJECTDIR}/src/energy.o \
-	${OBJECTDIR}/src/random.o \
+	${OBJECTDIR}/src/umbrella_spce_hamiltonian.o \
 	${OBJECTDIR}/src/main.o \
-	${OBJECTDIR}/src/simulation.o \
-	${OBJECTDIR}/src/output.o \
+	${OBJECTDIR}/src/random.o \
 	${OBJECTDIR}/src/spce_runtime.o \
 	${OBJECTDIR}/src/ipair_distance_sampler.o \
 	${OBJECTDIR}/src/rdf_sampler.o \
-	${OBJECTDIR}/src/mc.o \
+	${OBJECTDIR}/src/spce_hamiltonian.o \
 	${OBJECTDIR}/src/rotation.o \
 	${OBJECTDIR}/src/config_reader.o \
 	${OBJECTDIR}/src/water.o \
@@ -75,35 +73,25 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/spce2.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/spce2 ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/src/sampler_set.o: src/sampler_set.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/sampler_set.o src/sampler_set.cpp
-
 ${OBJECTDIR}/src/energy.o: src/energy.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/energy.o src/energy.cpp
 
-${OBJECTDIR}/src/random.o: src/random.cpp 
+${OBJECTDIR}/src/umbrella_spce_hamiltonian.o: src/umbrella_spce_hamiltonian.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/random.o src/random.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/umbrella_spce_hamiltonian.o src/umbrella_spce_hamiltonian.cpp
 
 ${OBJECTDIR}/src/main.o: src/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main.o src/main.cpp
 
-${OBJECTDIR}/src/simulation.o: src/simulation.cpp 
+${OBJECTDIR}/src/random.o: src/random.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/simulation.o src/simulation.cpp
-
-${OBJECTDIR}/src/output.o: src/output.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/output.o src/output.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/random.o src/random.cpp
 
 ${OBJECTDIR}/src/spce_runtime.o: src/spce_runtime.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -120,10 +108,10 @@ ${OBJECTDIR}/src/rdf_sampler.o: src/rdf_sampler.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/rdf_sampler.o src/rdf_sampler.cpp
 
-${OBJECTDIR}/src/mc.o: src/mc.cpp 
+${OBJECTDIR}/src/spce_hamiltonian.o: src/spce_hamiltonian.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/mc.o src/mc.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/spce_hamiltonian.o src/spce_hamiltonian.cpp
 
 ${OBJECTDIR}/src/rotation.o: src/rotation.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

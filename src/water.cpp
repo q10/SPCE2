@@ -20,9 +20,9 @@ ostream & operator<<(ostream & out, Water * water) {
     return out;
 }
 
-Water::Water(Simulation * sim, double * tmp_coords)
-: DISPLACEMENT_DISTANCE(sim->DISPLACEMENT_DISTANCE), DISPLACEMENT_ROTATION(sim->DISPLACEMENT_ROTATION),
-BOX_LENGTH(sim->BOX_LENGTH), BOX_Z_LENGTH(sim->BOX_Z_LENGTH) {
+Water::Water(System * sys, double * tmp_coords)
+: DISPLACEMENT_DISTANCE(sys->DISPLACEMENT_DISTANCE), DISPLACEMENT_ROTATION(sys->DISPLACEMENT_ROTATION),
+BOX_LENGTH(sys->BOX_LENGTH), BOX_Z_LENGTH(sys->BOX_Z_LENGTH) {
     TMP_CENTER_OF_MASS = new double [3];
     ROTATION_MATRIX = new double * [3];
     for (int i = 0; i < 3; i++)

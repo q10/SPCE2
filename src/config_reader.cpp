@@ -1,5 +1,5 @@
 #include "common.h"
-
+/*
 const program_flags_t ConfigReader::PROGRAM_FLAGS[] = {
     { "input", required_argument, NULL, 'r'},
     { "output_config", required_argument, NULL, 'w'},
@@ -152,3 +152,4 @@ void ConfigReader::load_configuration_file(string input_config_filename, Simulat
         simulation->turn_on_window_sampling_mc(window_lower_bound, window_upper_bound);
     return;
 }
+*/

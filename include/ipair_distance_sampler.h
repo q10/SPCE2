@@ -19,7 +19,7 @@ private:
     void finish_time_series_sampler();
 
 public:
-    IonPairDistanceSampler(Simulation * s);
+    IonPairDistanceSampler(System * s);
     ~IonPairDistanceSampler();
 
     void start();

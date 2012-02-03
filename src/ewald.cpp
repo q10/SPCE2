@@ -1,10 +1,7 @@
 #include "common.h"
 
-void Simulation::initialize_all_ewald_tables(double ewald_alpha, int ewald_nxy, int ewald_nz) {
-    ASSERT(ewald_alpha > 0.0 and ewald_nxy > 0 and ewald_nz > 0, "INVALID EWALD PARAMETERS ALPHA, NXY, OR NZ");
-    EWALD_ALPHA = ewald_alpha;
-    EWALD_NXY = ewald_nxy;
-    EWALD_NZ = ewald_nz;
+void SPCEHamiltonian::initialize_all_ewald_tables() {
+    ASSERT(EWALD_ALPHA > 0.0 and EWALD_NXY > 0 and EWALD_NZ > 0, "INVALID EWALD PARAMETERS ALPHA, NXY, OR NZ");
     K_111_INDEX = (3 * EWALD_NXY + 2) * (2 * EWALD_NZ + 1) + EWALD_NZ;
     NUM_K_VECTORS = (EWALD_NXY + 1) * (2 * EWALD_NXY + 1) * (2 * EWALD_NZ + 1) - 1;
 
@@ -15,7 +12,7 @@ void Simulation::initialize_all_ewald_tables(double ewald_alpha, int ewald_nxy, 
     return;
 }
 
-void Simulation::initialize_erfc_table() {
+void SPCEHamiltonian::initialize_erfc_table() {
     ERFC_TABLE.clear();
     double sqrt_alpha = sqrt(EWALD_ALPHA);
     // to optimize map search by using one less division, we keep the keys as x10^4
@@ -24,11 +21,11 @@ void Simulation::initialize_erfc_table() {
     return;
 }
 
-void Simulation::initialize_k_vectors_table() {
+void SPCEHamiltonian::initialize_k_vectors_table() {
     K_VECTORS.clear();
 
     // K vector order as follows (go through all ny and nzvalues descending, then ascending):    
-    double *arr, tmp_k2, half_factor, alpha_inv_4 = -1.0 / (4.0 * EWALD_ALPHA), four_pi_volume_ek = 4.0 * ELECTROSTATIC_K * M_PI / BOX_VOLUME;
+    double *arr, tmp_k2, half_factor, alpha_inv_4 = -1.0 / (4.0 * EWALD_ALPHA), four_pi_volume_ek = 4.0 * PCONSTANTS::ELECTROSTATIC_K * M_PI / BOX_VOLUME;
 
     for (int nx = 0; nx <= EWALD_NXY; nx++) {
         for (int ny = -EWALD_NXY; ny <= EWALD_NXY; ny++) {
@@ -56,7 +53,7 @@ void Simulation::initialize_k_vectors_table() {
     return;
 }
 
-void Simulation::initialize_rho_k_values_table() {
+void SPCEHamiltonian::initialize_rho_k_values_table() {
     RHO_K_VALUES.clear();
     dcomplex *column, column_sum;
     int NUM_TOTAL_PARTICLES = WATERS.size() + IONS.size();
@@ -76,7 +73,7 @@ void Simulation::initialize_rho_k_values_table() {
     return;
 }
 
-void Simulation::initialize_exp_kr_cache_tables() {
+void SPCEHamiltonian::initialize_exp_kr_cache_tables() {
     for (int i = 0; i < 3; i++) {
         if (exp_kr_O[i] != NULL)
             delete [] exp_kr_O[i];
@@ -99,13 +96,13 @@ void Simulation::initialize_exp_kr_cache_tables() {
 
     for (int i = 0; i < 3; i++) {
         tmp_n = (i < 2) ? EWALD_NXY : EWALD_NZ;
-        exp_kr_O[i][tmp_n] = exp_kr_H1[i][tmp_n] = exp_kr_H2[i][tmp_n] = exp_kr_ion[i][tmp_n] = COMPLEX_ONE;
+        exp_kr_O[i][tmp_n] = exp_kr_H1[i][tmp_n] = exp_kr_H2[i][tmp_n] = exp_kr_ion[i][tmp_n] = PCONSTANTS::COMPLEX_ONE;
     }
 
     return;
 }
 
-dcomplex Simulation::partial_rho(int index, double * k_coords) {
+dcomplex SPCEHamiltonian::partial_rho(int index, double * k_coords) {
     double q, *coords;
     dcomplex part_rho(0.0, 0.0);
 
@@ -123,7 +120,7 @@ dcomplex Simulation::partial_rho(int index, double * k_coords) {
     return part_rho;
 }
 
-double Simulation::total_ewald_energy() {
+double SPCEHamiltonian::total_ewald_energy() {
     double ewald_energy = 0.0;
     int NUM_TOTAL_PARTICLES = WATERS.size() + IONS.size();
     for (int k = 0; k < 725; k++)
@@ -131,11 +128,11 @@ double Simulation::total_ewald_energy() {
     return ewald_energy;
 }
 
-double Simulation::ewald_diff(int index) {
+double SPCEHamiltonian::ewald_diff(int index) {
     return (index < (int)WATERS.size()) ? ewald_diff_water(index) : ewald_diff_ion(index);
 }
 
-double Simulation::ewald_diff_water(int water_index) {
+double SPCEHamiltonian::ewald_diff_water(int water_index) {
     double sum_of_ewald_diffs = 0.0, old_pk2;
     dcomplex *column, tmp_x_O, tmp_y_O, tmp_x_H1, tmp_y_H1, tmp_x_H2, tmp_y_H2;
     int k = 0, NUM_TOTAL_PARTICLES = WATERS.size() + IONS.size();
@@ -172,7 +169,7 @@ double Simulation::ewald_diff_water(int water_index) {
     return sum_of_ewald_diffs;
 }
 
-double Simulation::ewald_diff_ion(int index) {
+double SPCEHamiltonian::ewald_diff_ion(int index) {
     int k = 0, ion_index = index - WATERS.size(), NUM_TOTAL_PARTICLES = WATERS.size() + IONS.size();
     double sum_of_ewald_diffs = 0.0, old_pk2;
     dcomplex *column, tmp_x_ion, tmp_y_ion;
@@ -205,7 +202,7 @@ double Simulation::ewald_diff_ion(int index) {
     return sum_of_ewald_diffs;
 }
 
-void Simulation::set_exp_kr_table_for_water(int water_index) {
+void SPCEHamiltonian::set_exp_kr_table_for_water(int water_index) {
     double *coords = WATERS[water_index]->coords;
     int tmp_n, tmp_m, tmp_o;
 
@@ -218,9 +215,9 @@ void Simulation::set_exp_kr_table_for_water(int water_index) {
         exp_kr_H1[i][tmp_n] = exp(dcomplex(0.0, K_VECTORS[K_111_INDEX][i] * coords[i + 3]));
         exp_kr_H2[i][tmp_n] = exp(dcomplex(0.0, K_VECTORS[K_111_INDEX][i] * coords[i + 6]));
 
-        exp_kr_O[i][tmp_m] = COMPLEX_ONE / exp_kr_O[i][tmp_n];
-        exp_kr_H1[i][tmp_m] = COMPLEX_ONE / exp_kr_H1[i][tmp_n];
-        exp_kr_H2[i][tmp_m] = COMPLEX_ONE / exp_kr_H2[i][tmp_n];
+        exp_kr_O[i][tmp_m] = PCONSTANTS::COMPLEX_ONE / exp_kr_O[i][tmp_n];
+        exp_kr_H1[i][tmp_m] = PCONSTANTS::COMPLEX_ONE / exp_kr_H1[i][tmp_n];
+        exp_kr_H2[i][tmp_m] = PCONSTANTS::COMPLEX_ONE / exp_kr_H2[i][tmp_n];
 
         for (int j = 2; j <= tmp_o; j++) {
             exp_kr_O[i][tmp_o + j] = exp_kr_O[i][tmp_m + j] * exp_kr_O[i][tmp_n];
@@ -236,7 +233,7 @@ void Simulation::set_exp_kr_table_for_water(int water_index) {
     return;
 }
 
-void Simulation::set_exp_kr_table_for_ion(int ion_index) {
+void SPCEHamiltonian::set_exp_kr_table_for_ion(int ion_index) {
     int tmp_n, tmp_m, tmp_o;
     double *coords = IONS[ion_index]->coords;
     for (int i = 0; i < 3; i++) {
@@ -245,7 +242,7 @@ void Simulation::set_exp_kr_table_for_ion(int ion_index) {
         tmp_m = tmp_o - 1;
 
         exp_kr_ion[i][tmp_n] = exp(dcomplex(0.0, K_VECTORS[K_111_INDEX][i] * coords[i]));
-        exp_kr_ion[i][tmp_m] = COMPLEX_ONE / exp_kr_ion[i][tmp_n];
+        exp_kr_ion[i][tmp_m] = PCONSTANTS::COMPLEX_ONE / exp_kr_ion[i][tmp_n];
 
         for (int j = 2; j <= tmp_o; j++) {
             exp_kr_ion[i][tmp_o + j] = exp_kr_ion[i][tmp_m + j] * exp_kr_ion[i][tmp_n];

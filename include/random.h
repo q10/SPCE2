@@ -10,6 +10,7 @@
 #define	RANDOM_H
 
 #define BUF_SIZE 1024
+#define D_INFINITY std::numeric_limits<double>::infinity()
 
 using namespace std;
 
