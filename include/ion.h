@@ -16,7 +16,7 @@ public:
     double *coords, *old_coords;
     double charge, &DISPLACEMENT_DISTANCE, &BOX_LENGTH, &BOX_Z_LENGTH;
 
-    Ion(System * sys, double * tmp_coords, double tmp_charge);
+    Ion(WaterSystem * sys, double * tmp_coords, double tmp_charge);
     ~Ion();
 
     // Must be friend to access private members.

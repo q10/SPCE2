@@ -15,9 +15,12 @@ template <class EF> class Simulation {
 private:
     EF * ENERGY_FUNCTION;
 
+    int total_attempted_mc_translations, total_attempted_mc_rotations, num_successful_mc_translations, num_successful_mc_rotations;
+
     struct timeval start_time, end_time;
 
-    int total_attempted_mc_translations, total_attempted_mc_rotations, num_successful_mc_translations, num_successful_mc_rotations;
+    void default_initialize_sampling_parameters();
+
     void mc_sweep();
     void mc_translate();
     void mc_rotate();
@@ -27,23 +30,13 @@ private:
     std::ofstream LAMMPSTRJ_FILE;
 
 public:
-    System SYSTEM;
+    WaterSystem SYSTEM;
 
     Simulation(int num_waters = 200, int num_ions = 2);
     ~Simulation();
 
-    void default_initialize_system_parameters(int num_waters, int num_ions);
-    void default_initialize_sampling_parameters();
-    void default_initialize_waters(int num_waters);
-    void default_initialize_ions(int num_ions);
-    void default_initialize_ewald_parameters(double alpha, int nxy, int nz);
-
     void equilibrate();
     void run_mc();
-
-    void set_temperature(double new_temp);
-    void expand_box_z_direction(double new_len = 0.0);
-
 
     std::vector <Sampler *> SAMPLERS;
     int DATA_SAMPLING_RATE;
@@ -65,15 +58,10 @@ public:
     bool IS_LAMMPSTRJ_SAMPLING;
 
     friend std::ostream & operator<< <> (std::ostream & out, Simulation<EF> * simulation);
-    std::string to_lammpstrj(int time_step);
 };
 
 template <class EF> Simulation<EF>::Simulation(int num_waters, int num_ions) {
-    default_initialize_system_parameters(num_waters, num_ions);
-    default_initialize_ewald_parameters(0.0784, 5, 5);
-    default_initialize_waters(num_waters);
-    default_initialize_ions(num_ions);
-    default_initialize_sampling_parameters();
+    total_attempted_mc_translations = total_attempted_mc_rotations = num_successful_mc_translations = num_successful_mc_rotations = 0;
     ENERGY_FUNCTION = new EF(SYSTEM);
 }
 
@@ -82,100 +70,6 @@ template <class EF> Simulation<EF>::~Simulation() {
     SAMPLERS.clear();
     if (LAMMPSTRJ_FILE.is_open())
         LAMMPSTRJ_FILE.close();
-}
-
-template <class EF> void Simulation<EF>::default_initialize_system_parameters(int num_waters, int num_ions) {
-    set_temperature(300.0);
-    SYSTEM.NAME = "SPCE_" + TIMESTAMP();
-
-    SYSTEM.TARGET_WATER_DENSITY = Water::STD_DENSITY;
-    SYSTEM.BOX_VOLUME = (num_waters + num_ions) / SYSTEM.TARGET_WATER_DENSITY;
-    SYSTEM.BOX_LENGTH = SYSTEM.BOX_Z_LENGTH = pow(SYSTEM.BOX_VOLUME, 1.0 / 3.0);
-    SYSTEM.HALF_BOX_LENGTH = SYSTEM.HALF_BOX_Z_LENGTH = SYSTEM.BOX_LENGTH / 2.0;
-
-    SYSTEM.ION_PROBABILITY_WEIGHT = 3;
-    SYSTEM.DISPLACEMENT_DISTANCE = 0.2;
-    SYSTEM.DISPLACEMENT_ROTATION = 0.17 * M_PI;
-    SYSTEM.NUM_EQUILIBRATION_SWEEPS = 5000;
-    SYSTEM.NUM_MC_SWEEPS = 1000000;
-    SYSTEM.NUM_MC_ATTEMPTS_PER_SWEEP = 1000;
-    total_attempted_mc_translations = total_attempted_mc_rotations = num_successful_mc_translations = num_successful_mc_rotations = 0;
-
-    SYSTEM.WINDOW_LOWER_BOUND = SYSTEM.WINDOW_UPPER_BOUND = -1;
-}
-
-template <class EF> void Simulation<EF>::default_initialize_waters(int num_waters) {
-    SYSTEM.WATERS.clear();
-    double HOH_ANGLE_RAD = DEG2RAD(Water::HOH_ANGLE_DEG), *coords = new double[9];
-    double tmp_r = Water::OH_LENGTH * sin(HOH_ANGLE_RAD), rand_angle_rad;
-
-    for (int i = 0; i < num_waters; i++) {
-        // Oxygen
-        for (int j = 0; j < 3; j++)
-            coords[j] = RAN3() * SYSTEM.BOX_LENGTH;
-
-        // First Hydrogen
-        coords[3] = coords[0];
-        coords[4] = coords[1];
-        coords[5] = coords[2] + Water::OH_LENGTH;
-
-        // Second Hydrogen
-        rand_angle_rad = 2.0 * M_PI * RAN3();
-        coords[6] = coords[0] + tmp_r * cos(rand_angle_rad);
-        coords[7] = coords[1] + tmp_r * sin(rand_angle_rad);
-        coords[8] = coords[2] + Water::OH_LENGTH * cos(HOH_ANGLE_RAD);
-
-        SYSTEM.WATERS.push_back(new Water(&SYSTEM, coords));
-    }
-    delete [] coords;
-}
-
-template <class EF> void Simulation<EF>::default_initialize_ions(int num_ions) {
-    SYSTEM.IONS.clear();
-    double *coords = new double[3], charge;
-
-    for (int i = 0; i < num_ions; i++) {
-        charge = (RAN3() < 0.5) ? -1.0 : 1.0;
-        for (int j = 0; j < 3; j++)
-            coords[j] = RAN3() * SYSTEM.BOX_LENGTH;
-        SYSTEM.IONS.push_back(new Ion(&SYSTEM, coords, charge));
-    }
-    delete [] coords;
-}
-
-template <class EF> void Simulation<EF>::default_initialize_ewald_parameters(double alpha, int nxy, int nz) {
-    SYSTEM.EWALD_ALPHA = alpha;
-    SYSTEM.EWALD_NXY = nxy;
-    SYSTEM.EWALD_NZ = nz;
-}
-
-template <class EF> void Simulation<EF>::set_temperature(double new_temp) {
-    SYSTEM.TEMPERATURE = new_temp;
-    SYSTEM.BETA = 1.0 / (PCONSTANTS::BOLTZMANN_K * SYSTEM.TEMPERATURE);
-}
-
-template <class EF> void Simulation<EF>::expand_box_z_direction(double new_len) {
-    // first increase the box z length, then move all particles up by displacement dz, where dz is such that after the move, water slab will be in the center
-    // set water's box z length when expanding box
-    if (new_len == 0.0)
-        new_len = 2 * SYSTEM.BOX_LENGTH;
-    ASSERT(new_len > SYSTEM.BOX_LENGTH, "INVALID BOX Z LENGTH - MUST BE GREATER THAN BOX LENGTH");
-    SYSTEM.BOX_Z_LENGTH = new_len;
-    SYSTEM.HALF_BOX_Z_LENGTH = SYSTEM.BOX_Z_LENGTH / 2.0;
-    SYSTEM.BOX_VOLUME = SYSTEM.BOX_LENGTH * SYSTEM.BOX_LENGTH * SYSTEM.BOX_Z_LENGTH;
-
-    double shift = (SYSTEM.BOX_Z_LENGTH - SYSTEM.BOX_LENGTH) / 2.0;
-    for (unsigned int i = 0; i < SYSTEM.WATERS.size(); i++) {
-        for (int j = 2; j < 9; j += 3)
-            SYSTEM.WATERS[i]->coords[j] += shift;
-    }
-
-    for (unsigned int i = 0; i < SYSTEM.IONS.size(); i++)
-        SYSTEM.IONS[i]->coords[2] += shift;
-
-    // redo all Ewald tables and recalculate energies
-    SYSTEM.EWALD_NZ *= int(ceil(SYSTEM.BOX_Z_LENGTH / SYSTEM.BOX_LENGTH));
-    ENERGY_FUNCTION->initialize_calculations();
 }
 
 template <class EF> void Simulation<EF>::default_initialize_sampling_parameters() {
@@ -302,7 +196,7 @@ template <class EF> void Simulation<EF>::write_lammpstrj_snapshot() {
         LAMMPSTRJ_FILE.open(lammpstrj_filename.c_str());
         ASSERT(LAMMPSTRJ_FILE.is_open(), "Could not open LAMMPSTRJ output file.");
     }
-    LAMMPSTRJ_FILE << to_lammpstrj(++lammpstrj_timestep);
+    LAMMPSTRJ_FILE << SYSTEM.to_lammpstrj(++lammpstrj_timestep);
 }
 
 template <class EF> void Simulation<EF>::write_config_snapshot() {
@@ -316,51 +210,7 @@ template <class EF> void Simulation<EF>::write_config_snapshot() {
 }
 
 template <class EF> std::ostream & operator<<(std::ostream & out, Simulation<EF> * simulation) {
-    // The policy is that the config file output only contains the configuration of the box and its particles;
-    // all other system parameters will be set in code and compiled before running;
-    // otherwise, the complexity of managing the config file will grow exponentially
-    out << "BOX_LENGTH\t" << std::setprecision(10) << simulation->SYSTEM.BOX_LENGTH << std::endl
-            << "BOX_Z_LENGTH\t" << simulation->SYSTEM.BOX_Z_LENGTH << std::endl
-            << "EWALD_ALPHA\t" << simulation->SYSTEM.EWALD_ALPHA << std::endl
-            << "EWALD_NXY\t" << simulation->SYSTEM.EWALD_NXY << std::endl
-            << "EWALD_NZ\t" << simulation->SYSTEM.EWALD_NZ << std::endl;
-
-    out << "ION_PAIR_DISTANCE_WINDOW\t" << simulation->SYSTEM.WINDOW_LOWER_BOUND << "\t" << simulation->SYSTEM.WINDOW_UPPER_BOUND << std::endl;
-
-    for (unsigned int i = 0; i < simulation->SYSTEM.WATERS.size(); i++)
-        out << "WATER\t" << simulation->SYSTEM.WATERS[i] << std::endl;
-
-    for (unsigned int i = 0; i < simulation->SYSTEM.IONS.size(); i++)
-        out << "ION\t" << simulation->SYSTEM.IONS[i] << std::endl;
-
-    return out;
-}
-
-template <class EF> std::string Simulation<EF>::to_lammpstrj(int time_step) {
-    std::stringstream lammpstrj_string;
-    int atom_count = 0, ion_id;
-    double *coords;
-    lammpstrj_string << std::setprecision(10) << "ITEM: TIMESTEP" << std::endl << time_step << std::endl
-            << "ITEM: NUMBER OF ATOMS" << std::endl << (3 * SYSTEM.WATERS.size() + SYSTEM.IONS.size()) << std::endl
-            << "ITEM: BOX BOUNDS" << std::endl
-            << "0 " << SYSTEM.BOX_LENGTH << std::endl
-            << "0 " << SYSTEM.BOX_LENGTH << std::endl
-            << "0 " << SYSTEM.BOX_Z_LENGTH << std::endl
-            << "ITEM: ATOMS id type x y z diameter q" << std::endl;
-    for (unsigned int i = 0; i < SYSTEM.WATERS.size(); i++) {
-        coords = SYSTEM.WATERS[i]->coords;
-        lammpstrj_string << ++atom_count << " 1 " << coords[0] << " " << coords[1] << " " << coords[2] << " " << Water::SIGMA_O << " " << Water::Q_O << std::endl;
-        lammpstrj_string << ++atom_count << " 2 " << coords[3] << " " << coords[4] << " " << coords[5] << " " << Water::SIGMA_H << " " << Water::Q_H << std::endl;
-        lammpstrj_string << ++atom_count << " 2 " << coords[6] << " " << coords[7] << " " << coords[8] << " " << Water::SIGMA_H << " " << Water::Q_H << std::endl;
-    }
-
-    for (unsigned int i = 0; i < SYSTEM.IONS.size(); i++) {
-        coords = SYSTEM.IONS[i]->coords;
-        ion_id = (SYSTEM.IONS[i]->charge < 0.0) ? 3 : 4;
-        lammpstrj_string << ++atom_count << " " << ion_id << " "
-                << coords[0] << " " << coords[1] << " " << coords[2] << " " << SYSTEM.IONS[i]->SIGMA << " " << SYSTEM.IONS[i]->charge << std::endl;
-    }
-    return lammpstrj_string.str();
+    return out << &(simulation->SYSTEM);
 }
 
 #endif	/* SIMULATION_H */

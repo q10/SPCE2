@@ -1,6 +1,6 @@
 #include "common.h"
 
-RDFSampler::RDFSampler(System * s) {
+RDFSampler::RDFSampler(WaterSystem * s) {
     system = s;
     radial_dist_num_his_bars = 200;
 }

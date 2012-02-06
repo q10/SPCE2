@@ -1,6 +1,6 @@
 #include "common.h"
 
-SPCEHamiltonian::SPCEHamiltonian(System &sys)
+SPCEHamiltonian::SPCEHamiltonian(WaterSystem &sys)
 : EWALD_ALPHA(sys.EWALD_ALPHA), EWALD_NXY(sys.EWALD_NXY),
 EWALD_NZ(sys.EWALD_NZ), TARGET_WATER_DENSITY(sys.TARGET_WATER_DENSITY),
 BOX_LENGTH(sys.BOX_LENGTH), HALF_BOX_LENGTH(sys.HALF_BOX_LENGTH),

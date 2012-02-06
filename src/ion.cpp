@@ -7,7 +7,7 @@ ostream & operator<<(ostream & out, Ion * ion) {
     return out << setprecision(10) << ion->coords[0] << "\t" << ion->coords[1] << "\t" << ion->coords[2] << "\t" << ion->charge;
 }
 
-Ion::Ion(System * sys, double * tmp_coords, double tmp_charge)
+Ion::Ion(WaterSystem * sys, double * tmp_coords, double tmp_charge)
 : DISPLACEMENT_DISTANCE(sys->DISPLACEMENT_DISTANCE), BOX_LENGTH(sys->BOX_LENGTH), BOX_Z_LENGTH(sys->BOX_Z_LENGTH) {
     charge = tmp_charge;
     old_coords = new double [3];

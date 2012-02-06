@@ -20,7 +20,7 @@ ostream & operator<<(ostream & out, Water * water) {
     return out;
 }
 
-Water::Water(System * sys, double * tmp_coords)
+Water::Water(WaterSystem * sys, double * tmp_coords)
 : DISPLACEMENT_DISTANCE(sys->DISPLACEMENT_DISTANCE), DISPLACEMENT_ROTATION(sys->DISPLACEMENT_ROTATION),
 BOX_LENGTH(sys->BOX_LENGTH), BOX_Z_LENGTH(sys->BOX_Z_LENGTH) {
     TMP_CENTER_OF_MASS = new double [3];

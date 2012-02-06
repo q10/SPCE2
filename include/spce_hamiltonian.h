@@ -43,10 +43,9 @@ protected:
     virtual double energy_between_two_ions(int i, int j, WHICH_TYPE typ);
     double total_real_space_energy();
 
-
-
+    
 public:
-    SPCEHamiltonian(System &sys);
+    SPCEHamiltonian(WaterSystem &sys);
     virtual ~SPCEHamiltonian();
     virtual void initialize_calculations();
     virtual double total_energy_difference(int index);

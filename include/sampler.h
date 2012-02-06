@@ -10,7 +10,7 @@
 
 class Sampler {
 protected:
-    System * system;
+    WaterSystem * system;
 
 public:
     Sampler() {}

@@ -15,7 +15,7 @@ private:
     std::vector <double> radial_dist_distance, water_water_RDF, anion_water_RDF, cation_water_RDF, ion_ion_RDF;
 
 public:
-    RDFSampler(System * s);
+    RDFSampler(WaterSystem * s);
     ~RDFSampler();
 
     void start();

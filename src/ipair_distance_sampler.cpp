@@ -1,6 +1,6 @@
 #include "common.h"
 
-IonPairDistanceSampler::IonPairDistanceSampler(System * s) {
+IonPairDistanceSampler::IonPairDistanceSampler(WaterSystem * s) {
     system = s;
     CATION = ANION = NULL;
     for (unsigned int i = 0; i < system->IONS.size(); i++) {

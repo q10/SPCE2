@@ -5,12 +5,11 @@
  * Created on November 5, 2011, 1:07 AM
  */
 
-#ifndef SPCE_RUNTIME_H
-#define	SPCE_RUNTIME_H
+#ifndef RUNTIME_H
+#define	RUNTIME_H
 
 namespace SPCERuntime {
     void run_umbrella_system();
-
 
     void run_all_tests(int argc, char** argv);
     void test_water_rotation();

@@ -16,7 +16,7 @@ private:
     virtual double energy_between_two_ions(int i, int j, WHICH_TYPE typ);
 
 public:
-    UmbrellaSPCEHamiltonian(System &sys);
+    UmbrellaSPCEHamiltonian(WaterSystem &sys);
     ~UmbrellaSPCEHamiltonian();
     virtual void initialize_calculations();
     virtual double total_energy_difference(int index);

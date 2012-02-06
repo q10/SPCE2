@@ -19,7 +19,7 @@ private:
     void finish_time_series_sampler();
 
 public:
-    IonPairDistanceSampler(System * s);
+    IonPairDistanceSampler(WaterSystem * s);
     ~IonPairDistanceSampler();
 
     void start();

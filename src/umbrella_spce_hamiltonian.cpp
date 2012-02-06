@@ -1,6 +1,6 @@
 #include "common.h"
 
-UmbrellaSPCEHamiltonian::UmbrellaSPCEHamiltonian(System &sys)
+UmbrellaSPCEHamiltonian::UmbrellaSPCEHamiltonian(WaterSystem &sys)
 : SPCEHamiltonian(sys), WINDOW_LOWER_BOUND(sys.WINDOW_LOWER_BOUND),
 WINDOW_UPPER_BOUND(sys.WINDOW_UPPER_BOUND) {
     OVER_THE_WINDOW = false;
@@ -14,7 +14,7 @@ void UmbrellaSPCEHamiltonian::initialize_calculations() {
     ASSERT(IONS.size() >= 2, "Not enough ions to start window sampling.");
     // ADD SOME CHECKS TO ENFORCE PARTICLES INTO A WINDOW ?
     SPCEHamiltonian::initialize_calculations();
-    cerr << "UmbrellaSPCEHamiltonian setup done." << endl;
+    cerr << "UmbrellaSPCEHamiltonian setup done.\n" << endl;
 }
 
 double UmbrellaSPCEHamiltonian::total_energy_difference(int index) {

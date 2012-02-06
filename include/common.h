@@ -39,7 +39,7 @@
 
 #include "random.h"
 #include "pconstants.h"
-#include "system.h"
+#include "water_system.h"
 #include "water.h"
 #include "ion.h"
 #include "sampler.h"
@@ -49,7 +49,7 @@
 #include "spce_hamiltonian.h"
 #include "umbrella_spce_hamiltonian.h"
 #include "config_reader.h"
-#include "spce_runtime.h"
+#include "runtime.h"
 
 using namespace std;
 
