@@ -19,8 +19,8 @@ public:
     UmbrellaSPCEHamiltonian(WaterSystem &sys);
     ~UmbrellaSPCEHamiltonian();
     virtual void initialize_calculations();
-    virtual double total_energy_difference(int index);
-    virtual void undo_calculations(int index);
+    virtual double total_energy_difference();
+    virtual void undo_calculations();
 };
 
 #endif	/* UMBRELLA_SPCE_HAMILTONIAN_H */

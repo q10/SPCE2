@@ -11,6 +11,7 @@
 class SPCEHamiltonian {
 protected:
     double &TARGET_WATER_DENSITY, &BOX_LENGTH, &HALF_BOX_LENGTH, &BOX_Z_LENGTH, &HALF_BOX_Z_LENGTH, &BOX_VOLUME;
+    int &TEMP_INDEX;
     std::vector <Water *> &WATERS;
     std::vector <Ion *> &IONS;
 
@@ -48,8 +49,8 @@ public:
     SPCEHamiltonian(WaterSystem &sys);
     virtual ~SPCEHamiltonian();
     virtual void initialize_calculations();
-    virtual double total_energy_difference(int index);
-    virtual void undo_calculations(int index);
+    virtual double total_energy_difference();
+    virtual void undo_calculations();
 };
 
 #endif

@@ -15,16 +15,11 @@ template <class EF> class Simulation {
 private:
     EF * ENERGY_FUNCTION;
 
-    int total_attempted_mc_translations, total_attempted_mc_rotations, num_successful_mc_translations, num_successful_mc_rotations;
-
-    struct timeval start_time, end_time;
+    struct timeval start_time, end_time, sweep_start, sweep_end;
 
     void default_initialize_sampling_parameters();
 
     void mc_sweep();
-    void mc_translate();
-    void mc_rotate();
-    bool mc_accept(int index);
 
     int lammpstrj_timestep, lammpstrj_snapshot_counter;
     std::ofstream LAMMPSTRJ_FILE;
@@ -61,7 +56,6 @@ public:
 };
 
 template <class EF> Simulation<EF>::Simulation(int num_waters, int num_ions) {
-    total_attempted_mc_translations = total_attempted_mc_rotations = num_successful_mc_translations = num_successful_mc_rotations = 0;
     ENERGY_FUNCTION = new EF(SYSTEM);
 }
 
@@ -109,51 +103,16 @@ template <class EF> void Simulation<EF>::run_mc() {
 }
 
 template <class EF> void Simulation<EF>::mc_sweep() {
-    static struct timeval sweep_start, sweep_end;
     gettimeofday(&sweep_start, NULL);
     for (int i = 0; i < SYSTEM.NUM_MC_ATTEMPTS_PER_SWEEP; i++) {
-        if (RAN3() < 0.5) {
-            total_attempted_mc_translations++;
-            mc_translate();
-        } else {
-            total_attempted_mc_rotations++;
-            mc_rotate();
+        SYSTEM.mc_move();
+        if (RAN3() >= exp(-SYSTEM.BETA * ENERGY_FUNCTION->total_energy_difference())) {
+            SYSTEM.undo_mc_move();
+            ENERGY_FUNCTION->undo_calculations();
         }
     }
     gettimeofday(&sweep_end, NULL);
     std::cerr << std::setprecision(10) << timeval_diff(&sweep_end, &sweep_start) / 1000000.0 << std::endl;
-    return;
-}
-
-template <class EF> void Simulation<EF>::mc_translate() {
-    int rand_i = RANDINT(0, SYSTEM.WATERS.size() + SYSTEM.IONS.size() * SYSTEM.ION_PROBABILITY_WEIGHT);
-    if (rand_i >= (int) SYSTEM.WATERS.size())
-        rand_i = SYSTEM.WATERS.size() + ((rand_i - SYSTEM.WATERS.size()) / SYSTEM.ION_PROBABILITY_WEIGHT);
-
-    (rand_i < (int) SYSTEM.WATERS.size()) ? SYSTEM.WATERS[rand_i]->mc_translate() : SYSTEM.IONS[rand_i - SYSTEM.WATERS.size()]->mc_translate();
-    if (mc_accept(rand_i))
-        num_successful_mc_translations++;
-    return;
-}
-
-template <class EF> void Simulation<EF>::mc_rotate() {
-    int rand_i = RANDINT(0, SYSTEM.WATERS.size());
-    SYSTEM.WATERS[rand_i]->mc_rotate();
-    if (mc_accept(rand_i))
-        num_successful_mc_rotations++;
-    return;
-}
-
-template <class EF> bool Simulation<EF>::mc_accept(int index) {
-    // total_energy_difference also updates TOTAL_ENERGY
-    if (RAN3() < exp(-SYSTEM.BETA * ENERGY_FUNCTION->total_energy_difference(index)))
-        return true;
-    else {
-        // undo the move if move not accepted
-        (index < (int) SYSTEM.WATERS.size()) ? SYSTEM.WATERS[index]->undo_move() : SYSTEM.IONS[index - SYSTEM.WATERS.size()]->undo_move();
-        ENERGY_FUNCTION->undo_calculations(index);
-        return false;
-    }
 }
 
 template <class EF> void Simulation<EF>::initialize_sampling() {

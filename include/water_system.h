@@ -35,13 +35,17 @@ public:
     int NUM_EQUILIBRATION_SWEEPS, NUM_MC_SWEEPS, NUM_MC_ATTEMPTS_PER_SWEEP, ION_PROBABILITY_WEIGHT;
 
     double TOTAL_ENERGY;
+    int TEMP_INDEX;
 
     WaterSystem(int num_waters = 200, int num_ions = 2);
     ~WaterSystem();
 
     void set_temperature(double new_temp);
     void expand_box_z_direction(double new_len = 0.0);
-    
+
+    void mc_move();
+    void undo_mc_move();
+
     std::string to_lammpstrj(int time_step);
     friend std::ostream & operator<<(std::ostream & out, WaterSystem * system);
 

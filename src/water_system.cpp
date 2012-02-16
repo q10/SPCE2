@@ -98,8 +98,24 @@ void WaterSystem::expand_box_z_direction(double new_len) {
     for (unsigned int i = 0; i < IONS.size(); i++)
         IONS[i]->coords[2] += shift;
 
-    // redo all Ewald tables and recalculate energies
+    // redo all Ewald tables and recalculate energies - the appropriate update calls will be made later in the runtime
     EWALD_NZ *= int(ceil(BOX_Z_LENGTH / BOX_LENGTH));
+}
+
+void WaterSystem::mc_move() {
+    if (RAN3() < 0.5) {
+        TEMP_INDEX = RANDINT(0, WATERS.size() + IONS.size() * ION_PROBABILITY_WEIGHT);
+        if (TEMP_INDEX >= (int) WATERS.size())
+            TEMP_INDEX = WATERS.size() + ((TEMP_INDEX - WATERS.size()) / ION_PROBABILITY_WEIGHT);
+        (TEMP_INDEX < (int) WATERS.size()) ? WATERS[TEMP_INDEX]->mc_translate() : IONS[TEMP_INDEX - WATERS.size()]->mc_translate();
+    } else {
+        TEMP_INDEX = RANDINT(0, WATERS.size());
+        WATERS[TEMP_INDEX]->mc_rotate();
+    }
+}
+
+void WaterSystem::undo_mc_move() {
+    (TEMP_INDEX < (int) WATERS.size()) ? WATERS[TEMP_INDEX]->undo_move() : IONS[TEMP_INDEX - WATERS.size()]->undo_move();
 }
 
 string WaterSystem::to_lammpstrj(int time_step) {

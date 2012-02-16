@@ -17,23 +17,22 @@ void UmbrellaSPCEHamiltonian::initialize_calculations() {
     cerr << "UmbrellaSPCEHamiltonian setup done.\n" << endl;
 }
 
-double UmbrellaSPCEHamiltonian::total_energy_difference(int index) {
-    if (index >= (int) WATERS.size()) {
+double UmbrellaSPCEHamiltonian::total_energy_difference() {
+    if (TEMP_INDEX >= (int) WATERS.size()) {
         double ion_dist = IONS[0]->distance_from(IONS[1]);
         if (ion_dist < WINDOW_LOWER_BOUND or ion_dist >= WINDOW_UPPER_BOUND) {
             OVER_THE_WINDOW = true;
             return D_INFINITY;
         }
     }
-    return SPCEHamiltonian::total_energy_difference(index);
+    return SPCEHamiltonian::total_energy_difference();
 }
 
-void UmbrellaSPCEHamiltonian::undo_calculations(int index) {
-    if (OVER_THE_WINDOW and index >= (int) WATERS.size()) {
+void UmbrellaSPCEHamiltonian::undo_calculations() {
+    if (OVER_THE_WINDOW and TEMP_INDEX >= (int) WATERS.size())
         OVER_THE_WINDOW = false;
-        return;
-    } else
-        SPCEHamiltonian::undo_calculations(index);
+    else
+        SPCEHamiltonian::undo_calculations();
 }
 
 double UmbrellaSPCEHamiltonian::energy_between_two_ions(int i, int j, WHICH_TYPE typ) {
