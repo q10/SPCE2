@@ -23,7 +23,6 @@ Pull code from GitHub:
 
 Then compile everything from inside the SPCE program folder into a binary:
 
-    $ make init
     $ make
 
 The following make flags are available:

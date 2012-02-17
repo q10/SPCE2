@@ -24,7 +24,7 @@ o1: verbose
 
 o0: verbose
 
-verbose: $(SOURCES) $(EXECUTABLE)
+verbose: init $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CXX) $(LDFLAGS) $(OBJECTS) -o $@
