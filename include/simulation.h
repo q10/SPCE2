@@ -8,10 +8,10 @@
 #ifndef SIMULATION_H
 #define	SIMULATION_H
 
-template <class EF> class Simulation;
-template <class EF> std::ostream & operator<<(std::ostream & out, Simulation<EF> * simulation);
+template <class EF, class SYS, class SAM, class SYS, class SAM> class Simulation;
+template <class EF, class SYS, class SAM> std::ostream & operator<<(std::ostream & out, Simulation<EF, SYS, SAM> * simulation);
 
-template <class EF> class Simulation {
+template <class EF, class SYS, class SAM> class Simulation {
 private:
     EF * ENERGY_FUNCTION;
 
@@ -52,21 +52,21 @@ public:
 
     bool IS_LAMMPSTRJ_SAMPLING;
 
-    friend std::ostream & operator<< <> (std::ostream & out, Simulation<EF> * simulation);
+    friend std::ostream & operator<< <> (std::ostream & out, Simulation<EF, SYS, SAM> * simulation);
 };
 
-template <class EF> Simulation<EF>::Simulation(int num_waters, int num_ions) {
+template <class EF, class SYS, class SAM> Simulation<EF, SYS, SAM>::Simulation(int num_waters, int num_ions) {
     ENERGY_FUNCTION = new EF(SYSTEM);
 }
 
-template <class EF> Simulation<EF>::~Simulation() {
+template <class EF, class SYS, class SAM> Simulation<EF, SYS, SAM>::~Simulation() {
     delete ENERGY_FUNCTION;
     SAMPLERS.clear();
     if (LAMMPSTRJ_FILE.is_open())
         LAMMPSTRJ_FILE.close();
 }
 
-template <class EF> void Simulation<EF>::default_initialize_sampling_parameters() {
+template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::default_initialize_sampling_parameters() {
     DATA_SAMPLING_RATE = 20;
     IS_LAMMPSTRJ_SAMPLING = false;
     RELATIVE_LAMMPSTRJ_SNAPSHOT_RATE = 10;
@@ -74,7 +74,7 @@ template <class EF> void Simulation<EF>::default_initialize_sampling_parameters(
     lammpstrj_snapshot_counter = 0;
 }
 
-template <class EF> void Simulation<EF>::equilibrate() {
+template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::equilibrate() {
     ENERGY_FUNCTION->initialize_calculations();
     gettimeofday(&start_time, NULL);
     for (int h = 0; h < SYSTEM.NUM_EQUILIBRATION_SWEEPS; h++) {
@@ -86,7 +86,7 @@ template <class EF> void Simulation<EF>::equilibrate() {
     return;
 }
 
-template <class EF> void Simulation<EF>::run_mc() {
+template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::run_mc() {
     initialize_sampling();
     ENERGY_FUNCTION->initialize_calculations();
     gettimeofday(&start_time, NULL);
@@ -102,7 +102,7 @@ template <class EF> void Simulation<EF>::run_mc() {
     return;
 }
 
-template <class EF> void Simulation<EF>::mc_sweep() {
+template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::mc_sweep() {
     gettimeofday(&sweep_start, NULL);
     for (int i = 0; i < SYSTEM.NUM_MC_ATTEMPTS_PER_SWEEP; i++) {
         SYSTEM.mc_move();
@@ -115,40 +115,40 @@ template <class EF> void Simulation<EF>::mc_sweep() {
     std::cerr << std::setprecision(10) << timeval_diff(&sweep_end, &sweep_start) / 1000000.0 << std::endl;
 }
 
-template <class EF> void Simulation<EF>::initialize_sampling() {
+template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::initialize_sampling() {
     lammpstrj_timestep = 0;
     for (unsigned int i = 0; i < SAMPLERS.size(); i++)
         SAMPLERS[i]->start();
 }
 
-template <class EF> void Simulation<EF>::sample_data() {
+template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::sample_data() {
     for (unsigned int i = 0; i < SAMPLERS.size(); i++)
         SAMPLERS[i]->sample();
     if (IS_LAMMPSTRJ_SAMPLING and ++lammpstrj_snapshot_counter % RELATIVE_LAMMPSTRJ_SNAPSHOT_RATE == 0)
         write_lammpstrj_snapshot();
 }
 
-template <class EF> void Simulation<EF>::finish_sampling() {
+template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::finish_sampling() {
     for (unsigned int i = 0; i < SAMPLERS.size(); i++)
         SAMPLERS[i]->finish();
 }
 
-template <class EF> void Simulation<EF>::print_individual_sampler_results() {
+template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::print_individual_sampler_results() {
     for (unsigned int i = 0; i < SAMPLERS.size(); i++)
         std::cout << SAMPLERS[i]->results() << std::endl;
 }
 
-template <class EF> void Simulation<EF>::add_rdf_sampler() {
+template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::add_rdf_sampler() {
     RDFSampler * sampler = new RDFSampler(&SYSTEM);
     SAMPLERS.push_back(dynamic_cast<Sampler *> (sampler));
 }
 
-template <class EF> void Simulation<EF>::add_ion_pair_distance_sampler() {
+template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::add_ion_pair_distance_sampler() {
     IonPairDistanceSampler * sampler = new IonPairDistanceSampler(&SYSTEM);
     SAMPLERS.push_back(dynamic_cast<Sampler *> (sampler));
 }
 
-template <class EF> void Simulation<EF>::write_lammpstrj_snapshot() {
+template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::write_lammpstrj_snapshot() {
     if (!LAMMPSTRJ_FILE.is_open()) {
         if (lammpstrj_filename.compare("") == 0)
             lammpstrj_filename = SYSTEM.NAME + ".lammpstrj";
@@ -158,7 +158,7 @@ template <class EF> void Simulation<EF>::write_lammpstrj_snapshot() {
     LAMMPSTRJ_FILE << SYSTEM.to_lammpstrj(++lammpstrj_timestep);
 }
 
-template <class EF> void Simulation<EF>::write_config_snapshot() {
+template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::write_config_snapshot() {
     std::ofstream config_file;
     if (config_filename.compare("") == 0)
         config_filename = SYSTEM.NAME + ".config";
@@ -168,7 +168,7 @@ template <class EF> void Simulation<EF>::write_config_snapshot() {
     config_file.close();
 }
 
-template <class EF> std::ostream & operator<<(std::ostream & out, Simulation<EF> * simulation) {
+template <class EF, class SYS, class SAM> std::ostream & operator<<(std::ostream & out, Simulation<EF, SYS, SAM> * simulation) {
     return out << &(simulation->SYSTEM);
 }
 
