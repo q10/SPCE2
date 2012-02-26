@@ -2,8 +2,7 @@
 
 void SPCERuntime::run_umbrella_system(int argc, char** argv) {
     cerr << "---- BEGIN - UMBRELLA SAMPLING ----" << endl;
-    cerr << atof(argv[1]) << "\t" << atof(argv[2]) << endl;
-    double window_lower_bound = 0.0, window_upper_bound = 20.0;
+    double window_lower_bound = atof(argv[1]), window_upper_bound = atof(argv[1]);
     Simulation<UmbrellaSPCEHamiltonian, WaterSystem, Sampler> * simulation = new Simulation<UmbrellaSPCEHamiltonian, WaterSystem, Sampler> ();
     
     Ion * anion = simulation->SYSTEM.IONS[0];
@@ -16,13 +15,13 @@ void SPCERuntime::run_umbrella_system(int argc, char** argv) {
         anion->set_random_coords();
     cerr << "done.\n" << endl;
 
-    simulation->SYSTEM.NUM_EQUILIBRATION_SWEEPS = 100000;
     simulation->SYSTEM.WINDOW_LOWER_BOUND = window_lower_bound;
     simulation->SYSTEM.WINDOW_UPPER_BOUND = window_upper_bound;
-    simulation->IS_LAMMPSTRJ_SAMPLING = true;
     simulation->add_ion_pair_distance_sampler();
     simulation->add_rdf_sampler();
+    simulation->IS_LAMMPSTRJ_SAMPLING = true;
     simulation->DATA_SAMPLING_RATE = 20;
+    simulation->SYSTEM.NUM_EQUILIBRATION_SWEEPS = 100000;
     simulation->SYSTEM.NUM_MC_SWEEPS = 500000;
     
     simulation->equilibrate();
