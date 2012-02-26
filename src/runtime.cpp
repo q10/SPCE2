@@ -2,7 +2,7 @@
 
 void SPCERuntime::run_umbrella_system(int argc, char** argv) {
     cerr << "---- BEGIN - UMBRELLA SAMPLING ----" << endl;
-    double window_lower_bound = atof(argv[1]), window_upper_bound = atof(argv[1]);
+    double window_lower_bound = atof(argv[1]), window_upper_bound = atof(argv[2]);
     Simulation<UmbrellaSPCEHamiltonian, WaterSystem, Sampler> * simulation = new Simulation<UmbrellaSPCEHamiltonian, WaterSystem, Sampler> ();
     
     Ion * anion = simulation->SYSTEM.IONS[0];
