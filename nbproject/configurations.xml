@@ -62,6 +62,7 @@
     </logicalFolder>
     <itemPath>Makefile</itemPath>
     <itemPath>qsub.script</itemPath>
+    <itemPath>umbrella.script</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>src</Elem>

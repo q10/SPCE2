@@ -9,7 +9,7 @@
 #define	RUNTIME_H
 
 namespace SPCERuntime {
-    void run_umbrella_system();
+    void run_umbrella_system(int argc, char** argv);
 
     void run_all_tests(int argc, char** argv);
     void test_water_rotation();

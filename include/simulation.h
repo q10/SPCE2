@@ -8,32 +8,29 @@
 #ifndef SIMULATION_H
 #define	SIMULATION_H
 
-template <class EF, class SYS, class SAM, class SYS, class SAM> class Simulation;
+template <class EF, class SYS, class SAM> class Simulation;
 template <class EF, class SYS, class SAM> std::ostream & operator<<(std::ostream & out, Simulation<EF, SYS, SAM> * simulation);
 
 template <class EF, class SYS, class SAM> class Simulation {
 private:
     EF * ENERGY_FUNCTION;
-
     struct timeval start_time, end_time, sweep_start, sweep_end;
-
-    void default_initialize_sampling_parameters();
-
-    void mc_sweep();
-
     int lammpstrj_timestep, lammpstrj_snapshot_counter;
     std::ofstream LAMMPSTRJ_FILE;
 
-public:
-    WaterSystem SYSTEM;
+    void default_initialize_sampling_parameters();
+    void mc_sweep();
 
-    Simulation(int num_waters = 200, int num_ions = 2);
+public:
+    SYS SYSTEM;
+
+    Simulation();
     ~Simulation();
 
     void equilibrate();
     void run_mc();
 
-    std::vector <Sampler *> SAMPLERS;
+    std::vector <SAM *> SAMPLERS;
     int DATA_SAMPLING_RATE;
     int RELATIVE_LAMMPSTRJ_SNAPSHOT_RATE;
 
@@ -55,7 +52,7 @@ public:
     friend std::ostream & operator<< <> (std::ostream & out, Simulation<EF, SYS, SAM> * simulation);
 };
 
-template <class EF, class SYS, class SAM> Simulation<EF, SYS, SAM>::Simulation(int num_waters, int num_ions) {
+template <class EF, class SYS, class SAM> Simulation<EF, SYS, SAM>::Simulation() {
     ENERGY_FUNCTION = new EF(SYSTEM);
 }
 
@@ -140,12 +137,12 @@ template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::print_i
 
 template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::add_rdf_sampler() {
     RDFSampler * sampler = new RDFSampler(&SYSTEM);
-    SAMPLERS.push_back(dynamic_cast<Sampler *> (sampler));
+    SAMPLERS.push_back(dynamic_cast<SAM *> (sampler));
 }
 
 template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::add_ion_pair_distance_sampler() {
     IonPairDistanceSampler * sampler = new IonPairDistanceSampler(&SYSTEM);
-    SAMPLERS.push_back(dynamic_cast<Sampler *> (sampler));
+    SAMPLERS.push_back(dynamic_cast<SAM *> (sampler));
 }
 
 template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::write_lammpstrj_snapshot() {

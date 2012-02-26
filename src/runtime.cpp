@@ -1,9 +1,10 @@
 #include "common.h"
 
-void SPCERuntime::run_umbrella_system() {
+void SPCERuntime::run_umbrella_system(int argc, char** argv) {
     cerr << "---- BEGIN - UMBRELLA SAMPLING ----" << endl;
-    double window_lower_bound = 0.0, window_upper_bound = 2.0;
-    Simulation<UmbrellaSPCEHamiltonian> * simulation = new Simulation<UmbrellaSPCEHamiltonian > ();
+    cerr << atof(argv[1]) << "\t" << atof(argv[2]) << endl;
+    double window_lower_bound = 0.0, window_upper_bound = 20.0;
+    Simulation<UmbrellaSPCEHamiltonian, WaterSystem, Sampler> * simulation = new Simulation<UmbrellaSPCEHamiltonian, WaterSystem, Sampler> ();
     
     Ion * anion = simulation->SYSTEM.IONS[0];
     Ion * cation = simulation->SYSTEM.IONS[1];
@@ -20,6 +21,7 @@ void SPCERuntime::run_umbrella_system() {
     simulation->SYSTEM.WINDOW_UPPER_BOUND = window_upper_bound;
     simulation->IS_LAMMPSTRJ_SAMPLING = true;
     simulation->add_ion_pair_distance_sampler();
+    simulation->add_rdf_sampler();
     simulation->DATA_SAMPLING_RATE = 20;
     simulation->SYSTEM.NUM_MC_SWEEPS = 500000;
     
@@ -32,7 +34,7 @@ void SPCERuntime::run_umbrella_system() {
 }
 
 void SPCERuntime::run_all_tests(int argc, char** argv) {
-    run_umbrella_system();
+    run_umbrella_system(argc, argv);
     //test_water_rotation();
     //test_lammpstrj_output();
     //test_config_output();
@@ -54,7 +56,7 @@ void SPCERuntime::test_config_input() {
  **/
 void SPCERuntime::test_lammpstrj_output() {
     cerr << "---- BEGIN TEST - LAMMPSTRJ (VMD) FILE OUTPUT ----" << endl;
-    Simulation<SPCEHamiltonian> * s = new Simulation<SPCEHamiltonian > ();
+    Simulation<SPCEHamiltonian, WaterSystem, Sampler> * s = new Simulation<SPCEHamiltonian, WaterSystem, Sampler> ();
     //s->turn_on_lammpstrj_sampler();
     s->DATA_SAMPLING_RATE = 2;
     s->SYSTEM.NUM_MC_SWEEPS = 10;
@@ -65,7 +67,7 @@ void SPCERuntime::test_lammpstrj_output() {
 
 void SPCERuntime::test_config_output() {
     cerr << "---- BEGIN TEST - CONFIG FILE OUTPUT ----" << endl;
-    Simulation<SPCEHamiltonian> * s = new Simulation<SPCEHamiltonian>();
+    Simulation<SPCEHamiltonian, WaterSystem, Sampler> * s = new Simulation<SPCEHamiltonian, WaterSystem, Sampler>();
     s->SYSTEM.IONS[0]->charge = -1.0;
     s->SYSTEM.IONS[1]->charge = 1.0;
     s->SYSTEM.NUM_MC_SWEEPS = 10;
@@ -79,7 +81,7 @@ void SPCERuntime::test_config_output() {
 
 void SPCERuntime::test_radial_dist() {
     cerr << "---- BEGIN TEST - RADIAL DISTRIBUTION SAMPLER ----" << endl;
-    Simulation<SPCEHamiltonian> * simulation = new Simulation<SPCEHamiltonian>();
+    Simulation<SPCEHamiltonian, WaterSystem, Sampler> * simulation = new Simulation<SPCEHamiltonian, WaterSystem, Sampler>();
     simulation->SYSTEM.IONS[0]->charge = -1.0;
     simulation->SYSTEM.IONS[1]->charge = 1.0;
     simulation->SYSTEM.NUM_MC_SWEEPS = 50000;
@@ -92,7 +94,7 @@ void SPCERuntime::test_radial_dist() {
 
 void SPCERuntime::test_ion_pair_dist() {
     cerr << "---- BEGIN TEST - ION PAIR DISTANCE SAMPLER ----" << endl;
-    Simulation<SPCEHamiltonian> * simulation = new Simulation<SPCEHamiltonian>();
+    Simulation<SPCEHamiltonian, WaterSystem, Sampler> * simulation = new Simulation<SPCEHamiltonian, WaterSystem, Sampler>();
     simulation->SYSTEM.IONS[0]->charge = -1.0;
     simulation->SYSTEM.IONS[1]->charge = 1.0;
     simulation->SYSTEM.NUM_MC_SWEEPS = 50000;

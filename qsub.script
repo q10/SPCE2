@@ -1,5 +1,5 @@
 # Declare a name for this job
-#$ -N SPCE_0
+#$ -N SPCE
 
 # Request that email is sent when job has started, ended, aborted, or suspended
 #$ -m beas
@@ -8,15 +8,14 @@
 # Run program and save logfiles in the current working directory
 #$ -cwd
 
-if [ "x" == "x$winlowbound" ] || [ "x" == "x$winhighbound" ] ; then
-	echo "window bounds not set"
-else
-	echo "WINDOW_LOWER_BOUND: $WINDOW_LOWER_BOUND"
-	echo "WINDOW_UPPER_BOUND: $WINDOW_UPPER_BOUND"
-fi
-
-
 # Run the program
-./SPCE $WINDOW_LOWER_BOUND $WINDOW_UPPER_BOUND
+if [ "x" == "x$WINDOW_LOWER_BOUND" ] || [ "x" == "x$WINDOW_UPPER_BOUND" ] ; then
+    echo "window bounds not set"
+    ./SPCE
+else
+    echo "WINDOW_LOWER_BOUND: $WINDOW_LOWER_BOUND"
+    echo "WINDOW_UPPER_BOUND: $WINDOW_UPPER_BOUND"
+    ./SPCE $WINDOW_LOWER_BOUND $WINDOW_UPPER_BOUND
+fi
 
 exit 0
