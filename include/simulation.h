@@ -53,6 +53,7 @@ public:
 };
 
 template <class EF, class SYS, class SAM> Simulation<EF, SYS, SAM>::Simulation() {
+    default_initialize_sampling_parameters();
     ENERGY_FUNCTION = new EF(SYSTEM);
 }
 
@@ -84,8 +85,8 @@ template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::equilib
 }
 
 template <class EF, class SYS, class SAM> void Simulation<EF, SYS, SAM>::run_mc() {
-    initialize_sampling();
     ENERGY_FUNCTION->initialize_calculations();
+    initialize_sampling();
     gettimeofday(&start_time, NULL);
     for (int h = 0; h < SYSTEM.NUM_MC_SWEEPS; h++) {
         mc_sweep();
