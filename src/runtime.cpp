@@ -2,6 +2,8 @@
 
 void SPCERuntime::run_umbrella_system(int argc, char** argv) {
     cerr << "---- BEGIN - UMBRELLA SAMPLING ----" << endl;
+    ASSERT(argc == 3, "need program parameters - window_lower_bound, window_upper_bound, simulation_name!");
+    
     double window_lower_bound = atof(argv[1]), window_upper_bound = atof(argv[2]);
     Simulation<UmbrellaSPCEHamiltonian, WaterSystem, Sampler> * simulation = new Simulation<UmbrellaSPCEHamiltonian, WaterSystem, Sampler> ();
     
@@ -15,6 +17,7 @@ void SPCERuntime::run_umbrella_system(int argc, char** argv) {
         anion->set_random_coords();
     cerr << "done.\n" << endl;
 
+    simulation->SYSTEM.NAME = argv[3];
     simulation->SYSTEM.WINDOW_LOWER_BOUND = window_lower_bound;
     simulation->SYSTEM.WINDOW_UPPER_BOUND = window_upper_bound;
     simulation->add_ion_pair_distance_sampler();
