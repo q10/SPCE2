@@ -32,6 +32,9 @@ $(EXECUTABLE): $(OBJECTS)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
+mbar:
+	$(CXX) -lm mbar.c
+
 remove:
 	rm -rf $(EXECUTABLE)
 

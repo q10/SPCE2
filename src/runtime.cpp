@@ -2,7 +2,7 @@
 
 void SPCERuntime::run_umbrella_system(int argc, char** argv) {
     cerr << "---- BEGIN - UMBRELLA SAMPLING ----" << endl;
-    ASSERT(argc == 3, "need program parameters - window_lower_bound, window_upper_bound, simulation_name!");
+    ASSERT(argc >= 3, "need program parameters - window_lower_bound, window_upper_bound, simulation_name!");
     
     double window_lower_bound = atof(argv[1]), window_upper_bound = atof(argv[2]);
     Simulation<UmbrellaSPCEHamiltonian, WaterSystem, Sampler> * simulation = new Simulation<UmbrellaSPCEHamiltonian, WaterSystem, Sampler> ();

@@ -1,5 +1,5 @@
 # Declare a name for this job
-#$ -N "SPCE_$SIM_NAME"
+# -N "SPCE_"$SIM_NAME
 
 # Request that email is sent when job has started, ended, aborted, or suspended
 #$ -m beas
