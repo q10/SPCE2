@@ -1,12 +1,12 @@
 #!/bin/bash
 
-$MAIN_N = "A"
-$N1 = $MAIN_N"1"
-$N2 = $MAIN_N"2"
-$N3 = $MAIN_N"3"
-$N4 = $MAIN_N"4"
-$N5 = $MAIN_N"5"
-$N6 = $MAIN_N"6"
+MAIN_N="A"
+N1=$MAIN_N"1"
+N2=$MAIN_N"2"
+N3=$MAIN_N"3"
+N4=$MAIN_N"4"
+N5=$MAIN_N"5"
+N6=$MAIN_N"6"
 
 qsub -v WINDOW_LOWER_BOUND=0.0,WINDOW_UPPER_BOUND=5.0,SIM_NAME=$N1 -N $N1 qsub.sh
 qsub -v WINDOW_LOWER_BOUND=4.5,WINDOW_UPPER_BOUND=7.0,SIM_NAME=$N2 -N $N2 qsub.sh
