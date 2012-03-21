@@ -33,10 +33,10 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 mbar:
-	$(CXX) -lm mbar.c -o mbar
+	$(CXX) -lm $(SRC_DIR)/mbar.c -o mbar
 
 remove:
-	rm -rf $(EXECUTABLE)
+	rm -rf $(EXECUTABLE) mbar
 
 clean: remove
 	rm -rf *~
