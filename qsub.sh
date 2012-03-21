@@ -18,6 +18,6 @@ else
     ./SPCE $WINDOW_LOWER_BOUND $WINDOW_UPPER_BOUND $SIM_NAME
 fi
 
-mkdir -p tmp && touch tmp/$SIM_NAME.jobdone
+mkdir -p results && touch results/$SIM_NAME.jobdone
 
 exit 0

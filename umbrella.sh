@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mkdir -p tmp
+mkdir -p results
 make clean && make o3 && make mbar
 
 MAIN_N="A"
@@ -22,6 +22,10 @@ while [ $(ls tmp/*$MAIN_N.jobdone | wc -l) != '6' ]; do
     sleep 3600
 done
 
+mv $MAIN_N*.e* $MAIN_N*.o* $MAIN_N*.ipair_dist $MAIN_N*.config $MAIN_N*.lammpstrj results/
+cp mbar results/mbar
+cd results
+
 # renames file extensions of results for mbar
 rename .ipair_dist .txt *.ipair_dist
 
@@ -30,7 +34,19 @@ WINDOWSPACING=2.0 # spacing between the start of one window and the start of the
 WINDOWWIDTH=2.5  # width of a single window
 MINIMUMH=5.0     # distance at which the lowest windows begins
 HISTOGRAMFILE=umbrella_rdf # name of output file
-NITERATIONS=400   # number of iterations to build the RDF
+NITERATIONS=1000   # number of iterations to build the RDF
 DATAFILE=window   # name of the input files (files start as %s1.txt, %s2.txt, etc)
 
 ./mbar $NWINDOWS $WINDOWSPACING $WINDOWWIDTH $MINIMUMH $HISTOGRAMFILE $NITERATIONS $DATAFILE
+rm mbar
+
+
+# plot output RDF
+cat <<EOF | gnuplot
+set term gif large size 1600, 1200
+set output "$HISTOGRAMFILE.gif"
+plot ...
+plot "$HISTOGRAMFILE" using ($1/60):2 with lines // scales column 1 by dividing by 60
+EOF
+
+exit 0
