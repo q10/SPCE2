@@ -22,12 +22,15 @@ while [ $(ls tmp/*$MAIN_N.jobdone | wc -l) != '6' ]; do
     sleep 3600
 done
 
-NWINDOWS=5
-WINDOWSPACING=2.0
-WINDOWWIDTH=2.5
-MINIMUMH=5.0
-HISTOGRAMFILE=umbrella_rdf
-NITERATIONS=400
-DATAFILE=window
+# renames file extensions of results for mbar
+rename .ipair_dist .txt *.ipair_dist
+
+NWINDOWS=5        # number of windows (files)
+WINDOWSPACING=2.0 # spacing between the start of one window and the start of the next
+WINDOWWIDTH=2.5  # width of a single window
+MINIMUMH=5.0     # distance at which the lowest windows begins
+HISTOGRAMFILE=umbrella_rdf # name of output file
+NITERATIONS=400   # number of iterations to build the RDF
+DATAFILE=window   # name of the input files (files start as %s1.txt, %s2.txt, etc)
 
 ./mbar $NWINDOWS $WINDOWSPACING $WINDOWWIDTH $MINIMUMH $HISTOGRAMFILE $NITERATIONS $DATAFILE
