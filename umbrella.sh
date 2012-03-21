@@ -1,5 +1,6 @@
 #!/bin/bash
 
+mkdir -p tmp
 make clean && make o3 && make mbar
 
 MAIN_N="A"
