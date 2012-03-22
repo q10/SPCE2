@@ -25,7 +25,7 @@ void SPCERuntime::run_umbrella_system(int argc, char** argv) {
     simulation->IS_LAMMPSTRJ_SAMPLING = true;
     simulation->DATA_SAMPLING_RATE = 20;
     simulation->SYSTEM.NUM_EQUILIBRATION_SWEEPS = 100000;
-    simulation->SYSTEM.NUM_MC_SWEEPS = 500000;
+    simulation->SYSTEM.NUM_MC_SWEEPS = 1000000;
     
     simulation->equilibrate();
     simulation->run_mc();
