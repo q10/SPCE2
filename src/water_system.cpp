@@ -8,6 +8,9 @@ WaterSystem::WaterSystem(int num_waters, int num_ions) {
 }
 
 WaterSystem::~WaterSystem() {
+    WATERS.clear();
+    IONS.clear();
+    SAMPLERS.clear();
 }
 
 void WaterSystem::default_initialize_system_parameters(int num_waters, int num_ions) {
@@ -118,50 +121,47 @@ void WaterSystem::undo_mc_move() {
     (TEMP_INDEX < (int) WATERS.size()) ? WATERS[TEMP_INDEX]->undo_move() : IONS[TEMP_INDEX - WATERS.size()]->undo_move();
 }
 
-string WaterSystem::to_lammpstrj(int time_step) {
-    std::stringstream lammpstrj_string;
-    int atom_count = 0, ion_id;
-    double *coords;
-    lammpstrj_string << std::setprecision(10) << "ITEM: TIMESTEP" << std::endl << time_step << std::endl
-            << "ITEM: NUMBER OF ATOMS" << std::endl << (3 * WATERS.size() + IONS.size()) << std::endl
-            << "ITEM: BOX BOUNDS" << std::endl
-            << "0 " << BOX_LENGTH << std::endl
-            << "0 " << BOX_LENGTH << std::endl
-            << "0 " << BOX_Z_LENGTH << std::endl
-            << "ITEM: ATOMS id type x y z diameter q" << std::endl;
-    for (unsigned int i = 0; i < WATERS.size(); i++) {
-        coords = WATERS[i]->coords;
-        lammpstrj_string << ++atom_count << " 1 " << coords[0] << " " << coords[1] << " " << coords[2] << " " << Water::SIGMA_O << " " << Water::Q_O << std::endl;
-        lammpstrj_string << ++atom_count << " 2 " << coords[3] << " " << coords[4] << " " << coords[5] << " " << Water::SIGMA_H << " " << Water::Q_H << std::endl;
-        lammpstrj_string << ++atom_count << " 2 " << coords[6] << " " << coords[7] << " " << coords[8] << " " << Water::SIGMA_H << " " << Water::Q_H << std::endl;
-    }
-
-    for (unsigned int i = 0; i < IONS.size(); i++) {
-        coords = IONS[i]->coords;
-        ion_id = (IONS[i]->charge < 0.0) ? 3 : 4;
-        lammpstrj_string << ++atom_count << " " << ion_id << " "
-                << coords[0] << " " << coords[1] << " " << coords[2] << " " << IONS[i]->SIGMA << " " << IONS[i]->charge << std::endl;
-    }
-    return lammpstrj_string.str();
-}
-
 ostream & operator<<(ostream & out, WaterSystem * system) {
     // The policy is that the config file output only contains the configuration of the box and its particles;
     // all other system parameters will be set in code and compiled before running;
     // otherwise, the complexity of managing the config file will grow exponentially
-    out << "BOX_LENGTH\t" << std::setprecision(10) << system->BOX_LENGTH << std::endl
-            << "BOX_Z_LENGTH\t" << system->BOX_Z_LENGTH << std::endl
-            << "EWALD_ALPHA\t" << system->EWALD_ALPHA << std::endl
-            << "EWALD_NXY\t" << system->EWALD_NXY << std::endl
-            << "EWALD_NZ\t" << system->EWALD_NZ << std::endl;
+    out << "BOX_LENGTH\t" << std::setprecision(10) << system->BOX_LENGTH << endl
+            << "BOX_Z_LENGTH\t" << system->BOX_Z_LENGTH << endl
+            << "EWALD_ALPHA\t" << system->EWALD_ALPHA << endl
+            << "EWALD_NXY\t" << system->EWALD_NXY << endl
+            << "EWALD_NZ\t" << system->EWALD_NZ << endl;
 
-    out << "ION_PAIR_DISTANCE_WINDOW\t" << system->WINDOW_LOWER_BOUND << "\t" << system->WINDOW_UPPER_BOUND << std::endl;
+    out << "ION_PAIR_DISTANCE_WINDOW\t" << system->WINDOW_LOWER_BOUND << "\t" << system->WINDOW_UPPER_BOUND << endl;
 
     for (unsigned int i = 0; i < system->WATERS.size(); i++)
-        out << "WATER\t" << system->WATERS[i] << std::endl;
+        out << "WATER\t" << system->WATERS[i] << endl;
 
     for (unsigned int i = 0; i < system->IONS.size(); i++)
-        out << "ION\t" << system->IONS[i] << std::endl;
+        out << "ION\t" << system->IONS[i] << endl;
 
     return out;
+}
+
+void WaterSystem::add_rdf_sampler() {
+    RDFSampler * sampler = new RDFSampler(this);
+    SAMPLERS.push_back(dynamic_cast<Sampler *> (sampler));
+}
+
+void WaterSystem::add_lammpstrj_sampler() {
+    LAMMPSTRJSampler * sampler = new LAMMPSTRJSampler(this);
+    SAMPLERS.push_back(dynamic_cast<Sampler *> (sampler));
+}
+
+void WaterSystem::add_ion_pair_distance_sampler() {
+    IonPairDistanceSampler * sampler = new IonPairDistanceSampler(this);
+    SAMPLERS.push_back(dynamic_cast<Sampler *> (sampler));
+}
+
+void WaterSystem::write_config_snapshot() {
+    std::ofstream config_file;
+    string config_filename = NAME + ".config";
+    config_file.open(config_filename.c_str());
+    ASSERT(config_file.is_open(), "Could not open config output file.");
+    config_file << this;
+    config_file.close();
 }

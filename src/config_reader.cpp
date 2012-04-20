@@ -1,4 +1,4 @@
-/*#include "common.h"
+#include "common.h"
 
 const program_flags_t ConfigReader::PROGRAM_FLAGS[] = {
     { "input", required_argument, NULL, 'r'},
@@ -7,19 +7,8 @@ const program_flags_t ConfigReader::PROGRAM_FLAGS[] = {
     { NULL, no_argument, NULL, 0}
 };
 
-Simulation * ConfigReader::new_simulation(int argc, char** argv) {
-    Simulation * simulation = new Simulation();
-    read_program_flags(argc, argv, simulation);
-    return simulation;
-}
-
-Simulation * ConfigReader::new_simulation_with_config(string input_config_filename) {
-    Simulation * simulation = new Simulation();
-    load_configuration_file(input_config_filename, simulation);
-    return simulation;
-}
-
-void ConfigReader::read_program_flags(int argc, char** argv, Simulation * simulation) {
+/*
+void ConfigReader::read_program_flags(int argc, char** argv, system * system) {
     int option;
 
     while (1) {
@@ -45,111 +34,129 @@ void ConfigReader::read_program_flags(int argc, char** argv, Simulation * simula
             string input_config_filename = optarg;
             if (input_config_filename[0] == '=')
                 input_config_filename = input_config_filename.substr(1);
-            load_configuration_file(input_config_filename, simulation);
+            load_configuration_file(input_config_filename, system);
         } else if (option == 'w') {
             string config_filename = optarg;
             if (config_filename[0] == '=')
                 config_filename = config_filename.substr(1);
-            simulation->SAMPLER_SET->config_filename = config_filename;
+            system->SAMPLER_SET->config_filename = config_filename;
         } else if (option == 'v') {
             string lammpstrj_filename = optarg;
             if (lammpstrj_filename[0] == '=')
                 lammpstrj_filename = lammpstrj_filename.substr(1);
-            simulation->SAMPLER_SET->lammpstrj_filename = lammpstrj_filename;
+            system->SAMPLER_SET->lammpstrj_filename = lammpstrj_filename;
         } else
             ASSERT(false, "Invalid program flag, invalid flag parameter, or missing a flag parameter.");
     }
     return;
 }
+ */
 
-void ConfigReader::load_configuration_file(string input_config_filename, Simulation * simulation) {
-    // For code simplicity purposes, this function works as intended ONLY when the config file format is 
-    // exactly the same as that produced by the simulation's << operator
+// For code simplicity purposes, this function works as intended ONLY when the config file format is
+// exactly the same as that produced by the system's << operator
+
+WaterSystem * ConfigReader::new_water_system(string input_config_filename) {
+    WaterSystem * system = new WaterSystem();
+
 
     ifstream input_filestream(input_config_filename.c_str());
     ASSERT(input_filestream.is_open(), "Could not open input configuration file " + STRING(input_config_filename));
 
-    bool window_sampling_mode = false;
-    double window_lower_bound = 0, window_upper_bound = 0;
-    unsigned int line_num = 0, num_ions = 0, num_waters = 0, ewald_nxy = 0, ewald_nz = 0;
+    unsigned int line_num = 0, num_ions = 0, num_waters = 0;
     string line, line_key;
-    vector< double > coords;
-    double ewald_alpha = 0.0, val;
-
     while (getline(input_filestream, line)) {
         istringstream iss(line);
         line_num++;
         iss >> line_key;
 
-        if (line_key.compare("BOX_LENGTH") == 0) {
-            double len;
-            iss >> len;
-            if (abs(len) > 0.0)
-                simulation->BOX_LENGTH = abs(len);
-            else
-                cerr << "WARNING: Bad box length at line " << line_num << " in config file - Using defaults instead." << endl;
-
-        } else if (line_key.compare("BOX_Z_LENGTH") == 0) {
-            double zlen;
-            iss >> zlen;
-            if (abs(zlen) > 0.0)
-                simulation->BOX_LENGTH = abs(zlen);
-            else
-                cerr << "WARNING: Bad box length at line " << line_num << " in config file - Using defaults instead." << endl;
-
-        } else if (line_key.compare("EWALD_ALPHA") == 0) {
-            iss >> ewald_alpha;
-        } else if (line_key.compare("EWALD_NXY") == 0) {
-            iss >> ewald_nxy;
-        } else if (line_key.compare("EWALD_NZ") == 0) {
-            iss >> ewald_nz;
-        } else if (line_key.compare("ION_PAIR_DISTANCE_WINDOW") == 0) {
-            window_sampling_mode = true;
-            iss >> window_lower_bound;
-            iss >> window_upper_bound;
-        } else if (line_key.compare("ION") == 0) {
-            coords.clear();
-            while (iss >> val)
-                coords.push_back(val);
-            ASSERT((int) coords.size() == 4, "Not enough parameters on line " + STRING(line_num) + " of config file.");
-            ASSERT(coords[3] != 0.0, "Charge is zero for ion on line " + STRING(line_num) + " of config file.");
-
-            if (simulation->IONS.size() < ++num_ions) {
-                Ion * ion = new Ion(simulation, &coords[0], coords[3]);
-                simulation->IONS.push_back(ion);
-            } else {
-                simulation->IONS[num_ions - 1]->set_coords(&coords[0]);
-                simulation->IONS[num_ions - 1]->charge = coords[3];
-            }
-        } else if (line_key.compare("WATER") == 0) {
-            coords.clear();
-            while (iss >> val)
-                coords.push_back(val);
-            ASSERT((int) coords.size() == 9, "Not enough coordinates on line " + STRING(line_num) + " of config file.");
-
-            if (simulation->WATERS.size() < ++num_waters) {
-                Water * water = new Water(simulation, &coords[0]);
-                simulation->WATERS.push_back(water);
-            } else
-                simulation->WATERS[num_waters - 1]->set_coords(&coords[0]);
-
-        } else
+        if (line_key.compare("BOX_LENGTH") == 0 or line_key.compare("BOX_Z_LENGTH") == 0)
+            handle_box_length();
+        else if (line_key.compare("EWALD_ALPHA") == 0)
+            iss >> system->EWALD_ALPHA;
+        else if (line_key.compare("EWALD_NXY") == 0)
+            iss >> system->EWALD_NXY;
+        else if (line_key.compare("EWALD_NZ") == 0)
+            iss >> system->EWALD_NZ;
+        else if (line_key.compare("ION_PAIR_DISTANCE_WINDOW") == 0)
+            handle_ion_pair_distance_window();
+        else if (line_key.compare("ION") == 0)
+            handle_ion();
+        else if (line_key.compare("WATER") == 0)
+            handle_water();
+        else
             cerr << "WARNING: Malformed line " << line_num << " in config file - Ignoring this line." << endl;
     }
 
     // removes excess particles if any
-    while (simulation->WATERS.size() > num_waters)
-        simulation->WATERS.pop_back();
-    while (simulation->IONS.size() > num_ions)
-        simulation->IONS.pop_back();
+    while (system->WATERS.size() > num_waters)
+        system->WATERS.pop_back();
+    while (system->IONS.size() > num_ions)
+        system->IONS.pop_back();
 
-    // recalculate energies and ewald tables
-    simulation->initialize_all_ewald_tables(ewald_alpha, ewald_nxy, ewald_nz);
-    simulation->calculate_and_init_energy();
-
-    // sets window sampling mode on if selected
-    if (window_sampling_mode)
-        simulation->turn_on_window_sampling_mc(window_lower_bound, window_upper_bound);
-    return;
+    return system;
 }
-*/
+
+void ConfigReader::handle_box_length(WaterSystem * system, int & line_num) {
+    double len;
+    iss >> len;
+    if (abs(len) > 0.0)
+        system->BOX_LENGTH = abs(len);
+    else
+        cerr << "WARNING: Bad box length at line " << line_num << " in config file - Using defaults instead." << endl;
+
+
+    //box z
+
+    else if () {
+        double zlen;
+        iss >> zlen;
+        if (abs(zlen) > 0.0)
+            system->BOX_LENGTH = abs(zlen);
+        else
+            cerr << "WARNING: Bad box length at line " << line_num << " in config file - Using defaults instead." << endl;
+
+    }
+
+}
+
+void ConfigReader::handle_ion_pair_distance_window(WaterSystem * system, int & line_num) {
+    window_sampling_mode = true;
+    iss >> window_lower_bound;
+    iss >> window_upper_bound;
+
+}
+
+void ConfigReader::handle_ion(WaterSystem * system, int & line_num) {
+    vector< double > coords;
+    coords.clear();
+    while (iss >> val)
+        coords.push_back(val);
+    ASSERT((int) coords.size() == 4, "Not enough parameters on line " + STRING(line_num) + " of config file.");
+    ASSERT(coords[3] != 0.0, "Charge is zero for ion on line " + STRING(line_num) + " of config file.");
+
+    if (system->IONS.size() < ++num_ions) {
+        Ion * ion = new Ion(system, &coords[0], coords[3]);
+        system->IONS.push_back(ion);
+    } else {
+        system->IONS[num_ions - 1]->set_coords(&coords[0]);
+        system->IONS[num_ions - 1]->charge = coords[3];
+    }
+
+
+}
+
+void ConfigReader::handle_water(WaterSystem * system, int & line_num) {
+    vector< double > coords;
+    coords.clear();
+    while (iss >> val)
+        coords.push_back(val);
+    ASSERT((int) coords.size() == 9, "Not enough coordinates on line " + STRING(line_num) + " of config file.");
+
+    if (system->WATERS.size() < ++num_waters) {
+        Water * water = new Water(system, &coords[0]);
+        system->WATERS.push_back(water);
+    } else
+        system->WATERS[num_waters - 1]->set_coords(&coords[0]);
+
+
+}

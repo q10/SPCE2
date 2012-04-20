@@ -43,6 +43,7 @@
 #include "water.h"
 #include "ion.h"
 #include "sampler.h"
+#include "lammpstrj_sampler.h"
 #include "rdf_sampler.h"
 #include "ipair_distance_sampler.h"
 #include "simulation.h"
@@ -50,6 +51,7 @@
 #include "umbrella_spce_hamiltonian.h"
 #include "config_reader.h"
 #include "runtime.h"
+
 
 using namespace std;
 

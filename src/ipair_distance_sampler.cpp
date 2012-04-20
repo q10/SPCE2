@@ -10,7 +10,7 @@ IonPairDistanceSampler::IonPairDistanceSampler(WaterSystem * s) {
         else if (ion->charge < 0)
             ANION = ion;
     }
-    ASSERT((CATION != NULL) && (ANION != NULL), "There needs to be at least one cation and one anion in the system.");
+    ASSERT((CATION != NULL) && (ANION != NULL), "IonPairDistanceSampler: There needs to be at least one cation and one anion in the system before IonPairDistanceSampler can be initialized.");
 }
 
 IonPairDistanceSampler::~IonPairDistanceSampler() {

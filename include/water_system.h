@@ -10,6 +10,7 @@
 
 class Water;
 class Ion;
+class Sampler;
 
 class WaterSystem {
 private:
@@ -37,6 +38,10 @@ public:
     double TOTAL_ENERGY;
     int TEMP_INDEX;
 
+    std::vector <Sampler *> SAMPLERS;
+    int DATA_SAMPLING_RATE;
+
+
     WaterSystem(int num_waters = 200, int num_ions = 2);
     ~WaterSystem();
 
@@ -46,9 +51,13 @@ public:
     void mc_move();
     void undo_mc_move();
 
-    std::string to_lammpstrj(int time_step);
-    friend std::ostream & operator<<(std::ostream & out, WaterSystem * system);
+    void add_rdf_sampler();
+    void add_lammpstrj_sampler();
+    void add_ion_pair_distance_sampler();
 
+    void write_config_snapshot();
+
+    friend std::ostream & operator<<(std::ostream & out, WaterSystem * system);
 };
 
 #endif	/* SYSTEM_H */
