@@ -1,45 +1,42 @@
 #!/bin/bash
 
-mkdir -p results
-make clean && make o3 && make mbar
-
 MAIN_N="A"
-NWINDOWS=6
+NWINDOWS=5
 WINDOWSPACING=1.0
 WINDOWWIDTH=1.5
 MINIMUMH=4.0
 
+# Make results folder if nonexistent, and check that it's empty
+mkdir -p results
+if [ "$(ls -A results)" ]; then
+    echo "There are other files in results/, possibly from older simulation runs.  Please remove them or move them out and rerun script."
+    exit 2
+fi
+
+# Build
+make clean && make o3 && make mbar
+
+# Submit the jobs
 lower=$MINIMUMH
 for i in $(seq 1 $NWINDOWS); do
     upper=$(echo "scale=10;$lower + $WINDOWWIDTH" | bc)
     qsub -v WINDOW_LOWER_BOUND=$lower,WINDOW_UPPER_BOUND=$upper,SIM_NAME=$MAIN_N$i -N $MAIN_N$i qsub.sh
     lower=$(echo "scale=10;$lower + $WINDOWSPACING" | bc)
-    sleep 5 # so that jobs can be more randomly distributed in the grid
+    sleep 10 # so that jobs can be more randomly distributed in the grid
 done
 
 
-# wait for umbrella windows to finish running on the grid
-while [ $(ls tmp/*$MAIN_N.jobdone | wc -l) -lt $NWINDOWS ]; do
-    sleep 3600
+# Wait for umbrella windows to finish running on the grid
+while [ $(ls results/*.jobdone | wc -l) -lt $NWINDOWS ]; do
+    sleep 10
 done
 
-# move all results into separate folder
-mv $MAIN_N*.e* $MAIN_N*.o* $MAIN_N*.ipair_dist results/
-if [ -f "$MAIN_N*.config" ]; then
-    mv $MAIN_N*.config results/
-fi
-if [ -f "$MAIN_N*.lammpstrj" ]; then
-    mv $MAIN_N*.lammpstrj results/
-fi
-cp mbar results/mbar
-cd results
-
-
-# renames file extensions of results for mbar
+# Move mbar into results folder and rename file extensions of results for mbar
+cp mbar results/mbar && cd results 
 rename .ipair_dist .txt *.ipair_dist
 
 
-# run mbar
+# Run mbar
 #NWINDOWS        # number of windows (files)
 #WINDOWSPACING=2.0 # spacing between the start of one window and the start of the next
 #WINDOWWIDTH=2.5  # width of a single window
@@ -51,7 +48,7 @@ NITERATIONS=1000   # number of iterations to build the RDF
 rm mbar
 
 
-# plot output RDF on gnuplot
+# Plot output RDF on gnuplot
 cat << EOF | gnuplot
 set term gif large size 1600, 1200
 set output "$HISTOGRAMFILE.gif"

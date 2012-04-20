@@ -9,7 +9,7 @@
 #$ -cwd
 
 
-final_path=$HOME/SPCE2
+final_path=`pwd`
 output_path=/scratch/bm/$JOB_ID
 [[ ! -e $output_path ]]  && mkdir -p $output_path
 [[ ! -e $final_path ]] && mkdir -p $final_path
@@ -23,7 +23,7 @@ cd $output_path
 # Run the program
 if [ "x" == "x$WINDOW_LOWER_BOUND" ] || [ "x" == "x$WINDOW_UPPER_BOUND" ] || [ "x" == "x$SIM_NAME" ]; then
     echo "window bounds or name not set"
-    ./SPCE
+    ./SPCE 1> $SIM_NAME.out 2> $SIM_NAME.error
 else
     echo "WINDOW_LOWER_BOUND: $WINDOW_LOWER_BOUND"
     echo "WINDOW_UPPER_BOUND: $WINDOW_UPPER_BOUND"
@@ -32,10 +32,10 @@ fi
 
 # copy the tons of data back to local disk
 rm -rf SPCE
-cd $final_path && mkdir -p results
-mv $output_path/* results/
+mkdir -p $final_path/results && mv $output_path/* $final_path/results/
+cd  $final_path && mv *$JOB_ID results/
 
-# signal master script that it is done
+# signal calling script that it is done
 touch results/$SIM_NAME.jobdone
 
 exit 0
