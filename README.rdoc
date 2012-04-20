@@ -32,6 +32,7 @@ The following make flags are available:
     $ make o2       // -O2 optimization applied
     $ make o1       // -O1 optimization applied
     $ make o0       // no optimizations applied
+    $ make mbar   // builds the MBAR program used to assemble data collected from umbrella sampling
     $ make remove   // delete the compiled executable SPCE
     $ make clean    // removes SPCE executable and *.o and *~ files everywhere
 
@@ -41,19 +42,11 @@ Simply run the following command on terminal:
 
     $ ./SPCE
 
-== Flags:
+Sample qsub scripts and metascripts that run SPCE on a grid engine, wait, and post-process data  are also available in the top level directory.
 
-The following program flags are allowed for a customized simulation.
+= Flags:
 
--r:: Specify the system configuration file to import
--w:: Specify the name of the file to export the system configuration
--v:: Specify the name of the VMD (.lammpstrj) file to export the system configuration
-
-All customizations must be specified in the config file that is to be used by the -r flag
-
-Example Usage:
-
-    $ ./SPCE -r=sample.config -w=output.config -v=output.lammpstrj
+Flags are not implemented by default, to give the end users more choice in coding their simulation.  However, a ConfigReader class is provided that will build an example WaterSystem with customizations specified in a config file.  Please read the config output format to see how to take advantage of this.
 
 = Development:
 
