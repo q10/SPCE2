@@ -90,7 +90,7 @@ void SPCERuntime::test_radial_dist() {
     s.SYSTEM->NUM_MC_SWEEPS = 50000;
     s.SYSTEM->add_rdf_sampler();
     s.run_mc();
-    s.print_individual_sampler_results();
+    s.SYSTEM->print_individual_sampler_results();
     cerr << "\n---- END TEST - RADIAL DISTRIBUTION SAMPLER ----\n" << endl;
     return;
 }
@@ -103,7 +103,7 @@ void SPCERuntime::test_ion_pair_dist() {
     s.SYSTEM->NUM_MC_SWEEPS = 50000;
     s.SYSTEM->add_ion_pair_distance_sampler();
     s.run_mc();
-    s.print_individual_sampler_results();
+    s.SYSTEM->print_individual_sampler_results();
     cerr << "---- END TEST - ION PAIR DISTANCE SAMPLER ----\n" << endl;
     return;
 }

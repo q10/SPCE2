@@ -52,7 +52,6 @@
 #include "config_reader.h"
 #include "runtime.h"
 
-
 using namespace std;
 
 #endif	/* COMMON_H */
