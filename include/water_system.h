@@ -56,6 +56,9 @@ public:
     void add_ion_pair_distance_sampler();
 
     void write_config_snapshot();
+    void initialize_sampling();
+    void sample_data();
+    void finish_sampling();
 
     friend std::ostream & operator<<(std::ostream & out, WaterSystem * system);
 };

@@ -15,13 +15,7 @@ template <class EF, class SYS> class Simulation {
 private:
     EF * ENERGY_FUNCTION;
     struct timeval start_time, end_time, sweep_start, sweep_end;
-
     void mc_sweep();
-
-    void initialize_sampling();
-    void sample_data();
-    void finish_sampling();
-
 
 public:
     SYS * SYSTEM;
@@ -33,13 +27,12 @@ public:
     void run_mc();
 
     void print_individual_sampler_results();
-
     friend std::ostream & operator<< <> (std::ostream & out, Simulation<EF, SYS> * simulation);
 };
 
 template <class EF, class SYS> Simulation<EF, SYS>::Simulation(SYS * another_system) {
     SYSTEM = (another_system) ? new SYS(*another_system) : new SYS();
-    ENERGY_FUNCTION = new EF(*SYSTEM);
+    ENERGY_FUNCTION = new EF(*SYSTEM); // need to fix this copy method to make a true copy of stuff
 }
 
 template <class EF, class SYS> Simulation<EF, SYS>::~Simulation() {
@@ -61,15 +54,15 @@ template <class EF, class SYS> void Simulation<EF, SYS>::equilibrate() {
 
 template <class EF, class SYS> void Simulation<EF, SYS>::run_mc() {
     ENERGY_FUNCTION->initialize_calculations();
-    initialize_sampling();
+    SYSTEM->initialize_sampling();
     gettimeofday(&start_time, NULL);
     for (int h = 0; h < SYSTEM->NUM_MC_SWEEPS; h++) {
         mc_sweep();
         if (h % SYSTEM->DATA_SAMPLING_RATE == 0)
-            sample_data();
+            SYSTEM->sample_data();
         std::cerr << "MC sweep " << h + 1 << " of " << SYSTEM->NUM_MC_SWEEPS << " complete." << std::endl;
     }
-    finish_sampling();
+    SYSTEM->finish_sampling();
     gettimeofday(&end_time, NULL);
     std::cerr << "MC run completed in " << std::setprecision(10) << timeval_diff(&end_time, &start_time) / 1000000.0 / 3600.0 << " hours." << std::endl;
     return;
@@ -88,29 +81,13 @@ template <class EF, class SYS> void Simulation<EF, SYS>::mc_sweep() {
     std::cerr << std::setprecision(10) << timeval_diff(&sweep_end, &sweep_start) / 1000000.0 << std::endl;
 }
 
-template <class EF, class SYS> void Simulation<EF, SYS>::initialize_sampling() {
-    for (unsigned int i = 0; i < SYSTEM->SAMPLERS.size(); i++)
-        SYSTEM->SAMPLERS[i]->start();
-}
-
-template <class EF, class SYS> void Simulation<EF, SYS>::sample_data() {
-    for (unsigned int i = 0; i < SYSTEM->SAMPLERS.size(); i++)
-        SYSTEM->SAMPLERS[i]->sample();
-}
-
-template <class EF, class SYS> void Simulation<EF, SYS>::finish_sampling() {
-    for (unsigned int i = 0; i < SYSTEM->SAMPLERS.size(); i++)
-        SYSTEM->SAMPLERS[i]->finish();
-}
-
 template <class EF, class SYS> void Simulation<EF, SYS>::print_individual_sampler_results() {
     for (unsigned int i = 0; i < SYSTEM->SAMPLERS.size(); i++)
         std::cout << SYSTEM->SAMPLERS[i]->results() << std::endl;
 }
 
 template <class EF, class SYS> std::ostream & operator<<(std::ostream & out, Simulation<EF, SYS> * simulation) {
-    return out << simulation->SYSTEM;
-    return out << simulation->ENERGY_FUNCTION;
+    return out << simulation->SYSTEM << std::endl << simulation->ENERGY_FUNCTION << std::endl;
 }
 
 #endif	/* SIMULATION_H */

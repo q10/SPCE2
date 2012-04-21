@@ -165,3 +165,18 @@ void WaterSystem::write_config_snapshot() {
     config_file << this;
     config_file.close();
 }
+
+void WaterSystem::initialize_sampling() {
+    for (unsigned int i = 0; i < SAMPLERS.size(); i++)
+        SAMPLERS[i]->start();
+}
+
+void WaterSystem::sample_data() {
+    for (unsigned int i = 0; i < SAMPLERS.size(); i++)
+        SAMPLERS[i]->sample();
+}
+
+void WaterSystem::finish_sampling() {
+    for (unsigned int i = 0; i < SAMPLERS.size(); i++)
+        SAMPLERS[i]->finish();
+}

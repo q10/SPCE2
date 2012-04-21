@@ -12,16 +12,22 @@ typedef struct option program_flags_t;
 
 class ConfigReader {
 private:
-    static const program_flags_t PROGRAM_FLAGS[];
+    unsigned int line_num = 0, num_ions = 0, num_waters = 0;
+    std::string line, line_key;
+    std::vector< double > tmp_coords;
+    
+    WaterSystem * system;
 
-    //static void read_program_flags(int argc, char** argv, Simulation * simulation);
-    static void handle_water(WaterSystem * system, int & line_num);
-    static void handle_ion(WaterSystem * system, int & line_num, int &num_ione);
-    static void handle_box_length(WaterSystem * system, int & line_num);
-    static void handle_ion_pair_distance_window(WaterSystem * system, int & line_num);
+    void handle_water(std::istringstream & iss);
+    void handle_ion(std::istringstream & iss);
+    void handle_box_length(std::istringstream & iss);
+    void handle_ewald_parameters(std::istringstream & iss);
+    void handle_ion_pair_distance_window(std::istringstream & iss);
 
 public:
-    static WaterSystem * new_water_system(std::string input_config_filename);
+    ConfigReader(std::string input_config_filename);
+    ~ConfigReader();
+    WaterSystem * new_water_system();
 };
 
 #endif	/* CONFIG_READER_H */
