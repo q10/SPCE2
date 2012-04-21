@@ -7,6 +7,7 @@ ConfigReader::ConfigReader(std::string input_config_filename) {
     ifstream input_filestream(input_config_filename.c_str());
     ASSERT(input_filestream.is_open(), "Could not open input configuration file " + STRING(input_config_filename));
 
+    line_num = num_ions = num_waters = 0;
     system = new WaterSystem();
 
     while (getline(input_filestream, line)) {
@@ -17,7 +18,7 @@ ConfigReader::ConfigReader(std::string input_config_filename) {
         if (line_key.compare("BOX_LENGTH") == 0 or line_key.compare("BOX_Z_LENGTH") == 0)
             handle_box_length(iss);
         else if (line_key.compare("EWALD_ALPHA") == 0 or line_key.compare("EWALD_NXY") == 0 or line_key.compare("EWALD_NZ") == 0)
-            handle_ewald_parameters();
+            handle_ewald_parameters(iss);
         else if (line_key.compare("ION_PAIR_DISTANCE_WINDOW") == 0)
             handle_ion_pair_distance_window(iss);
         else if (line_key.compare("ION") == 0)
@@ -36,7 +37,7 @@ ConfigReader::ConfigReader(std::string input_config_filename) {
 }
 
 WaterSystem * ConfigReader::new_water_system() {
-    WaterSystem * copy = new WaterSystem(system);
+    WaterSystem * copy = new WaterSystem(*system);
     return copy;
 }
 

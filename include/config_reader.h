@@ -12,10 +12,10 @@ typedef struct option program_flags_t;
 
 class ConfigReader {
 private:
-    unsigned int line_num = 0, num_ions = 0, num_waters = 0;
+    unsigned int line_num, num_ions, num_waters;
     std::string line, line_key;
     std::vector< double > tmp_coords;
-    
+
     WaterSystem * system;
 
     void handle_water(std::istringstream & iss);
