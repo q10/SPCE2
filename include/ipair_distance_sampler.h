@@ -10,8 +10,8 @@
 
 class IonPairDistanceSampler : public Sampler {
 private:
-    Ion * CATION;
-    Ion * ANION;
+    std::vector<Ion *> CATIONS;
+    std::vector<Ion *> ANIONS;
     std::ofstream ION_PAIR_DISTANCE_FILE;
 
     void initialize_time_series_sampler();

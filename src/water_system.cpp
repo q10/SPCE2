@@ -8,6 +8,7 @@ WaterSystem::WaterSystem(int num_waters, int num_ions) {
 }
 
 WaterSystem::~WaterSystem() {
+    // should use pointers and call delete WATERS for auto deallocation of waters and ions, or maybe use &WATERS
     WATERS.clear();
     IONS.clear();
     SAMPLERS.clear();
