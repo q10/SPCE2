@@ -26,7 +26,6 @@ public:
     void equilibrate();
     void run_mc();
 
-    void print_individual_sampler_results();
     friend std::ostream & operator<< <> (std::ostream & out, Simulation<EF, SYS> * simulation);
 };
 
@@ -79,11 +78,6 @@ template <class EF, class SYS> void Simulation<EF, SYS>::mc_sweep() {
     }
     gettimeofday(&sweep_end, NULL);
     std::cerr << std::setprecision(10) << timeval_diff(&sweep_end, &sweep_start) / 1000000.0 << std::endl;
-}
-
-template <class EF, class SYS> void Simulation<EF, SYS>::print_individual_sampler_results() {
-    for (unsigned int i = 0; i < SYSTEM->SAMPLERS.size(); i++)
-        std::cout << SYSTEM->SAMPLERS[i]->results() << std::endl;
 }
 
 template <class EF, class SYS> std::ostream & operator<<(std::ostream & out, Simulation<EF, SYS> * simulation) {

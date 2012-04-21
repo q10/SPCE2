@@ -48,18 +48,19 @@ public:
     void set_temperature(double new_temp);
     void expand_box_z_direction(double new_len = 0.0);
 
-    void mc_move();
-    void undo_mc_move();
-
     void add_rdf_sampler();
     void add_lammpstrj_sampler();
     void add_ion_pair_distance_sampler();
 
-    void write_config_snapshot();
+    // CALLS SUPPORTED BY SIMULATION TEMPLATE API
+    void mc_move();
+    void undo_mc_move();
     void initialize_sampling();
     void sample_data();
     void finish_sampling();
 
+    void write_config_snapshot();
+    void print_individual_sampler_results();
     friend std::ostream & operator<<(std::ostream & out, WaterSystem * system);
 };
 

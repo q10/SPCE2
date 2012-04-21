@@ -121,27 +121,6 @@ void WaterSystem::undo_mc_move() {
     (TEMP_INDEX < (int) WATERS.size()) ? WATERS[TEMP_INDEX]->undo_move() : IONS[TEMP_INDEX - WATERS.size()]->undo_move();
 }
 
-ostream & operator<<(ostream & out, WaterSystem * system) {
-    // The policy is that the config file output only contains the configuration of the box and its particles;
-    // all other system parameters will be set in code and compiled before running;
-    // otherwise, the complexity of managing the config file will grow exponentially
-    out << "BOX_LENGTH\t" << std::setprecision(10) << system->BOX_LENGTH << endl
-            << "BOX_Z_LENGTH\t" << system->BOX_Z_LENGTH << endl
-            << "EWALD_ALPHA\t" << system->EWALD_ALPHA << endl
-            << "EWALD_NXY\t" << system->EWALD_NXY << endl
-            << "EWALD_NZ\t" << system->EWALD_NZ << endl;
-
-    out << "ION_PAIR_DISTANCE_WINDOW\t" << system->WINDOW_LOWER_BOUND << "\t" << system->WINDOW_UPPER_BOUND << endl;
-
-    for (unsigned int i = 0; i < system->WATERS.size(); i++)
-        out << "WATER\t" << system->WATERS[i] << endl;
-
-    for (unsigned int i = 0; i < system->IONS.size(); i++)
-        out << "ION\t" << system->IONS[i] << endl;
-
-    return out;
-}
-
 void WaterSystem::add_rdf_sampler() {
     RDFSampler * sampler = new RDFSampler(this);
     SAMPLERS.push_back(dynamic_cast<Sampler *> (sampler));
@@ -179,4 +158,30 @@ void WaterSystem::sample_data() {
 void WaterSystem::finish_sampling() {
     for (unsigned int i = 0; i < SAMPLERS.size(); i++)
         SAMPLERS[i]->finish();
+}
+
+void WaterSystem::print_individual_sampler_results() {
+    for (unsigned int i = 0; i < SAMPLERS.size(); i++)
+        std::cout << SAMPLERS[i]->results() << std::endl;
+}
+
+ostream & operator<<(ostream & out, WaterSystem * system) {
+    // The policy is that the config file output only contains the configuration of the box and its particles;
+    // all other system parameters will be set in code and compiled before running;
+    // otherwise, the complexity of managing the config file will grow exponentially
+    out << "BOX_LENGTH\t" << std::setprecision(10) << system->BOX_LENGTH << endl
+            << "BOX_Z_LENGTH\t" << system->BOX_Z_LENGTH << endl
+            << "EWALD_ALPHA\t" << system->EWALD_ALPHA << endl
+            << "EWALD_NXY\t" << system->EWALD_NXY << endl
+            << "EWALD_NZ\t" << system->EWALD_NZ << endl;
+
+    out << "ION_PAIR_DISTANCE_WINDOW\t" << system->WINDOW_LOWER_BOUND << "\t" << system->WINDOW_UPPER_BOUND << endl;
+
+    for (unsigned int i = 0; i < system->WATERS.size(); i++)
+        out << "WATER\t" << system->WATERS[i] << endl;
+
+    for (unsigned int i = 0; i < system->IONS.size(); i++)
+        out << "ION\t" << system->IONS[i] << endl;
+
+    return out;
 }
