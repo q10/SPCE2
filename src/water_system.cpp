@@ -27,10 +27,11 @@ void WaterSystem::default_initialize_system_parameters(int num_waters, int num_i
     DISPLACEMENT_DISTANCE = 0.2;
     DISPLACEMENT_ROTATION = 0.17 * M_PI;
     NUM_EQUILIBRATION_SWEEPS = 5000;
-    NUM_MC_SWEEPS = 1000000;
+    NUM_MC_SWEEPS = 100000;
     NUM_MC_ATTEMPTS_PER_SWEEP = 1000;
 
     WINDOW_LOWER_BOUND = WINDOW_UPPER_BOUND = -1;
+    DATA_SAMPLING_RATE = 20;
 }
 
 void WaterSystem::default_initialize_waters(int num_waters) {

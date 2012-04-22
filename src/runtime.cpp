@@ -9,7 +9,6 @@ void SPCERuntime::run_umbrella_system(int argc, char** argv) {
     system->NAME = argv[3];
     system->WINDOW_LOWER_BOUND = window_lower_bound;
     system->WINDOW_UPPER_BOUND = window_upper_bound;
-    system->DATA_SAMPLING_RATE = 20;
     system->NUM_EQUILIBRATION_SWEEPS = 100000;
     system->NUM_MC_SWEEPS = 1000000;
 
