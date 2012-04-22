@@ -23,7 +23,7 @@ cd $output_path
 # Run the program
 if [ "x" == "x$WINDOW_LOWER_BOUND" ] || [ "x" == "x$WINDOW_UPPER_BOUND" ] || [ "x" == "x$SIM_NAME" ]; then
     echo "window bounds or name not set"
-    ./SPCE 1> $SIM_NAME.out 2> $SIM_NAME.error
+    ./SPCE $NUM_ION_PAIRS $SIM_NAME 1> $SIM_NAME.out 2> $SIM_NAME.error
 else
     echo "WINDOW_LOWER_BOUND: $WINDOW_LOWER_BOUND"
     echo "WINDOW_UPPER_BOUND: $WINDOW_UPPER_BOUND"

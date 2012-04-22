@@ -107,15 +107,23 @@ void WaterSystem::expand_box_z_direction(double new_len) {
 }
 
 void WaterSystem::mc_move() {
-    if (RAN3() < 0.5) {
-        TEMP_INDEX = RANDINT(0, WATERS.size() + IONS.size() * ION_PROBABILITY_WEIGHT);
-        if (TEMP_INDEX >= (int) WATERS.size())
-            TEMP_INDEX = WATERS.size() + ((TEMP_INDEX - WATERS.size()) / ION_PROBABILITY_WEIGHT);
-        (TEMP_INDEX < (int) WATERS.size()) ? WATERS[TEMP_INDEX]->mc_translate() : IONS[TEMP_INDEX - WATERS.size()]->mc_translate();
-    } else {
-        TEMP_INDEX = RANDINT(0, WATERS.size());
-        WATERS[TEMP_INDEX]->mc_rotate();
-    }
+    TEMP_INDEX = RANDINT(0, WATERS.size() + IONS.size() * ION_PROBABILITY_WEIGHT);
+    if (TEMP_INDEX >= int(WATERS.size())) {
+        TEMP_INDEX = WATERS.size() + ((TEMP_INDEX - WATERS.size()) / ION_PROBABILITY_WEIGHT);
+        IONS[TEMP_INDEX - WATERS.size()]->mc_translate();
+    } else
+        (RAN3() < 0.5) ? WATERS[TEMP_INDEX]->mc_translate() : WATERS[TEMP_INDEX]->mc_rotate();
+
+    /*    if (RAN3() < 0.5) {
+            TEMP_INDEX = RANDINT(0, WATERS.size() + IONS.size() * ION_PROBABILITY_WEIGHT);
+            if (TEMP_INDEX >= (int) WATERS.size())
+                TEMP_INDEX = WATERS.size() + ((TEMP_INDEX - WATERS.size()) / ION_PROBABILITY_WEIGHT);
+            (TEMP_INDEX < (int) WATERS.size()) ? WATERS[TEMP_INDEX]->mc_translate() : IONS[TEMP_INDEX - WATERS.size()]->mc_translate();
+        } else {
+            TEMP_INDEX = RANDINT(0, WATERS.size());
+            WATERS[TEMP_INDEX]->mc_rotate();
+        }
+     * **/
 }
 
 void WaterSystem::undo_mc_move() {

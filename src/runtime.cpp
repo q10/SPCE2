@@ -8,7 +8,7 @@ void SPCERuntime::run_umbrella_system(int argc, char** argv) {
     WaterSystem * system = new WaterSystem();
     system->NAME = argv[3];
     system->WINDOW_LOWER_BOUND = window_lower_bound;
-    system->WINDOW_UPPER_BOUND = window_upper_bound;    
+    system->WINDOW_UPPER_BOUND = window_upper_bound;
     system->DATA_SAMPLING_RATE = 20;
     system->NUM_EQUILIBRATION_SWEEPS = 100000;
     system->NUM_MC_SWEEPS = 1000000;
@@ -21,28 +21,28 @@ void SPCERuntime::run_umbrella_system(int argc, char** argv) {
     while (anion->distance_from(cation) < window_lower_bound or anion->distance_from(cation) >= window_upper_bound)
         anion->set_random_coords();
     cerr << "done.\n" << endl;
-    
+
     system->add_rdf_sampler();
     system->add_lammpstrj_sampler();
     system->add_ion_pair_distance_sampler();
     cout << system << endl;
-    
+
     Simulation<UmbrellaSPCEHamiltonian, WaterSystem> simulation(system); // simulation makes a new copy of system and everything in it to make things easier
     simulation.equilibrate();
     simulation.run_mc();
-    
+
     simulation.SYSTEM->write_config_snapshot(); // working with the copy of system that's inside this simulation
     cerr << "\n---- END - UMBRELLA SAMPLING ----\n" << endl;
     return;
 }
 
 void SPCERuntime::run_all_tests(int argc, char** argv) {
-    run_umbrella_system(argc, argv);
+    //run_umbrella_system(argc, argv);
     //test_water_rotation();
     //test_lammpstrj_output();
     //test_config_output();
     //test_config_input();
-    //test_radial_dist();
+    test_radial_dist(argc, argv);
     //test_ion_pair_dist();
     return;
 }
@@ -82,13 +82,20 @@ void SPCERuntime::test_config_output() {
     return;
 }
 
-void SPCERuntime::test_radial_dist() {
+void SPCERuntime::test_radial_dist(int argc, char** argv) {
     cerr << "---- BEGIN TEST - RADIAL DISTRIBUTION SAMPLER ----" << endl;
-    Simulation<SPCEHamiltonian, WaterSystem> s;
-    s.SYSTEM->IONS[0]->charge = -1.0;
-    s.SYSTEM->IONS[1]->charge = 1.0;
-    s.SYSTEM->NUM_MC_SWEEPS = 50000;
-    s.SYSTEM->add_rdf_sampler();
+    ASSERT(argc >= 2, "need program parameters - num_ion_pairs, simulation_name!");
+    int num_ion_pairs = abs(atoi(argv[1]));
+    ASSERT(num_ion_pairs > 0, "needs at least one ion pair!");
+    WaterSystem * system = new WaterSystem(200, num_ion_pairs * 2);
+    for (int i = 0; i < num_ion_pairs; i++) {
+        system->IONS[num_ion_pairs * 2]->charge = -1.0;
+        system->IONS[num_ion_pairs * 2 + 1]->charge = 1.0;
+    }
+    system->NAME = argv[2];
+    system->NUM_MC_SWEEPS = 100000;
+    system->add_rdf_sampler();
+    Simulation<SPCEHamiltonian, WaterSystem> s(system);
     s.run_mc();
     s.SYSTEM->print_individual_sampler_results();
     cerr << "\n---- END TEST - RADIAL DISTRIBUTION SAMPLER ----\n" << endl;

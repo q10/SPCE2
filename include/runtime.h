@@ -16,7 +16,7 @@ namespace SPCERuntime {
     void test_config_input();
     void test_lammpstrj_output();
     void test_config_output();
-    void test_radial_dist();
+    void test_radial_dist(int argc, char** argv);
     void test_ion_pair_dist();
 };
 
