@@ -22,6 +22,7 @@ o2: verbose
 o1: CXXFLAGS += -O1
 o1: verbose
 
+o0: CXXFLAGS += -g
 o0: verbose
 
 verbose: init $(SOURCES) $(EXECUTABLE)

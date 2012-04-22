@@ -85,6 +85,7 @@ void SPCERuntime::test_config_output() {
 void SPCERuntime::test_radial_dist(int argc, char** argv) {
     cerr << "---- BEGIN TEST - RADIAL DISTRIBUTION SAMPLER ----" << endl;
     ASSERT(argc >= 2, "need program parameters - num_ion_pairs, simulation_name!");
+    
     int num_ion_pairs = abs(atoi(argv[1]));
     ASSERT(num_ion_pairs > 0, "needs at least one ion pair!");
     WaterSystem * system = new WaterSystem(200, num_ion_pairs * 2);
