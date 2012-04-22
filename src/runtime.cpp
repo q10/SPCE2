@@ -90,8 +90,8 @@ void SPCERuntime::test_radial_dist(int argc, char** argv) {
     ASSERT(num_ion_pairs > 0, "needs at least one ion pair!");
     WaterSystem * system = new WaterSystem(200, num_ion_pairs * 2);
     for (int i = 0; i < num_ion_pairs; i++) {
-        system->IONS[num_ion_pairs * 2]->charge = -1.0;
-        system->IONS[num_ion_pairs * 2 + 1]->charge = 1.0;
+        system->IONS[i * 2]->charge = -1.0;
+        system->IONS[i * 2 + 1]->charge = 1.0;
     }
     system->NAME = argv[2];
     system->NUM_MC_SWEEPS = 100000;
