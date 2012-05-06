@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="79">
+<configurationDescriptor version="80">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -27,7 +27,6 @@
       <itemPath>.gitignore</itemPath>
       <itemPath>LICENSE</itemPath>
       <itemPath>README.rdoc</itemPath>
-      <itemPath>sample.config</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -61,8 +60,6 @@
       <itemPath>Makefile2</itemPath>
     </logicalFolder>
     <itemPath>Makefile</itemPath>
-    <itemPath>qsub.script</itemPath>
-    <itemPath>umbrella.script</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>src</Elem>
