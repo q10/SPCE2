@@ -83,9 +83,9 @@ void RDFSampler::finish() {
 
         // need to divide by num_gr and num_waters to get time and number average
         water_water_RDF[i] /= (num_gr * system->WATERS.size() * shell_volume * water_density);
-        anion_water_RDF[i] /= (num_gr * num_anions * shell_volume * anion_density);
-        cation_water_RDF[i] /= (num_gr * num_cations * shell_volume * cation_density);
-        ion_ion_RDF[i] /= (num_gr * num_anions * shell_volume * anion_density);
+        anion_water_RDF[i] /= (num_gr * (num_anions + system->WATERS.size()) * shell_volume * anion_density);
+        cation_water_RDF[i] /= (num_gr * (num_cations + system->WATERS.size()) * shell_volume * cation_density);
+        ion_ion_RDF[i] /= (num_gr * system->IONS.size() * shell_volume * anion_density);
     }
     return;
 }
