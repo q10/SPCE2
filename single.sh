@@ -1,6 +1,7 @@
 #!/bin/bash
 
 MAIN_N=SPCEX
+EMAIL=bm@berkeley.edu
 
 # Make results folder if nonexistent, and check that it's empty
 mkdir -p results
@@ -11,11 +12,11 @@ fi
 
 # Build
 make clean && make o3
-qsub -v SIM_NAME=$MAIN_N,NUM_ION_PAIRS=3 -N $MAIN_N qsub.sh
+qsub -v SIM_NAME=$MAIN_N,NUM_ION_PAIRS=1 -N $MAIN_N qsub.sh
 
 # Wait for simulation to finish running on the grid
 while [ $(ls results/*.jobdone | wc -l) -lt "1" ]; do
-    sleep 10
+    sleep 900
 done
 
 # Plot output RDF on gnuplot
@@ -32,5 +33,7 @@ plot "$MAIN_N.out" using 1:5 with lp title 'A-C RDF'
 set output "ALL-RDF.gif"
 plot "$MAIN_N.out" using 1:2 with lp title 'O-O RDF', "$MAIN_N.out" using 1:3 with lp title 'A-O RDF', "$MAIN_N.out" using 1:4 with lp title 'C-O RDF', "$MAIN_N.out" using 1:5 with lp title 'A-C RDF'
 EOF
+
+echo "" | mail -s "Simulation \'$MAIN_N\' has finished" "$EMAIL"
 
 exit 0

@@ -96,8 +96,10 @@ void SPCERuntime::test_radial_dist(int argc, char** argv) {
     system->NUM_MC_SWEEPS = 100000;
     system->add_rdf_sampler();
     Simulation<SPCEHamiltonian, WaterSystem> s(system);
+    s.equilibrate();
     s.run_mc();
     s.SYSTEM->print_individual_sampler_results();
+    s.SYSTEM->write_config_snapshot();
     cerr << "\n---- END TEST - RADIAL DISTRIBUTION SAMPLER ----\n" << endl;
     return;
 }
@@ -107,8 +109,9 @@ void SPCERuntime::test_ion_pair_dist() {
     Simulation<SPCEHamiltonian, WaterSystem> s;
     s.SYSTEM->IONS[0]->charge = -1.0;
     s.SYSTEM->IONS[1]->charge = 1.0;
-    s.SYSTEM->NUM_MC_SWEEPS = 50000;
+    s.SYSTEM->NUM_MC_SWEEPS = 500000;
     s.SYSTEM->add_ion_pair_distance_sampler();
+    s.equilibrate();
     s.run_mc();
     s.SYSTEM->print_individual_sampler_results();
     cerr << "---- END TEST - ION PAIR DISTANCE SAMPLER ----\n" << endl;

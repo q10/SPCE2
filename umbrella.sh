@@ -28,7 +28,7 @@ done
 
 # Wait for umbrella windows to finish running on the grid
 while [ $(ls results/*.jobdone | wc -l) -lt $NWINDOWS ]; do
-    sleep 10
+    sleep 900
 done
 
 # Move mbar into results folder and rename file extensions of results for mbar
@@ -54,5 +54,7 @@ set term gif large size 1600, 1200
 set output "$HISTOGRAMFILE.gif"
 plot "$HISTOGRAMFILE" using 1:(\$2/\$1**2) with lp
 EOF
+
+echo "" | mail -s "Simulation \'$MAIN_N\' has finished" "$EMAIL"
 
 exit 0
