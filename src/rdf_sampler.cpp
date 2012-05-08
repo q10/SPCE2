@@ -41,25 +41,25 @@ void RDFSampler::sample() {
     // ion-water
     for (unsigned int i = 0; i < system->IONS.size(); i++) {
         for (unsigned int j = i; j < system->WATERS.size(); j++) {
-            if ((system->IONS[i]->charge < 0.0 and system->IONS[j]->charge > 0.0) or (system->IONS[i]->charge > 0.0 and system->IONS[j]->charge < 0.0)) {
-                double dr = system->IONS[i]->distance_from(system->WATERS[j]);
-                int ig = int(dr / delg);
-                if (ig < radial_dist_num_his_bars) {
-                    if (system->IONS[i]->charge < 0.0)
-                        anion_water_RDF[ig] += 2;
-                    else
-                        cation_water_RDF[ig] += 2;
-                }
+            double dr = system->IONS[i]->distance_from(system->WATERS[j]);
+            int ig = int(dr / delg);
+            if (ig < radial_dist_num_his_bars) {
+                if (system->IONS[i]->charge < 0.0)
+                    anion_water_RDF[ig] += 2;
+                else
+                    cation_water_RDF[ig] += 2;
             }
         }
     }
     // ion-ion
     for (unsigned int i = 0; i < system->IONS.size() - 1; i++) {
         for (unsigned int j = i + 1; j < system->IONS.size(); j++) {
-            double dr = system->IONS[i]->distance_from(system->IONS[j]);
-            int ig = int(dr / delg);
-            if (ig < radial_dist_num_his_bars)
-                ion_ion_RDF[ig] += 2;
+            if ((system->IONS[i]->charge < 0.0 and system->IONS[j]->charge > 0.0) or (system->IONS[i]->charge > 0.0 and system->IONS[j]->charge < 0.0)) {
+                double dr = system->IONS[i]->distance_from(system->IONS[j]);
+                int ig = int(dr / delg);
+                if (ig < radial_dist_num_his_bars)
+                    ion_ion_RDF[ig] += 2;
+            }
         }
     }
     return;
