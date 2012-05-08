@@ -32,6 +32,8 @@ void WaterSystem::default_initialize_system_parameters(int num_waters, int num_i
 
     WINDOW_LOWER_BOUND = WINDOW_UPPER_BOUND = -1;
     DATA_SAMPLING_RATE = 20;
+
+    num_ion_disp_attempts = num_ion_disp_successes = 0;
 }
 
 void WaterSystem::default_initialize_waters(int num_waters) {
@@ -108,27 +110,42 @@ void WaterSystem::expand_box_z_direction(double new_len) {
 }
 
 void WaterSystem::mc_move() {
+    if (RAN3() < 0.5) {
+        num_ion_disp_attempts++;
+        num_ion_disp_successes++;
+        TEMP_INDEX = WATERS.size() + RANDINT(0, IONS.size());
+        IONS[TEMP_INDEX - WATERS.size()]->mc_translate();
+    } else {
+        TEMP_INDEX = RANDINT(0, WATERS.size());
+        (RAN3() < 0.5) ? WATERS[TEMP_INDEX]->mc_translate() : WATERS[TEMP_INDEX]->mc_rotate();
+    }
+
+    /*
     TEMP_INDEX = RANDINT(0, WATERS.size() + IONS.size() * ION_PROBABILITY_WEIGHT);
     if (TEMP_INDEX >= int(WATERS.size())) {
         TEMP_INDEX = WATERS.size() + ((TEMP_INDEX - WATERS.size()) / ION_PROBABILITY_WEIGHT);
         IONS[TEMP_INDEX - WATERS.size()]->mc_translate();
     } else
         (RAN3() < 0.5) ? WATERS[TEMP_INDEX]->mc_translate() : WATERS[TEMP_INDEX]->mc_rotate();
+     */
 
-    /*    if (RAN3() < 0.5) {
-            TEMP_INDEX = RANDINT(0, WATERS.size() + IONS.size() * ION_PROBABILITY_WEIGHT);
-            if (TEMP_INDEX >= (int) WATERS.size())
-                TEMP_INDEX = WATERS.size() + ((TEMP_INDEX - WATERS.size()) / ION_PROBABILITY_WEIGHT);
-            (TEMP_INDEX < (int) WATERS.size()) ? WATERS[TEMP_INDEX]->mc_translate() : IONS[TEMP_INDEX - WATERS.size()]->mc_translate();
-        } else {
-            TEMP_INDEX = RANDINT(0, WATERS.size());
-            WATERS[TEMP_INDEX]->mc_rotate();
-        }
-     * **/
+    /*    
+     if (RAN3() < 0.5) {
+        TEMP_INDEX = RANDINT(0, WATERS.size() + IONS.size() * ION_PROBABILITY_WEIGHT);
+        if (TEMP_INDEX >= (int) WATERS.size())
+            TEMP_INDEX = WATERS.size() + ((TEMP_INDEX - WATERS.size()) / ION_PROBABILITY_WEIGHT);
+        (TEMP_INDEX < (int) WATERS.size()) ? WATERS[TEMP_INDEX]->mc_translate() : IONS[TEMP_INDEX - WATERS.size()]->mc_translate();
+     } else {
+         TEMP_INDEX = RANDINT(0, WATERS.size());
+         WATERS[TEMP_INDEX]->mc_rotate();
+     }
+     */
 }
 
 void WaterSystem::undo_mc_move() {
-    (TEMP_INDEX < (int) WATERS.size()) ? WATERS[TEMP_INDEX]->undo_move() : IONS[TEMP_INDEX - WATERS.size()]->undo_move();
+    if (TEMP_INDEX >= int(WATERS.size()))
+        num_ion_disp_successes--;
+    (TEMP_INDEX < int(WATERS.size())) ? WATERS[TEMP_INDEX]->undo_move() : IONS[TEMP_INDEX - WATERS.size()]->undo_move();
 }
 
 void WaterSystem::add_rdf_sampler() {
@@ -147,7 +164,7 @@ void WaterSystem::add_ion_pair_distance_sampler() {
 }
 
 void WaterSystem::write_config_snapshot() {
-    std::ofstream config_file;
+    ofstream config_file;
     string config_filename = NAME + ".config";
     config_file.open(config_filename.c_str());
     ASSERT(config_file.is_open(), "Could not open config output file.");
@@ -171,15 +188,14 @@ void WaterSystem::finish_sampling() {
 }
 
 void WaterSystem::print_individual_sampler_results() {
+    cerr << "\nSIMULATION STATISTICS:" << setprecision(10) << endl
+            << 'Acceptance ratio of ion displacement moves' << double(num_ion_disp_successes) / double(num_ion_disp_attempts) << endl;
     for (unsigned int i = 0; i < SAMPLERS.size(); i++)
-        std::cout << SAMPLERS[i]->results() << std::endl;
+        cout << SAMPLERS[i]->results() << endl;
 }
 
 ostream & operator<<(ostream & out, WaterSystem * system) {
-    // The policy is that the config file output only contains the configuration of the box and its particles;
-    // all other system parameters will be set in code and compiled before running;
-    // otherwise, the complexity of managing the config file will grow exponentially
-    out << "BOX_LENGTH\t" << std::setprecision(10) << system->BOX_LENGTH << endl
+    out << "BOX_LENGTH\t" << setprecision(10) << system->BOX_LENGTH << endl
             << "BOX_Z_LENGTH\t" << system->BOX_Z_LENGTH << endl
             << "EWALD_ALPHA\t" << system->EWALD_ALPHA << endl
             << "EWALD_NXY\t" << system->EWALD_NXY << endl

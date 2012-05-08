@@ -6,6 +6,8 @@ RDFSampler::RDFSampler(WaterSystem * s) {
 }
 
 RDFSampler::~RDFSampler() {
+    if (RDF_FILE.is_open())
+        RDF_FILE.close();
 }
 
 void RDFSampler::start() {
@@ -89,16 +91,24 @@ void RDFSampler::finish() {
         cation_water_RDF[i] /= (num_gr * (num_cations + system->WATERS.size()) * shell_volume * cation_density);
         ion_ion_RDF[i] /= (num_gr * system->IONS.size() * shell_volume * anion_density);
     }
+
+    // Print results out to file
+    // Format of results is as such:
+    // r(Angstroms)     g(r)[O-O]       g(r)[anion-O]   g(r)[cation-O]  g(r)[ion-ion]
+    if (!RDF_FILE.is_open()) {
+        string filename = system->NAME + ".rdf";
+        RDF_FILE.open(filename.c_str());
+        ASSERT(RDF_FILE.is_open(), "Could not open rdf output file.");
+    }
+    for (int k = 0; k < radial_dist_num_his_bars; k++)
+        RDF_FILE << setprecision(10) << radial_dist_distance[k] << "\t"
+            << water_water_RDF[k] << "\t" << anion_water_RDF[k] << "\t" << cation_water_RDF[k] << "\t" << ion_ion_RDF[k] << endl;
+    RDF_FILE.close();
     return;
 }
 
 string RDFSampler::results() {
-    stringstream rad_dist_results;
-    // Format of results is as such:
-    // r(Angstroms)     g(r)[O-O]       g(r)[anion-O]   g(r)[cation-O]  g(r)[ion-ion]
-    //rad_dist_results << "r(Angstroms)\tg(r)[O-O]\tg(r)[anion-O]\tg(r)[cation-O]\tg(r)[ion-ion]" << endl;
-    for (int k = 0; k < radial_dist_num_his_bars; k++)
-        rad_dist_results << setprecision(10) << radial_dist_distance[k] << "\t"
-            << water_water_RDF[k] << "\t" << anion_water_RDF[k] << "\t" << cation_water_RDF[k] << "\t" << ion_ion_RDF[k] << endl;
-    return rad_dist_results.str();
+    stringstream results;
+    results << "RDF results are available in " << system->NAME << ".rdf" << endl;
+    return results.str();
 }

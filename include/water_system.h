@@ -14,6 +14,7 @@ class Sampler;
 
 class WaterSystem {
 private:
+    int num_ion_disp_attempts, num_ion_disp_successes;
     void default_initialize_system_parameters(int num_waters, int num_ions);
     void default_initialize_sampling_parameters();
     void default_initialize_waters(int num_waters);

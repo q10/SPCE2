@@ -23,15 +23,15 @@ done
 cd results && cat << EOF | gnuplot
 set term gif large size 1600, 1200
 set output "OO-RDF.gif"
-plot "$MAIN_N.out" using 1:2 with lp title 'O-O RDF'
+plot "$MAIN_N.rdf" using 1:2 with lp title 'O-O RDF'
 set output "AO-RDF.gif"
-plot "$MAIN_N.out" using 1:3 with lp title 'A-O RDF'
+plot "$MAIN_N.rdf" using 1:3 with lp title 'A-O RDF'
 set output "CO-RDF.gif"
-plot "$MAIN_N.out" using 1:4 with lp title 'C-O RDF'
+plot "$MAIN_N.rdf" using 1:4 with lp title 'C-O RDF'
 set output "AC-RDF.gif"
-plot "$MAIN_N.out" using 1:5 with lp title 'A-C RDF'
+plot "$MAIN_N.rdf" using 1:5 with lp title 'A-C RDF'
 set output "ALL-RDF.gif"
-plot "$MAIN_N.out" using 1:2 with lp title 'O-O RDF', "$MAIN_N.out" using 1:3 with lp title 'A-O RDF', "$MAIN_N.out" using 1:4 with lp title 'C-O RDF', "$MAIN_N.out" using 1:5 with lp title 'A-C RDF'
+plot "$MAIN_N.rdf" using 1:2 with lp title 'O-O RDF', "$MAIN_N.rdf" using 1:3 with lp title 'A-O RDF', "$MAIN_N.rdf" using 1:4 with lp title 'C-O RDF', "$MAIN_N.rdf" using 1:5 with lp title 'A-C RDF'
 EOF
 
 echo "" | mail -s "Simulation \"$MAIN_N\" has finished" "$EMAIL"

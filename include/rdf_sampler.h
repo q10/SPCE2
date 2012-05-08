@@ -13,6 +13,7 @@ private:
     double delg;
     int num_gr, radial_dist_num_his_bars;
     std::vector <double> radial_dist_distance, water_water_RDF, anion_water_RDF, cation_water_RDF, ion_ion_RDF;
+    std::ofstream RDF_FILE;
 
 public:
     RDFSampler(WaterSystem * s);

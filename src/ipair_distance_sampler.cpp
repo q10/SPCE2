@@ -25,7 +25,7 @@ void IonPairDistanceSampler::start() {
     if (!ION_PAIR_DISTANCE_FILE.is_open()) {
         string filename = system->NAME + ".ipair_dist";
         ION_PAIR_DISTANCE_FILE.open(filename.c_str());
-        ASSERT(ION_PAIR_DISTANCE_FILE.is_open(), "Could not open config output file.");
+        ASSERT(ION_PAIR_DISTANCE_FILE.is_open(), "Could not open ipair_dist file.");
     }
     return;
 }
