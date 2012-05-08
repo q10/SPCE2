@@ -34,6 +34,6 @@ set output "ALL-RDF.gif"
 plot "$MAIN_N.out" using 1:2 with lp title 'O-O RDF', "$MAIN_N.out" using 1:3 with lp title 'A-O RDF', "$MAIN_N.out" using 1:4 with lp title 'C-O RDF', "$MAIN_N.out" using 1:5 with lp title 'A-C RDF'
 EOF
 
-echo "" | mail -s "Simulation \'$MAIN_N\' has finished" "$EMAIL"
+echo "" | mail -s "Simulation \"$MAIN_N\" has finished" "$EMAIL"
 
 exit 0

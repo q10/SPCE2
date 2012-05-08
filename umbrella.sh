@@ -55,6 +55,6 @@ set output "$HISTOGRAMFILE.gif"
 plot "$HISTOGRAMFILE" using 1:(\$2/\$1**2) with lp
 EOF
 
-echo "" | mail -s "Simulation \'$MAIN_N\' has finished" "$EMAIL"
+echo "" | mail -s "Simulation \"$MAIN_N\" has finished" "$EMAIL"
 
 exit 0
