@@ -93,7 +93,7 @@ void SPCERuntime::test_radial_dist(int argc, char** argv) {
         system->IONS[i * 2 + 1]->charge = 1.0;
     }
     system->NAME = argv[2];
-    system->NUM_MC_SWEEPS = 100000;
+    system->NUM_MC_SWEEPS = 1050000;
     system->add_rdf_sampler();
     Simulation<SPCEHamiltonian, WaterSystem> s(system);
     s.equilibrate();
