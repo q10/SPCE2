@@ -12,7 +12,7 @@ fi
 
 # Build
 make clean && make o3
-qsub -v SIM_NAME=$MAIN_N,NUM_ION_PAIRS=1 -N $MAIN_N qsub.sh
+qsub -v SIM_NAME=$MAIN_N,NUM_ION_PAIRS=9 -N $MAIN_N qsub.sh
 
 # Wait for simulation to finish running on the grid
 while [ $(ls results/*.jobdone | wc -l) -lt "1" ]; do
