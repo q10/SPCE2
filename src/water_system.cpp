@@ -189,7 +189,7 @@ void WaterSystem::finish_sampling() {
 
 void WaterSystem::print_individual_sampler_results() {
     cerr << "\nSIMULATION STATISTICS:" << setprecision(10) << endl
-            << 'Acceptance ratio of ion displacement moves' << double(num_ion_disp_successes) / double(num_ion_disp_attempts) << endl;
+            << "Acceptance ratio of ion displacement moves" << double(num_ion_disp_successes) / double(num_ion_disp_attempts) << endl;
     for (unsigned int i = 0; i < SAMPLERS.size(); i++)
         cout << SAMPLERS[i]->results() << endl;
 }

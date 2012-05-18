@@ -27,6 +27,9 @@
       <itemPath>.gitignore</itemPath>
       <itemPath>LICENSE</itemPath>
       <itemPath>README.rdoc</itemPath>
+      <itemPath>qsub.sh</itemPath>
+      <itemPath>single.sh</itemPath>
+      <itemPath>umbrella.sh</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"

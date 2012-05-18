@@ -37,8 +37,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/energy.o \
 	${OBJECTDIR}/src/umbrella_spce_hamiltonian.o \
 	${OBJECTDIR}/src/main.o \
-	${OBJECTDIR}/src/water_system.o \
 	${OBJECTDIR}/src/random.o \
+	${OBJECTDIR}/src/water_system.o \
 	${OBJECTDIR}/src/runtime.o \
 	${OBJECTDIR}/src/ipair_distance_sampler.o \
 	${OBJECTDIR}/src/rdf_sampler.o \
@@ -89,15 +89,15 @@ ${OBJECTDIR}/src/main.o: src/main.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -Iinclude -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main.o src/main.cpp
 
-${OBJECTDIR}/src/water_system.o: src/water_system.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.cc) -g -Iinclude -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/water_system.o src/water_system.cpp
-
 ${OBJECTDIR}/src/random.o: src/random.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.cc) -g -Iinclude -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/random.o src/random.cpp
+
+${OBJECTDIR}/src/water_system.o: src/water_system.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iinclude -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/water_system.o src/water_system.cpp
 
 ${OBJECTDIR}/src/runtime.o: src/runtime.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
